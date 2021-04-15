@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31205.134
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecordRecorder", "RecordRecorder\RecordRecorder.csproj", "{DFB7FCE6-A50E-4EE2-86C6-DCB0DFB393EE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DFB7FCE6-A50E-4EE2-86C6-DCB0DFB393EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFB7FCE6-A50E-4EE2-86C6-DCB0DFB393EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFB7FCE6-A50E-4EE2-86C6-DCB0DFB393EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFB7FCE6-A50E-4EE2-86C6-DCB0DFB393EE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {46BC2D68-10EC-40C5-8384-70A8C29FB625}
+	EndGlobalSection
+EndGlobal
