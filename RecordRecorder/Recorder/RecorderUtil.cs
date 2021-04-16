@@ -43,14 +43,10 @@ namespace RecordRecorder
 
         public void StartRecording()
         {
-            Directory.CreateDirectory(dataFolder);
-            string path = Path.Combine(dataFolder, "recorded4.wav");
-
-
             recordingDevice = new WaveInEvent() { DeviceNumber = RecordingDeviceNum };
             recordingDevice.WaveFormat = new WaveFormat(44100, 2);
 
-            writer = new WaveFileWriter(path, recordingDevice.WaveFormat);
+            writer = new WaveFileWriter(dataFilePath, recordingDevice.WaveFormat);
 
             recordingDevice.DataAvailable += (s, a) =>
             {
@@ -65,6 +61,11 @@ namespace RecordRecorder
             };
 
             recordingDevice.StartRecording();
+        }
+
+        public void StopRecording()
+        {
+            if (recordingDevice != null) recordingDevice.StopRecording();
         }
 
         public async Task DetectAndSaveTracks()
@@ -186,10 +187,6 @@ namespace RecordRecorder
                 return shazamModel;
             }
         }
-
-        public void StopRecording()
-        {
-            if (recordingDevice != null) recordingDevice.StopRecording();
-        }
+        
     }
 }
