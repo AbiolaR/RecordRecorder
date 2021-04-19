@@ -9,7 +9,10 @@
         AllowsTransparency="True"
         WindowStartupLocation="CenterScreen"
         Icon="Images/Logo/logo.png"
-        Title="Record Recorder" Height="450" Width="800">
+        Title="Record Recorder" 
+        MinWidth="{Binding WindowMinimumWidth}"
+        MinHeight="{Binding WindowMinimumHeight}"
+        Height="450" Width="800">
 
     <Window.Resources>
         <Style TargetType="{x:Type local:MainWindow}">
@@ -17,21 +20,30 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Window}">
                         <!-- Outer border with the dropshadow margin -->
-                        <Border Padding="{Binding OuterMarginThickness, FallbackValue=5}">
+                        <Border Padding="{Binding OuterMarginThickness}">
                             <!-- Main window outline -->
                             <Grid>
+                                <!-- Opacity mask for corners on grid -->
+                                <Border x:Name="Container" Background="AliceBlue" CornerRadius="{Binding WindowCornerRadius}" />
+                                
                                 <!-- Window border and dropshadow -->
-                                <Border CornerRadius="{Binding WindowCornerRadius, FallbackValue=10}" Background="AliceBlue">
+                                <Border CornerRadius="{Binding WindowCornerRadius}" Background="AliceBlue">
                                     <Border.Effect>
                                         <DropShadowEffect ShadowDepth="0" Opacity="0.2" />
                                     </Border.Effect>
                                 </Border>
-                                
+
                                 <!-- Main window content -->
                                 <Grid>
+
+                                    <!-- Corner clipping -->
+                                    <Grid.OpacityMask>
+                                        <VisualBrush Visual="{Binding ElementName=Container}" />
+                                    </Grid.OpacityMask>
+
                                     <Grid.RowDefinitions>
                                         <!-- Title Bar -->
-                                        <RowDefinition Height="{Binding TitleHeightGridLength, FallbackValue=24}"/>
+                                        <RowDefinition Height="{Binding TitleHeightGridLength}"/>
                                         <!-- Dropshadow -->
                                         <RowDefinition Height="Auto"/>
                                         <!-- Window Content -->
@@ -48,36 +60,63 @@
                                             <!-- Windows Button -->
                                             <ColumnDefinition Width="Auto" />
                                         </Grid.ColumnDefinitions>
-                                        
+
                                         <!-- Icon -->
                                         <Button Style="{StaticResource SystemIconButton}" Command="{Binding MenuCommand}">
                                             <Image Source="Images/Logo/logo-small.png"/>
                                         </Button>
-                                        
+
                                         <!-- Title -->
                                         <Viewbox Grid.Column="1" Margin="0">
-                                            <TextBlock Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Title, FallbackValue='Welcome Dude'}" />
+                                            <TextBlock Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Title}" />
                                         </Viewbox>
 
+                                        <!-- Window Buttons -->
+                                        <StackPanel Grid.Column="2" Orientation="Horizontal">
+                                            <Button Content="_" Style="{StaticResource WindowControlButton}" Command="{Binding MinimizeCommand}" />
+                                            <Button Content="[ ]" Style="{StaticResource WindowControlButton}" Command="{Binding MaximizeCommand}" />
+                                            <Button Content="X" Style="{StaticResource WindowCloseButton}" Command="{Binding CloseCommand}" />
+                                        </StackPanel>
                                     </Grid>
                                     
+                                    <!-- Drop Shadow -->
+                                    <Border Grid.Row="1" Height="6" BorderThickness="0 0.2 0 0">
+                                        <!-- Underline -->
+                                        <Border.BorderBrush>
+                                            <LinearGradientBrush StartPoint="0, 0" EndPoint="1, 0">
+                                                <GradientStop Color="White" Offset="0.0" />
+                                                <GradientStop Color="Gray" Offset="0.5" />
+                                                <GradientStop Color="White" Offset="1.0" />
+                                            </LinearGradientBrush>
+                                        </Border.BorderBrush>
+                                    </Border>
+
+                                    <!-- Page Content -->
+                                    <Border Grid.Row="2" Padding="{Binding InnerContentPadding}">
+                                        <ContentPresenter Content="{TemplateBinding Content}" />
+                                    </Border>
+
                                 </Grid>
                             </Grid>
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
-            </Setter>        
+            </Setter>
         </Style>
     </Window.Resources>
-    
+
     <WindowChrome.WindowChrome>
         <WindowChrome 
-            ResizeBorderThickness="{Binding ResizeBorderThickness, FallbackValue=4}"
-            CaptionHeight="{Binding TitleHeight, FallbackValue=24}"
+            ResizeBorderThickness="{Binding ResizeBorderThickness}"
+            CaptionHeight="{Binding TitleHeight}"
             GlassFrameThickness="0"
             CornerRadius="0"
             />
     </WindowChrome.WindowChrome>
+
+    <Grid>
+        <TextBlock Text="this is a test of the content presenter" />
+    </Grid>
 
 </Window>
     

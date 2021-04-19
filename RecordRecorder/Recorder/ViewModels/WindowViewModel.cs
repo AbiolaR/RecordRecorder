@@ -32,6 +32,9 @@ namespace RecordRecorder
 
         #region Public Properties
 
+        public double WindowMinimumWidth { get; set; } = 400;
+        public double WindowMinimumHeight { get; set; } = 400;
+
         /// <summary>
         /// The size of the resize border around the window, taking the outer margin into account
         /// </summary>
@@ -55,6 +58,8 @@ namespace RecordRecorder
 
         public Thickness OuterMarginThickness { get { return new Thickness(OuterMarginSize); } }
 
+        public Thickness InnerContentPadding { get { return new Thickness(resizeBorder);  } }
+
         /// <summary>
         /// The radious of the window, creting curved corners
         /// </summary>
@@ -76,7 +81,7 @@ namespace RecordRecorder
         /// <summary>
         /// The height of the title bar of the window
         /// </summary>
-        public int TitleHeight { get; set; } = 24;
+        public int TitleHeight { get; set; } = 36;
 
         public GridLength TitleHeightGridLength { get { return new GridLength(TitleHeight + resizeBorder); } }
 

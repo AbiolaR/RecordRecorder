@@ -1,4 +1,21 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <FontFamily x:Key="FocoBold">pack:..application;,,,/Fonts/#Foco</FontFamily>
+    <FontFamily x:Key="FocoBlack">pack:..application;,,,/Fonts/#Foco Black</FontFamily>
+
+    <Style TargetType="{x:Type Control}" x:Key="BaseStyle">
+        <Setter Property="FontFamily" Value="{StaticResource FocoBold}" />
+    </Style>
+
+    <Style TargetType="{x:Type TextBlock}" x:Key="BaseTextBlockStyle">
+        <Setter Property="FontFamily" Value="{StaticResource FocoBold}" />
+    </Style>
+
+    <Style TargetType="Button" BasedOn="{StaticResource BaseStyle}" />
+    <Style TargetType="Label" BasedOn="{StaticResource BaseStyle}" />
+    <Style TargetType="TextBox" BasedOn="{StaticResource BaseStyle}" />
+    <Style TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlockStyle}" />
+    <Style TargetType="ListView" BasedOn="{StaticResource BaseStyle}" />
     
 </ResourceDictionary>
