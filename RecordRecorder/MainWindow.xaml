@@ -17,11 +17,11 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Window}">
                         <!-- Outer border with the dropshadow margin -->
-                        <Border Padding="{Binding OuterMarginThickness}">
+                        <Border Padding="{Binding OuterMarginThickness, FallbackValue=5}">
                             <!-- Main window outline -->
                             <Grid>
                                 <!-- Window border and dropshadow -->
-                                <Border CornerRadius="{Binding WindowCornerRadius}" Background="AliceBlue">
+                                <Border CornerRadius="{Binding WindowCornerRadius, FallbackValue=10}" Background="AliceBlue">
                                     <Border.Effect>
                                         <DropShadowEffect ShadowDepth="0" Opacity="0.2" />
                                     </Border.Effect>
@@ -31,7 +31,7 @@
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <!-- Title Bar -->
-                                        <RowDefinition Height="{Binding TitleHeightGridLength}"/>
+                                        <RowDefinition Height="{Binding TitleHeightGridLength, FallbackValue=24}"/>
                                         <!-- Dropshadow -->
                                         <RowDefinition Height="Auto"/>
                                         <!-- Window Content -->
@@ -50,9 +50,14 @@
                                         </Grid.ColumnDefinitions>
                                         
                                         <!-- Icon -->
-                                        <Button WindowChrome.IsHitTestVisibleInChrome="True" Command="{Binding MenuCommand}">
+                                        <Button Style="{StaticResource SystemIconButton}" Command="{Binding MenuCommand}">
                                             <Image Source="Images/Logo/logo-small.png"/>
                                         </Button>
+                                        
+                                        <!-- Title -->
+                                        <Viewbox Grid.Column="1" Margin="0">
+                                            <TextBlock Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Title, FallbackValue='Welcome Dude'}" />
+                                        </Viewbox>
 
                                     </Grid>
                                     
@@ -67,13 +72,13 @@
     
     <WindowChrome.WindowChrome>
         <WindowChrome 
-            ResizeBorderThickness="{Binding ResizeBorderThickness}"
-            CaptionHeight="{Binding TitleHeight}"
+            ResizeBorderThickness="{Binding ResizeBorderThickness, FallbackValue=4}"
+            CaptionHeight="{Binding TitleHeight, FallbackValue=24}"
             GlassFrameThickness="0"
             CornerRadius="0"
             />
     </WindowChrome.WindowChrome>
-    
+
 </Window>
     
     

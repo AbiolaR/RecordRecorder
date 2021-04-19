@@ -4,6 +4,14 @@
              xmlns:local="clr-namespace:RecordRecorder"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!-- The order is important -->
+                <ResourceDictionary Source="Styles/Colors.xaml" />
+                <ResourceDictionary Source="Styles/Fonts.xaml" />
+                <ResourceDictionary Source="Styles/Buttons.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
          
     </Application.Resources>
 </Application>

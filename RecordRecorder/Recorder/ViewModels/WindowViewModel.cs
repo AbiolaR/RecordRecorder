@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
+﻿using System.Windows;
+using System.Windows.Input;
 
 namespace RecordRecorder
 {
@@ -84,6 +82,30 @@ namespace RecordRecorder
 
         #endregion
 
+        #region Commands
+
+        /// <summary>
+        /// The command to minimize the window
+        /// </summary>
+        public ICommand MinimizeCommand { get; set; }
+
+        /// <summary>
+        /// The command to maximize the window
+        /// </summary>
+        public ICommand MaximizeCommand { get; set; }
+
+        /// <summary>
+        /// The command to close the window
+        /// </summary>
+        public ICommand CloseCommand { get; set; }
+
+        /// <summary>
+        /// The command to show the system menu of the window
+        /// </summary>
+        public ICommand MenuCommand { get; set; }
+
+        #endregion
+
         #region Constructor
         public WindowViewModel(Window window)
         {
@@ -99,6 +121,13 @@ namespace RecordRecorder
                 OnPropertyChanged(nameof(WindowRadius));
                 OnPropertyChanged(nameof(WindowCornerRadius));
             };
+
+            // Create commands
+            MinimizeCommand = new RelayCommand((o) => _window.WindowState = WindowState.Minimized);
+            MaximizeCommand = new RelayCommand((o) => _window.WindowState ^= WindowState.Maximized);
+            CloseCommand = new RelayCommand((o) => window.Close());
+            var mousePosition = Mouse.GetPosition(_window);
+            MenuCommand = new RelayCommand((o) => SystemCommands.ShowSystemMenu(_window, new Point(mousePosition.X + _window.Left, mousePosition.Y + _window.Top)));
         }
         #endregion
     }
