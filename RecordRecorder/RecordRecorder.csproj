@@ -8,19 +8,31 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Images\logo\logo-small.png" />
-    <None Remove="Images\logo\logo.ico" />
-    <None Remove="Images\logo\logo.png" />
+    <None Remove="Images\Background\pattern_blue.png" />
+    <None Remove="Images\Background\pattern_pink.png" />
+    <None Remove="Images\Background\pattern_white.png" />
+    <None Remove="Images\Logo\logo-small.png" />
+    <None Remove="Images\Logo\logo.ico" />
+    <None Remove="Images\Logo\logo.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Images\logo\logo-small.png">
+    <Content Include="Images\Background\pattern_blue.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\logo\logo.ico">
+    <Content Include="Images\Background\pattern_pink.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\logo\logo.png">
+    <Content Include="Images\Background\pattern_white.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Logo\logo-small.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Logo\logo.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Logo\logo.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
