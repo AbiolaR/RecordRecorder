@@ -44,8 +44,6 @@
                                     <Grid.RowDefinitions>
                                         <!-- Title Bar -->
                                         <RowDefinition Height="{Binding TitleHeightGridLength}"/>
-                                        <!-- Dropshadow -
-                                        <RowDefinition Height="Auto"/> -->
                                         <!-- Window Content -->
                                         <RowDefinition Height="*"/>
                                     </Grid.RowDefinitions>
@@ -78,18 +76,6 @@
                                             <Button Content="X" Style="{StaticResource WindowCloseButton}" Command="{Binding CloseCommand}" />
                                         </StackPanel>
                                     </Grid>
-                                    
-                                    <!-- Drop Shadow -
-                                    <Border Grid.Row="1" Height="6" BorderThickness="0 0.2 0 0">
-                                        - Underline -
-                                        <Border.BorderBrush>
-                                            <LinearGradientBrush StartPoint="0, 0" EndPoint="1, 0">
-                                                <GradientStop Color="White" Offset="0.0" />
-                                                <GradientStop Color="Gray" Offset="0.5" />
-                                                <GradientStop Color="White" Offset="1.0" />
-                                            </LinearGradientBrush>
-                                        </Border.BorderBrush>
-                                    </Border> -->
 
                                     <!-- Page Content -->
                                     <Border Grid.Row="1" Padding="{Binding InnerContentPadding}" Background="Azure">
