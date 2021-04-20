@@ -15,6 +15,11 @@ namespace RecordRecorder
         private Window _window;
 
         /// <summary>
+        /// The last known dock position
+        /// </summary>
+        private WindowDockPosition dockPosition = WindowDockPosition.Undocked;
+
+        /// <summary>
         /// The size of the resize border around the window
         /// </summary>
         private int resizeBorder { get; set; } = 4;
@@ -23,7 +28,7 @@ namespace RecordRecorder
         /// The margin around the window allowing for a drop shadow
         /// </summary>
         private int _outerMarginSize = 5;
-        
+
         /// <summary>
         /// The radious of the window, creting curved corners
         /// </summary>
@@ -34,6 +39,8 @@ namespace RecordRecorder
 
         public double WindowMinimumWidth { get; set; } = 400;
         public double WindowMinimumHeight { get; set; } = 400;
+
+        public bool Borderless { get { return (_window.WindowState == WindowState.Maximized || dockPosition == WindowDockPosition.Undocked); } }
 
         /// <summary>
         /// The size of the resize border around the window, taking the outer margin into account
@@ -48,7 +55,7 @@ namespace RecordRecorder
             get
             {
                 // if window is maximized, return 0, removing the drop shadow margin, otherwise return it
-                return _window.WindowState == WindowState.Maximized ? 0 : _outerMarginSize;
+                return Borderless ? 0 : _outerMarginSize;
             }
             set
             {
@@ -58,7 +65,7 @@ namespace RecordRecorder
 
         public Thickness OuterMarginThickness { get { return new Thickness(OuterMarginSize); } }
 
-        public Thickness InnerContentPadding { get { return new Thickness(resizeBorder);  } }
+        public Thickness InnerContentPadding { get; set; } = new Thickness(0);
 
         /// <summary>
         /// The radious of the window, creting curved corners
@@ -121,12 +128,7 @@ namespace RecordRecorder
             // Listen for the window resizing
             _window.StateChanged += (sender, e) =>
             {
-                // Fire off events for all properties that are affected by a resize
-                OnPropertyChanged(nameof(ResizeBorderThickness));
-                OnPropertyChanged(nameof(OuterMarginSize));
-                OnPropertyChanged(nameof(OuterMarginThickness));
-                OnPropertyChanged(nameof(WindowRadius));
-                OnPropertyChanged(nameof(WindowCornerRadius));
+                WindowResized();
             };
 
             // Create commands
@@ -137,7 +139,27 @@ namespace RecordRecorder
             MenuCommand = new RelayCommand((o) => SystemCommands.ShowSystemMenu(_window, new Point(mousePosition.X + _window.Left, mousePosition.Y + _window.Top)));
 
             var resizer = new WindowResizer(_window);
+
+            // Listen out for dock changes
+            resizer.WindowDockChanged += (dock) =>
+            {
+                // Store last position
+                dockPosition = dock;
+
+                // Fire off resize events
+                WindowResized();
+            };
         }
         #endregion
+
+        private void WindowResized()
+        {
+            // Fire off events for all properties that are affected by a resize
+            OnPropertyChanged(nameof(ResizeBorderThickness));
+            OnPropertyChanged(nameof(OuterMarginSize));
+            OnPropertyChanged(nameof(OuterMarginThickness));
+            OnPropertyChanged(nameof(WindowRadius));
+            OnPropertyChanged(nameof(WindowCornerRadius));
+        }
     }
 }
