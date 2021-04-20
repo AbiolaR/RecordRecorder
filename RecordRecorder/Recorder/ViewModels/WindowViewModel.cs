@@ -133,6 +133,8 @@ namespace RecordRecorder
             CloseCommand = new RelayCommand((o) => window.Close());
             var mousePosition = Mouse.GetPosition(_window);
             MenuCommand = new RelayCommand((o) => SystemCommands.ShowSystemMenu(_window, new Point(mousePosition.X + _window.Left, mousePosition.Y + _window.Top)));
+
+            var resizer = new WindowResizer(_window);
         }
         #endregion
     }

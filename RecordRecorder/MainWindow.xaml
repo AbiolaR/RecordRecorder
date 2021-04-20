@@ -24,7 +24,7 @@
                             <!-- Main window outline -->
                             <Grid>
                                 <!-- Opacity mask for corners on grid -->
-                                <Border x:Name="Container" Background="AliceBlue" CornerRadius="{Binding WindowCornerRadius}" />
+                                <Border x:Name="Container" Background="LightGray" CornerRadius="{Binding WindowCornerRadius}" />
                                 
                                 <!-- Window border and dropshadow -->
                                 <Border CornerRadius="{Binding WindowCornerRadius}" Background="AliceBlue">
@@ -114,8 +114,9 @@
             />
     </WindowChrome.WindowChrome>
 
-    <Grid>
+    <Grid Background="AliceBlue">
         <TextBlock Text="this is a test of the content presenter" />
+        
     </Grid>
 
 </Window>
