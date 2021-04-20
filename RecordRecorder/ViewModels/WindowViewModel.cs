@@ -85,6 +85,8 @@ namespace RecordRecorder
 
         public GridLength TitleHeightGridLength { get { return new GridLength(TitleHeight + resizeBorder); } }
 
+        public ApplicationPage CurrentPage { get; set; } = ApplicationPage.MainPage;
+
         #endregion
 
         #region Commands
