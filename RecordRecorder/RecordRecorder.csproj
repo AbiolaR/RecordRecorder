@@ -8,8 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\Background\pattern.png" />
     <None Remove="Images\Background\pattern_blue.png" />
     <None Remove="Images\Background\pattern_pink.png" />
+    <None Remove="Images\Background\pattern_soft.png" />
     <None Remove="Images\Background\pattern_white.png" />
     <None Remove="Images\Logo\logo-small.png" />
     <None Remove="Images\Logo\logo.ico" />
@@ -17,10 +19,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Images\Background\pattern.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\Background\pattern_blue.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\Background\pattern_pink.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Background\pattern_soft.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\Background\pattern_white.png">

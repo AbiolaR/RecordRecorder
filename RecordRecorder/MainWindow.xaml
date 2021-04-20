@@ -27,7 +27,7 @@
                                 <Border x:Name="Container" Background="LightGray" CornerRadius="{Binding WindowCornerRadius}" />
                                 
                                 <!-- Window border and dropshadow -->
-                                <Border CornerRadius="{Binding WindowCornerRadius}" Background="AliceBlue">
+                                <Border CornerRadius="{Binding WindowCornerRadius}" Background="White">
                                     <Border.Effect>
                                         <DropShadowEffect ShadowDepth="0" Opacity="0.2" />
                                     </Border.Effect>
@@ -44,8 +44,8 @@
                                     <Grid.RowDefinitions>
                                         <!-- Title Bar -->
                                         <RowDefinition Height="{Binding TitleHeightGridLength}"/>
-                                        <!-- Dropshadow -->
-                                        <RowDefinition Height="Auto"/>
+                                        <!-- Dropshadow -
+                                        <RowDefinition Height="Auto"/> -->
                                         <!-- Window Content -->
                                         <RowDefinition Height="*"/>
                                     </Grid.RowDefinitions>
@@ -67,8 +67,8 @@
                                         </Button>
 
                                         <!-- Title -->
-                                        <Viewbox Grid.Column="1" Margin="0">
-                                            <TextBlock Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Title}" />
+                                        <Viewbox Grid.Column="1" Margin="0" HorizontalAlignment="Center">
+                                            <TextBlock Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Title}" HorizontalAlignment="Center" />
                                         </Viewbox>
 
                                         <!-- Window Buttons -->
@@ -79,9 +79,9 @@
                                         </StackPanel>
                                     </Grid>
                                     
-                                    <!-- Drop Shadow -->
+                                    <!-- Drop Shadow -
                                     <Border Grid.Row="1" Height="6" BorderThickness="0 0.2 0 0">
-                                        <!-- Underline -->
+                                        - Underline -
                                         <Border.BorderBrush>
                                             <LinearGradientBrush StartPoint="0, 0" EndPoint="1, 0">
                                                 <GradientStop Color="White" Offset="0.0" />
@@ -89,11 +89,16 @@
                                                 <GradientStop Color="White" Offset="1.0" />
                                             </LinearGradientBrush>
                                         </Border.BorderBrush>
-                                    </Border>
+                                    </Border> -->
 
                                     <!-- Page Content -->
-                                    <Border Grid.Row="2" Padding="{Binding InnerContentPadding}">
-                                        <ContentPresenter Content="{TemplateBinding Content}" />
+                                    <Border Grid.Row="1" Padding="{Binding InnerContentPadding}" Background="Aquamarine">
+                                        <Border>
+                                                <Border.Background>
+                                                    <ImageBrush TileMode="Tile" ViewportUnits="Absolute" Viewport="0 0 500 500" ImageSource="Images/Background/pattern_soft.png" />
+                                                </Border.Background>
+                                                <ContentPresenter Content="{TemplateBinding Content}" />
+                                        </Border>
                                     </Border>
 
                                 </Grid>
@@ -114,8 +119,8 @@
             />
     </WindowChrome.WindowChrome>
 
-    <Grid Background="AliceBlue">
-        <TextBlock Text="this is a test of the content presenter" />
+    <Grid Background="Transparent">
+         <TextBlock Text="this is a test of the content presenter" />
         
     </Grid>
 
