@@ -16,6 +16,7 @@
     <None Remove="Images\Logo\logo-small.png" />
     <None Remove="Images\Logo\logo.ico" />
     <None Remove="Images\Logo\logo.png" />
+    <None Remove="Images\record-player.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -41,6 +42,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\Logo\logo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\record-player.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

@@ -14,15 +14,12 @@ namespace RecordRecorder
         /// </summary>
         private Window _window;
 
-        /// <summary>
-        /// The last known dock position
-        /// </summary>
-        private WindowDockPosition dockPosition = WindowDockPosition.Undocked;
+        private bool isDocked = false;
 
         /// <summary>
         /// The size of the resize border around the window
         /// </summary>
-        private int resizeBorder { get; set; } = 4;
+        private int resizeBorder { get { return Borderless ? 0 : 6; } }
 
         /// <summary>
         /// The margin around the window allowing for a drop shadow
@@ -37,10 +34,10 @@ namespace RecordRecorder
 
         #region Public Properties
 
-        public double WindowMinimumWidth { get; set; } = 400;
-        public double WindowMinimumHeight { get; set; } = 400;
+        public double WindowMinimumWidth { get; set; } = 500;
+        public double WindowMinimumHeight { get; set; } = 500;
 
-        public bool Borderless { get { return (_window.WindowState == WindowState.Maximized || dockPosition == WindowDockPosition.Undocked); } }
+        public bool Borderless { get { return (_window.WindowState == WindowState.Maximized || isDocked); } }
 
         /// <summary>
         /// The size of the resize border around the window, taking the outer margin into account
@@ -75,7 +72,7 @@ namespace RecordRecorder
             get
             {
                 // if window is maximized, return 0, removing the radius, otherwise return it
-                return _window.WindowState == WindowState.Maximized ? 0 : _windowRadius;
+                return Borderless ? 0 : _windowRadius;
             }
             set
             {
@@ -125,11 +122,20 @@ namespace RecordRecorder
         {
             _window = window;
 
-            // Listen for the window resizing
+            // Listen for the window state changing
             _window.StateChanged += (sender, e) =>
             {
                 WindowResized();
             };
+
+            // Listen for the window size changing
+            _window.SizeChanged += (sender, e) =>
+            {
+                isDocked = _window.WindowState == WindowState.Normal && _window.Width != _window.RestoreBounds.Width && _window.Height != _window.RestoreBounds.Height;
+                WindowResized();
+            };
+
+
 
             // Create commands
             MinimizeCommand = new RelayCommand((o) => _window.WindowState = WindowState.Minimized);
@@ -141,6 +147,7 @@ namespace RecordRecorder
             var resizer = new WindowResizer(_window);
 
             // Listen out for dock changes
+            /*
             resizer.WindowDockChanged += (dock) =>
             {
                 // Store last position
@@ -148,7 +155,7 @@ namespace RecordRecorder
 
                 // Fire off resize events
                 WindowResized();
-            };
+            };*/
         }
         #endregion
 
