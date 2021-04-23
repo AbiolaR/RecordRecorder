@@ -34,8 +34,8 @@ namespace RecordRecorder
 
         #region Public Properties
 
-        public double WindowMinimumWidth { get; set; } = 500;
-        public double WindowMinimumHeight { get; set; } = 500;
+        public double WindowMinimumWidth { get; set; } = 530;
+        public double WindowMinimumHeight { get; set; } = 530;
 
         public bool Borderless { get { return (_window.WindowState == WindowState.Maximized || isDocked); } }
 
@@ -159,6 +159,9 @@ namespace RecordRecorder
         }
         #endregion
 
+
+        #region Private Methods
+
         private void WindowResized()
         {
             // Fire off events for all properties that are affected by a resize
@@ -168,5 +171,7 @@ namespace RecordRecorder
             OnPropertyChanged(nameof(WindowRadius));
             OnPropertyChanged(nameof(WindowCornerRadius));
         }
+
+        #endregion
     }
 }

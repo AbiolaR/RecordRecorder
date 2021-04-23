@@ -83,7 +83,7 @@
                                     </Grid>
 
                                     <!-- Page Content -->
-                                    <Border Grid.Row="1" Padding="{Binding InnerContentPadding}" Background="Azure">
+                                    <Border Grid.Row="1" Padding="{Binding InnerContentPadding}" Background="#9f83a6">
                                         <Border>
                                             <Border.Background>
                                                 <ImageBrush TileMode="Tile" ViewportUnits="Absolute" Viewport="0 0 500 500" ImageSource="Images/Background/pattern_soft.png" />

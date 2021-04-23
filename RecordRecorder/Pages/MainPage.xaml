@@ -5,10 +5,53 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:RecordRecorder"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="400" d:DesignWidth="600"
       Title="Page1">
 
     <Grid>
-        <Button Content="Test" />
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" TextBlock.TextAlignment="Center">
+                <Border Background="White" CornerRadius="10" Padding="15" Width="300" Margin="50">
+                    <StackPanel>
+
+                        <TextBlock Text="Bitte Album Namen eingeben:" FontFamily="Foco" />
+                        <TextBox x:Name="AlbumInput" Text="Album"  Width="80"/>
+                        <Grid>
+                            <Image Source="../Images/vinyl.png" IsEnabled="False" Margin="50,20,50,20">
+                                <Image.RenderTransform>
+                                    <RotateTransform CenterX="85" CenterY="85" />
+                                </Image.RenderTransform>
+                                <Image.Style>
+                                    <Style>
+                                        <Style.Triggers>
+                                            <Trigger Property="UIElement.IsEnabled" Value="True">
+                                                <Trigger.EnterActions>
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <DoubleAnimation
+                                                            Storyboard.TargetProperty="RenderTransform.Angle"
+                                                            From="0"
+                                                            To="360"
+                                                            Duration="0:0:2"
+                                                            RepeatBehavior="Forever" />
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </Trigger.EnterActions>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Image.Style>
+                            </Image>
+                            <Border Background="White" Width="170" Height="90" Margin="50,100,50,10">
+                                <Viewbox VerticalAlignment="Top">
+                                    <TextBlock Text="00:00:00" FontFamily="Foco" Background="White" />
+                                </Viewbox>
+                            </Border>
+                        </Grid>
+                        <Button x:Name="RecordButton" Height="40" Width="200" Content="Record" Style="{StaticResource AppStandardButton}" />
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </Page>
