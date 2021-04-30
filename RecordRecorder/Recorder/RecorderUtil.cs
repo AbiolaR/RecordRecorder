@@ -19,7 +19,7 @@ namespace RecordRecorder
         WaveFileWriter writer = null;
         WaveInEvent recordingDevice = null;
         private static readonly string dataFolder = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData); //Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "NAudio");
-        private static readonly string dataFilePath = Path.Combine(dataFolder, "recording1.wav"); 
+        private static readonly string dataFilePath = Path.Combine(dataFolder, "recording.wav");
         private static readonly string dataPartPath = Path.Combine(dataFolder, "part.wav");
         public string OutputFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic); //@"C:\Users\rasheed_abiola\Desktop\NAudio\recorded3.wav";
         public string OutputFolder = "";
