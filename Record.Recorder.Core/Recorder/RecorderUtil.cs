@@ -12,19 +12,25 @@ using System.Threading.Tasks;
 namespace Record.Recorder.Core
 {
     public delegate void Notify();
-    class RecorderUtil
+    public class RecorderUtil
     {
         public static event Notify ProgressIndeterminateStarted;
         private static HttpClient client = new HttpClient();
         WaveFileWriter writer = null;
         WaveInEvent recordingDevice = null;
         private static readonly string dataFolder = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData); //Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "NAudio");
-        private static readonly string dataFilePath = Path.Combine(dataFolder, "recording.wav");
-        private static readonly string dataPartPath = Path.Combine(dataFolder, "part.wav");
+        private static readonly string recordingFilePath = Path.Combine(dataFolder, "recording.wav");
+        //private static readonly string tempDataFolder = Path.Combine(dataFolder, "temp");
+        private static readonly string tempFilePath = Path.Combine(dataFolder, "temp", "temp.wav"); //Path.Combine(dataFolder, "part.wav");
         public string OutputFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic); //@"C:\Users\rasheed_abiola\Desktop\NAudio\recorded3.wav";
         public string OutputFolder = "";
         public string fileType = AudioFileType.WAV;
         public int RecordingDeviceNum { get; set; } = 999;
+
+        public RecorderUtil()
+        {            
+            Directory.CreateDirectory(Path.Combine(dataFolder, "temp"));
+        }
 
         public Dictionary<int, string> GetRecordingDevices()
         {
@@ -45,7 +51,7 @@ namespace Record.Recorder.Core
             recordingDevice = new WaveInEvent() { DeviceNumber = RecordingDeviceNum };
             recordingDevice.WaveFormat = new WaveFormat(44100, 2);
 
-            writer = new WaveFileWriter(dataFilePath, recordingDevice.WaveFormat);
+            writer = new WaveFileWriter(recordingFilePath, recordingDevice.WaveFormat);
 
             recordingDevice.DataAvailable += (s, a) =>
             {
@@ -100,7 +106,7 @@ namespace Record.Recorder.Core
                 }
             }*/
 
-            using (AudioFileReader reader = new AudioFileReader(dataFilePath))
+            using (AudioFileReader reader = new AudioFileReader(recordingFilePath))
             {
                 trackPositions = reader.GetTrackPositions();
                 reader.Dispose();
@@ -126,7 +132,7 @@ namespace Record.Recorder.Core
                 trackPositions.TryGetValue("End: " + i, out TimeSpan end);
                 end = TimeSpan.FromMilliseconds(end.TotalMilliseconds + 500);
 
-                var trimmed = new AudioFileReader(dataFilePath)
+                var trimmed = new AudioFileReader(recordingFilePath)
                                                 .Skip(start)
                                                 .Take(end.Subtract(start));
                 var shazamModel = await GetTrackNameAsync(GetMonoSampleAsBytes(start));
@@ -149,13 +155,13 @@ namespace Record.Recorder.Core
             start = TimeSpan.FromMilliseconds(start.TotalMilliseconds + 10000);
             TimeSpan end = TimeSpan.FromMilliseconds(start.TotalMilliseconds + 5000);
 
-            var trimmed = new AudioFileReader(dataFilePath)
+            var trimmed = new AudioFileReader(recordingFilePath)
                                             .Skip(start)
                                             .Take(end.Subtract(start));
 
             var mono = new StereoToMonoSampleProvider(trimmed);
-            WaveFileWriter.CreateWaveFile16(dataPartPath, mono); //$@"C:\Users\rasheed_abiola\Desktop\NAudio\parts\part.wav", mono);
-            return File.ReadAllBytes(dataPartPath);
+            WaveFileWriter.CreateWaveFile16(tempFilePath, mono); //$@"C:\Users\rasheed_abiola\Desktop\NAudio\parts\part.wav", mono);
+            return File.ReadAllBytes(tempFilePath);
         }
 
         private static async Task<ShazamModel> GetTrackNameAsync(byte[] bytes)

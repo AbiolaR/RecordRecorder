@@ -13,23 +13,10 @@ namespace Record.Recorder.Core
 
         public SettingsViewModel()
         {
-
-
             // Now some navigational commands
             GoToHomeCommand = new RelayCommand((o) => SetCurrentPageTo(ApplicationPage.MainPage));
 
         }
-
-        private void SetCurrentPageToMainPage()
-        {
-            System.Diagnostics.Debug.WriteLine("I'm going home now");
-
-            //((WindowViewModel)((MainWindow)Application.Current.MainWindow).DataContext).CurrentPage = ApplicationPage.MainPage;
-            IoC.Get<ApplicationViewModel>().CurrentPage = ApplicationPage.MainPage;
-        }
-
-
-
 
     }
 }
