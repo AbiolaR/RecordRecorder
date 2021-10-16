@@ -47,6 +47,26 @@
         </Setter>
     </Style>
     
+    <!-- Tab like Menu Button -->
+    <Style TargetType="Button" x:Key="MenuButton">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="Black" />
+        <Setter Property="TextElement.FontFamily" Value="Foco" />
+        <Setter Property="TextElement.FontSize" Value="15" />
+        <Setter Property="BorderThickness" Value="0" />
+    </Style>
+    
+    <!-- Navigational Button -->
+    <!-- for switching either to the Home or Settings Page -->
+    <Style TargetType="Button" x:Key="NavButton" BasedOn="{StaticResource AppStandardButton}">
+        <Setter Property="Background" Value="White" />
+        <Setter Property="Height" Value="20" />
+        <Setter Property="Width" Value="20" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="HorizontalAlignment" Value="Right" />
+        <Setter Property="Panel.ZIndex" Value="1" />
+    </Style>
+    
     <!-- System Icon Button -->
     <Style TargetType="{x:Type Button}" x:Key="SystemIconButton" BasedOn="{StaticResource Hoverless}">
         <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True" />

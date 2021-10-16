@@ -1,11 +1,11 @@
 ﻿using System.ComponentModel;
 
-namespace RecordRecorder
+namespace Record.Recorder.Core
 {
     /// <summary>
     /// A base view model that fires Property Changed events 
     /// </summary>
-    class BaseViewModel : INotifyPropertyChanged
+    public class BaseViewModel : INotifyPropertyChanged
     {
         /// <summary>
         /// The event that is fired when any child property changes its value
@@ -15,6 +15,11 @@ namespace RecordRecorder
         public void OnPropertyChanged(string name)
         {
             PropertyChanged(this, new PropertyChangedEventArgs(name));
+        }
+
+        protected void SetCurrentPageTo(ApplicationPage page)
+        {
+            IoC.Get<ApplicationViewModel>().CurrentPage = page;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using Record.Recorder.Core;
+using System.Windows;
 using System.Windows.Input;
 
 namespace RecordRecorder
@@ -89,7 +90,15 @@ namespace RecordRecorder
 
         public GridLength TitleHeightGridLength { get { return new GridLength(TitleHeight + resizeBorder); } }
 
-        public ApplicationPage CurrentPage { get; set; } = ApplicationPage.MainPage;
+        
+
+        /// <summary>
+        /// The view model to use for the current page when the CurrentPage changes
+        /// NOTE: This is not a live up-to-date view model of the current page
+        ///       it is simply used to set the view model of the current page 
+        ///       at the time it changes
+        /// </summary>
+        public BaseViewModel CurrentPageViewModel { get; set; }
 
         #endregion
 
@@ -115,12 +124,46 @@ namespace RecordRecorder
         /// </summary>
         public ICommand MenuCommand { get; set; }
 
+        /// <summary>
+        /// The command to switch to the settings page
+        /// </summary>
+        public ICommand SettingsViewCommand { get; set; }
+
+        #endregion
+
+        #region Public Helper Methods
+        /*
+        /// <summary>
+        /// Navigates to the specified page
+        /// </summary>
+        /// <param name="page">The page to go to</param>
+        /// <param name="viewModel">The view model, if any, to set explicitly to the new page</param>
+        public void GoToPage(ApplicationPage page, BaseViewModel viewModel = null)
+        {
+            // Set the view model
+            CurrentPageViewModel = viewModel;
+
+            // See if page has changed
+            //var different = CurrentPage != page;
+
+            // Set the current page
+            CurrentPage = page;
+
+            // Fire off a CurrentPage changed event
+            OnPropertyChanged(nameof(CurrentPage));
+
+            // If the page hasn't changed, fire off notification
+            // So pages still update if just the view model has changed
+            //if (!different) { OnPropertyChanged(nameof(CurrentPage)); }
+        }*/
+
         #endregion
 
         #region Constructor
         public WindowViewModel(Window window)
         {
             _window = window;
+
 
             // Listen for the window state changing
             _window.StateChanged += (sender, e) =>
@@ -143,6 +186,12 @@ namespace RecordRecorder
             CloseCommand = new RelayCommand((o) => window.Close());
             var mousePosition = Mouse.GetPosition(_window);
             MenuCommand = new RelayCommand((o) => SystemCommands.ShowSystemMenu(_window, new Point(mousePosition.X + _window.Left, mousePosition.Y + _window.Top)));
+
+            // Now some navigational commands
+            //HomeViewCommand = new RelayCommand((o) => CurrentPage = ApplicationPage.MainPage);
+            //SettingsViewCommand = new RelayCommand((o) => CurrentPage = ApplicationPage.SettingsPage);
+
+
 
             var resizer = new WindowResizer(_window);
 
@@ -171,6 +220,11 @@ namespace RecordRecorder
             OnPropertyChanged(nameof(WindowRadius));
             OnPropertyChanged(nameof(WindowCornerRadius));
         }
+
+        /*private void OnCurrentPageChanged()
+        {
+            OnPropertyChanged(nameof(CurrentPage));
+        }*/
 
         #endregion
     }

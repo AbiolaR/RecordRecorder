@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using Record.Recorder.Core;
+using System.Windows;
 
 namespace RecordRecorder
 {

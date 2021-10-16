@@ -1,15 +1,15 @@
 ﻿using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace RecordRecorder
+namespace Record.Recorder.Core
 {
     public delegate void Notify();
     class RecorderUtil
@@ -181,10 +181,10 @@ namespace RecordRecorder
             {
                 response.EnsureSuccessStatusCode();
                 var body = await response.Content.ReadAsStringAsync();
-                var shazamModel = JsonSerializer.Deserialize<ShazamModel>(body);
+                var shazamModel = JsonConvert.DeserializeObject<ShazamModel>(body);
                 return shazamModel;
             }
         }
-        
+
     }
 }

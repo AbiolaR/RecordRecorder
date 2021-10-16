@@ -1,27 +1,21 @@
 ﻿using Record.Recorder.Core;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
-using System.Text;
 
 namespace RecordRecorder
 {
     /// <summary>
-    /// Converts the <see cref="ApplicationPage"/> to an actual view page
+    /// Converts a string name to a service pulled from the IoC container
     /// </summary>
-    class ApplicationPageValueConverter : BaseValueConverter<ApplicationPageValueConverter>
+    class IoCConverter : BaseValueConverter<IoCConverter>
     {
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            switch ((ApplicationPage) value)
+            switch ((string)parameter)
             {
-                case ApplicationPage.MainPage:
-                    return new MainPage();
-
-                case ApplicationPage.SettingsPage:
-                    return new SettingsPage();
-              
+                case nameof(ApplicationViewModel):
+                    return IoC.Get<ApplicationViewModel>();
 
                 default:
                     Debugger.Break();
