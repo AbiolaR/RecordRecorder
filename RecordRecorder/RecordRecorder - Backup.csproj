@@ -1,0 +1,113 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
+    <StartupObject>RecordRecorder.App</StartupObject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Fonts\FOCO.TTF" />
+    <None Remove="Fonts\FOCOBLACK.TTF" />
+    <None Remove="Fonts\FOCOBOLD.TTF" />
+    <None Remove="Fonts\FOCOLIGHT.TTF" />
+    <None Remove="Images\Background\pattern.png" />
+    <None Remove="Images\Background\pattern_blue.png" />
+    <None Remove="Images\Background\pattern_pink.png" />
+    <None Remove="Images\Background\pattern_soft.png" />
+    <None Remove="Images\Background\pattern_white.png" />
+    <None Remove="Images\gear.png" />
+    <None Remove="Images\home.png" />
+    <None Remove="Images\Logo\icon.ico" />
+    <None Remove="Images\Logo\logo-small.png" />
+    <None Remove="Images\Logo\logo.ico" />
+    <None Remove="Images\Logo\logo.png" />
+    <None Remove="Images\Logo\settings.png" />
+    <None Remove="Images\Logo\vinyl-logo-small.png" />
+    <None Remove="Images\Logo\vinyl-logo.png" />
+    <None Remove="Images\record-player.png" />
+    <None Remove="Images\settings.png" />
+    <None Remove="Images\vinyl.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Images\Background\pattern.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Background\pattern_blue.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Background\pattern_pink.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Background\pattern_soft.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Background\pattern_white.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\gear.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\home.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Logo\icon.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Logo\logo-small.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Logo\logo.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Logo\logo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Logo\vinyl-logo-small.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Logo\vinyl-logo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\record-player.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\settings.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\vinyl.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Fonts\FOCO.TTF">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\FOCOBLACK.TTF">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\FOCOBOLD.TTF">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\FOCOLIGHT.TTF">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NAudio" Version="2.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Ninject" Version="3.3.4" />
+    <PackageReference Include="PropertyChanged.Fody" Version="3.4.0" />
+    <PackageReference Include="taglib-sharp-netstandard2.0" Version="2.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Record.Recorder.Core\Record.Recorder.Core.csproj" />
+  </ItemGroup>
+
+</Project>
