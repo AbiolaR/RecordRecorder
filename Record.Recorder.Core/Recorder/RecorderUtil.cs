@@ -1,4 +1,5 @@
-﻿using NAudio.Wave;
+﻿using NAudio.CoreAudioApi;
+using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using Newtonsoft.Json;
 using System;
@@ -7,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Record.Recorder.Core
@@ -28,22 +30,67 @@ namespace Record.Recorder.Core
         public int RecordingDeviceNum { get; set; } = 999;
 
         public RecorderUtil()
-        {            
+        {
             Directory.CreateDirectory(Path.Combine(dataFolder, "temp"));
         }
 
-        public Dictionary<int, string> GetRecordingDevices()
+        async public Task<SortedDictionary<int, string>> GetRecordingDevices()
         {
-            Dictionary<int, string> recordingDevices = new Dictionary<int, string>();
-            recordingDevices.Add(-2, "Bitte Aufnahmegerät auswählen"); // placeholder
+            var recordingDevices = new SortedDictionary<int, string>();
+            //var recordingDevicesFullName = new Dictionary<int, string>();
+            //recordingDevices.Add(-2, "Bitte Aufnahmegerät auswählen"); // placeholder
 
-
-            for (int n = -1; n < WaveIn.DeviceCount; n++)
+            await Task.Run(() =>
             {
-                var caps = WaveIn.GetCapabilities(n);
-                recordingDevices.Add(n, caps.ProductName);
-            }
+
+                for (int n = -1; n < WaveIn.DeviceCount; n++)
+                {
+                    var caps = WaveIn.GetCapabilities(n);
+                    recordingDevices.Add(n, caps.ProductName);
+                }
+
+                var enumerator = new MMDeviceEnumerator();
+                MMDeviceCollection enumeratedDevices = enumerator.EnumerateAudioEndPoints(DataFlow.Capture, DeviceState.Active);
+
+                foreach (var device in recordingDevices.ToList())
+                {
+                    for (int i = 0; i < enumeratedDevices.Count; i++)
+                    {
+                        string deviceFullName = enumeratedDevices[i].ToString();
+                        if (deviceFullName.Contains(device.Value))
+                        {
+                            recordingDevices[device.Key] = deviceFullName;
+                        }
+                    }
+                }
+            });
+
+
             return recordingDevices;
+        }
+
+        public async Task<KeyValuePair<int, string>> GetRecordingDeviceByName(string deviceName)
+        {
+            var recordingDevice = new KeyValuePair<int, string>();
+
+            if (deviceName.Length <= 30)
+            {
+                for (int n = -1; n < WaveIn.DeviceCount; n++)
+                {
+                    var caps = WaveIn.GetCapabilities(n);
+                    if (deviceName.Equals(caps.ProductName))
+                    {
+                        recordingDevice = new KeyValuePair<int, string>(n, deviceName);
+                    }
+                }
+            } else
+            {
+                SortedDictionary<int, string> recordingDevices = await GetRecordingDevices();
+                recordingDevice = recordingDevices.FirstOrDefault(device => device.Value == deviceName);
+            }
+
+
+            return recordingDevice;
         }
 
         public void StartRecording()

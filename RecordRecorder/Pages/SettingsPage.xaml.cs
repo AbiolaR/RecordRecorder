@@ -1,5 +1,5 @@
 ﻿using Record.Recorder.Core;
-using System.Windows.Controls;
+using System.Windows;
 
 namespace RecordRecorder
 {
@@ -11,6 +11,13 @@ namespace RecordRecorder
         public SettingsPage()
         {
             InitializeComponent();
+            var recorder = new RecorderUtil();
+            var test = recorder.GetRecordingDevices();
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+           
         }
     }
 }

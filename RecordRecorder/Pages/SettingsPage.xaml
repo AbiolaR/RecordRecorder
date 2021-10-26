@@ -5,10 +5,13 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:core="clr-namespace:Record.Recorder.Core;assembly=Record.Recorder.Core"
       xmlns:local="clr-namespace:RecordRecorder"
+      xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
       mc:Ignorable="d" 
       x:Name="Page"                
       d:DesignHeight="400" d:DesignWidth="600"
-      Title="SettingsPage">
+      Title="SettingsPage"
+      Loaded="Page_Loaded"
+                >
 
 
     <Grid>
@@ -21,13 +24,55 @@
                         </Button>
 
                         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" TextBlock.TextAlignment="Center">
+                        <!--
+                            
+                        <ComboBox Style="{DynamicResource DropDownBox}" 
+                                      x:Name="inputSources"
+                                      FontSize="12"
+                                        FontFamily="/Fonts/#Foco"
+                                        FontWeight="Bold"
+                                        IsEditable="False"
+                                        IsReadOnly="True"
+                                        SelectedIndex="0"
+                                        SelectedValuePath="Key" 
+                                        DisplayMemberPath="Value"
+                                        RenderTransformOrigin="0.5,0.5" Margin="-44,61,0,174" /> -->
 
-                            <TextBlock Text="This is the Settings Page" FontFamily="Foco" FontSize="20"/>
+                            <ComboBox x:Name="deviceSelector"
+                                      ItemsSource="{Binding RecordingDevices}"
+                                      Height="20" 
+                                      Text="Select an Item"
+                                      IsReadOnly="True"
+                                      SelectedValuePath="Key" 
+                                      DisplayMemberPath="Value" 
+                                      SelectedItem="{Binding RecordingDevice}">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="DropDownOpened">
+                                        <i:InvokeCommandAction Command="{Binding UpdateDevicesCommand}" />
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="SelectionChanged">
+                                        <i:InvokeCommandAction Command="{Binding SaveRecordingDeviceCommand}" CommandParameter="{Binding ElementName=deviceSelector, Path=SelectedItem}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </ComboBox>
+                            
+                            <!--:CommandBehaviour.Event="DropDownOpened"
+                                      local:CommandBehaviour.Command="{Binding UpdateDevicesCommand}" -->
 
+                            <Label Content="Folder location" />
+                            <TextBlock Text="{Binding SaveFolderLocation}" />
+                            <Button Content="1"  Style="{StaticResource AppStandardButton}" Height="40" Width="60" Command="{Binding UpdateDevicesCommand}" CommandParameter="{Binding ElementName=deviceSelector, Path=SelectedItem}" />
+                            
                         </StackPanel>
                     </Grid>
                 </Border>
             </StackPanel>
         </ScrollViewer>
     </Grid>
+
+    <!--<i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding UpdateDevicesCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>-->
 </local:BasePage>

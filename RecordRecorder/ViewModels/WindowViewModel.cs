@@ -25,7 +25,7 @@ namespace RecordRecorder
         /// <summary>
         /// The margin around the window allowing for a drop shadow
         /// </summary>
-        private int _outerMarginSize = 5;
+        private int _outerMarginSize = 10;
 
         /// <summary>
         /// The radious of the window, creting curved corners
@@ -35,7 +35,7 @@ namespace RecordRecorder
 
         #region Public Properties
 
-        public double WindowMinimumWidth { get; set; } = 530;
+        public double WindowMinimumWidth { get; set; } = 430;
         public double WindowMinimumHeight { get; set; } = 530;
 
         public bool Borderless { get { return (_window.WindowState == WindowState.Maximized || isDocked); } }
@@ -86,7 +86,7 @@ namespace RecordRecorder
         /// <summary>
         /// The height of the title bar of the window
         /// </summary>
-        public int TitleHeight { get; set; } = 36;
+        public int TitleHeight { get; set; } = 24;
 
         public GridLength TitleHeightGridLength { get { return new GridLength(TitleHeight + resizeBorder); } }
 
@@ -187,10 +187,6 @@ namespace RecordRecorder
             var mousePosition = Mouse.GetPosition(_window);
             MenuCommand = new RelayCommand((o) => SystemCommands.ShowSystemMenu(_window, new Point(mousePosition.X + _window.Left, mousePosition.Y + _window.Top)));
 
-            // Now some navigational commands
-            //HomeViewCommand = new RelayCommand((o) => CurrentPage = ApplicationPage.MainPage);
-            //SettingsViewCommand = new RelayCommand((o) => CurrentPage = ApplicationPage.SettingsPage);
-
 
 
             var resizer = new WindowResizer(_window);
@@ -220,11 +216,6 @@ namespace RecordRecorder
             OnPropertyChanged(nameof(WindowRadius));
             OnPropertyChanged(nameof(WindowCornerRadius));
         }
-
-        /*private void OnCurrentPageChanged()
-        {
-            OnPropertyChanged(nameof(CurrentPage));
-        }*/
 
         #endregion
     }

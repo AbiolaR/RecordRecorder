@@ -12,7 +12,15 @@
     <Grid>
         <ScrollViewer VerticalScrollBarVisibility="Auto">
             <StackPanel >
-                <Border Background="White" CornerRadius="10" Padding="15" Width="300" Margin="50">
+                <Border Background="#363636" CornerRadius="10" Padding="15" Width="300" Margin="50" BorderBrush="Black">
+                    <Border.Effect>
+                        <DropShadowEffect BlurRadius="100"
+                              Color="#424242"
+                              Opacity="1"
+                              ShadowDepth="0"
+                              Direction="0" />
+                        <!--<DropShadowEffect ShadowDepth="10" Opacity="0.4" Color="White" />-->
+                    </Border.Effect> 
                     <Grid>
                         <Button x:Name="Settings" Height="20" Width="20" VerticalAlignment="Top" HorizontalAlignment="Right" Style="{StaticResource NavButton}" Command="{Binding GoToSettingsCommand}">
                             <Image Source="../Images/gear.png" />
@@ -20,8 +28,8 @@
 
                         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" TextBlock.TextAlignment="Center">
 
-                            <TextBlock Text="Bitte Album Namen eingeben:" FontFamily="Foco" />
-                            <TextBox x:Name="AlbumInput" Text="Album"  Width="80"/>
+                            <TextBlock Text="Bitte Album Namen eingeben:" FontFamily="{StaticResource FocoBold}" />
+                            <TextBox x:Name="AlbumInput" Text="Album"  Width="80" FontFamily="{StaticResource FocoLight}" />
                             <Grid>
                                 <Image Source="../Images/vinyl.png" IsEnabled="False" Margin="50,20,50,20">
                                     <Image.RenderTransform>
@@ -48,9 +56,9 @@
                                         </Style>
                                     </Image.Style>
                                 </Image>
-                                <Border Background="White" Width="170" Height="90" Margin="50,100,50,10">
+                                <Border Background="#363636" Width="170" Height="90" Margin="50,100,50,10">
                                     <Viewbox VerticalAlignment="Top">
-                                        <TextBlock Text="00:00:00" FontFamily="Foco" Background="White" />
+                                        <TextBlock Text="00:00:00" FontFamily="{StaticResource FocoBold}" Background="#363636" />
                                     </Viewbox>
                                 </Border>
                             </Grid>

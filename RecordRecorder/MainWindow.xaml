@@ -8,12 +8,12 @@
         WindowStyle="None"
         AllowsTransparency="True"
         WindowStartupLocation="CenterScreen"
-        Icon="Images/Logo/logo.png"
-        Title="Record Recorder"
+        Icon="Images/Logo/vinyl-logo.png"
+        Title="Vinyl Recorder"
         Name="AppWindow"
         MinWidth="{Binding WindowMinimumWidth}"
         MinHeight="{Binding WindowMinimumHeight}"
-        Height="450" Width="800">
+        Height="450" Width="400">
 
     <Window.Resources>
         <Style TargetType="{x:Type local:MainWindow}">
@@ -25,10 +25,10 @@
                             <!-- Main window outline -->
                             <Grid>
                                 <!-- Opacity mask for corners on grid -->
-                                <Border x:Name="Container" Background="LightGray" CornerRadius="{Binding WindowCornerRadius, FallbackValue=10}" />
+                                <Border x:Name="Container" Background="Black" CornerRadius="{Binding WindowCornerRadius, FallbackValue=10}" />
 
                                 <!-- Window border and dropshadow -->
-                                <Border CornerRadius="{Binding WindowCornerRadius}" Background="White">
+                                <Border CornerRadius="{Binding WindowCornerRadius}" Background="#2b2b2b">
                                     <Border.Effect>
                                         <DropShadowEffect ShadowDepth="0" Opacity="0.2" />
                                     </Border.Effect>
@@ -62,23 +62,26 @@
 
                                         <!-- Icon -->
                                         <Button Style="{StaticResource SystemIconButton}" Command="{Binding MenuCommand}">
-                                            <Image Source="Images/Logo/logo-small.png"/>
+                                            <Image Source="Images/Logo/vinyl-logo-small.png"/>
                                         </Button>
 
                                         <!-- Title -->
                                         <Viewbox Grid.Column="0" Grid.ColumnSpan="3" Margin="0">
-                                            <!--<TextBlock Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Title}" />-->
+                                            <TextBlock Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Title}" FontFamily="{StaticResource Foco}" />
+                                            <!-- old title 
                                             <TextBlock TextWrapping="Wrap" FontFamily="Foco Bold">
                                                 <Run>Vinyl Rec</Run><InlineUIContainer>
                                                     <Image Source="Images/record-player.png" Height="6" />
                                                 </InlineUIContainer><Run>rder</Run>
                                             </TextBlock>
+                                        -->
                                         </Viewbox>
+                                        
 
                                         <!-- Window Buttons -->
                                         <StackPanel Grid.Column="2" Orientation="Horizontal">
-                                            <Button Content="_" Style="{StaticResource WindowControlButton}" Command="{Binding MinimizeCommand}" />
-                                            <Button Content="[ ]" Style="{StaticResource WindowControlButton}" Command="{Binding MaximizeCommand}" />
+                                            <Button Content="-" Style="{StaticResource WindowControlButton}" Command="{Binding MinimizeCommand}" />
+                                            <Button Content="&#63521;" Style="{StaticResource WindowControlButton}" Command="{Binding MaximizeCommand}" />
                                             <Button Content="X" Style="{StaticResource WindowCloseButton}" Command="{Binding CloseCommand}" />
                                         </StackPanel>
                                     </Grid>
@@ -108,16 +111,16 @@
             />
     </WindowChrome.WindowChrome>
 
-    <Border Background="Aquamarine">
+    <Border Background="#2b2b2b" Opacity="1">
         <Grid>
             <!--
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*" />
                 <RowDefinition Height="4*" />
-            </Grid.RowDefinitions> -->
+            </Grid.RowDefinitions> 
             <Grid.Background>
                 <ImageBrush TileMode="Tile" ViewportUnits="Absolute" Viewport="0 0 500 500" ImageSource="Images/Background/pattern_soft.png" />
-            </Grid.Background>
+            </Grid.Background>-->
             <!--
 
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Bottom" Orientation="Horizontal" Width="300">
@@ -145,9 +148,11 @@
             <Frame Grid.Row="0" 
                    x:Name="MainFrame" 
                    NavigationUIVisibility="Hidden"
+                   VerticalAlignment="Center"
                    Content="{Binding ApplicationViewModel.CurrentPage, 
                             Source={x:Static local:ViewModelLocator.Instance}, 
                             Converter={local:ApplicationPageValueConverter}}"/>
+            
             
         </Grid>
     </Border>

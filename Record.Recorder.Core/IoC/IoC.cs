@@ -33,6 +33,12 @@ namespace Record.Recorder.Core
         {
             // Bind all required view models
             BindViewModels();
+
+            // Set necessary default settings data
+            if (string.IsNullOrEmpty(Properties.Settings.Default["saveFolderLocation"].ToString()))
+            {
+                Properties.Settings.Default["saveFolderLocation"] = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic);
+            }
         }
 
         /// <summary>

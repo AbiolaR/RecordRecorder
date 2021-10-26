@@ -4,10 +4,15 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
-    <ApplicationIcon>Images\Logo\logo.ico</ApplicationIcon>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
+    <StartupObject>RecordRecorder.App</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Fonts\FOCO.TTF" />
+    <None Remove="Fonts\FOCOBLACK.TTF" />
+    <None Remove="Fonts\FOCOBOLD.TTF" />
+    <None Remove="Fonts\FOCOLIGHT.TTF" />
     <None Remove="Images\Background\pattern.png" />
     <None Remove="Images\Background\pattern_blue.png" />
     <None Remove="Images\Background\pattern_pink.png" />
@@ -15,10 +20,15 @@
     <None Remove="Images\Background\pattern_white.png" />
     <None Remove="Images\gear.png" />
     <None Remove="Images\home.png" />
+    <None Remove="Images\Logo\icon.ico" />
     <None Remove="Images\Logo\logo-small.png" />
     <None Remove="Images\Logo\logo.ico" />
     <None Remove="Images\Logo\logo.png" />
+    <None Remove="Images\Logo\settings.png" />
+    <None Remove="Images\Logo\vinyl-logo-small.png" />
+    <None Remove="Images\Logo\vinyl-logo.png" />
     <None Remove="Images\record-player.png" />
+    <None Remove="Images\settings.png" />
     <None Remove="Images\vinyl.png" />
   </ItemGroup>
 
@@ -44,6 +54,9 @@
     <Content Include="Images\home.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\Logo\icon.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\Logo\logo-small.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -53,7 +66,16 @@
     <Content Include="Images\Logo\logo.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\Logo\vinyl-logo-small.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Logo\vinyl-logo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\record-player.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\settings.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\vinyl.png">
@@ -62,6 +84,22 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Fonts\FOCO.TTF">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\FOCOBLACK.TTF">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\FOCOBOLD.TTF">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\FOCOLIGHT.TTF">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Expression.Blend.Sdk.WPF" Version="1.0.1" />
     <PackageReference Include="NAudio" Version="2.0.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Ninject" Version="3.3.4" />
@@ -71,6 +109,21 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Record.Recorder.Core\Record.Recorder.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
 
 </Project>

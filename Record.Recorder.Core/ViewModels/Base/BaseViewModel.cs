@@ -19,7 +19,7 @@ namespace Record.Recorder.Core
 
         protected void SetCurrentPageTo(ApplicationPage page)
         {
-            IoC.Get<ApplicationViewModel>().CurrentPage = page;
+            IoC.Get<ApplicationViewModel>().CurrentPage = page;           
         }
     }
 }
