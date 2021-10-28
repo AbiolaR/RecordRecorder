@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System.Windows;
 using System.Windows.Input;
 
 namespace Record.Recorder.Core
@@ -8,18 +8,26 @@ namespace Record.Recorder.Core
     /// </summary>
     public class RecorderViewModel : BaseViewModel
     {
-        public Dictionary<int, string> RecordingDevices { get; set; }
-
-        public int SelectedRecordingDevice { get; set; }
-
         /// <summary>
         /// The command to switch to the settings page
         /// </summary>
         public ICommand GoToSettingsCommand { get; set; }
+        public ICommand PressRecordCommand { get; set; }
+
+        private bool isRecording = false;
+
+        public bool IsRecording { get => isRecording; set { isRecording = value; OnPropertyChanged(nameof(IsRecording)); } }
+
 
         public RecorderViewModel()
         {
             GoToSettingsCommand = new RelayCommand((o) => SetCurrentPageTo(ApplicationPage.SettingsPage));
+            PressRecordCommand = new RelayCommand((o) => ToggleIsRecording());
+        }
+
+        private void ToggleIsRecording()
+        {
+            IsRecording = !IsRecording;
         }
     }
 }

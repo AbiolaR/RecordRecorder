@@ -5,7 +5,7 @@
     /// </summary>
     public enum  ApplicationPage
     {
-        /// <summary>BB
+        /// <summary>
         /// The main application page
         /// </summary>
         MainPage = 0,

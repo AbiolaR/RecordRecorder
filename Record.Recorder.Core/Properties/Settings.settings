@@ -5,8 +5,11 @@
     <Setting Name="recordingDevice" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="saveFolderLocation" Type="System.String" Scope="User">
+    <Setting Name="outputFolderLocation" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="ApplicationTheme" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Light</Value>
     </Setting>
   </Settings>
 </SettingsFile>

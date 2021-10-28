@@ -86,11 +86,11 @@ namespace RecordRecorder
         /// <summary>
         /// The height of the title bar of the window
         /// </summary>
-        public int TitleHeight { get; set; } = 24;
+        public int TitleHeight { get; set; } = 18;
 
         public GridLength TitleHeightGridLength { get { return new GridLength(TitleHeight + resizeBorder); } }
 
-        
+
 
         /// <summary>
         /// The view model to use for the current page when the CurrentPage changes

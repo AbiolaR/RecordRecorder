@@ -1,0 +1,41 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <DataTemplate x:Key="RecordingProgressCollection">
+        <DataTemplate.Resources>
+            <Storyboard x:Key="rotateVinyl">
+                <DoubleAnimation                
+                    Storyboard.TargetName="recordInProgress"
+                    Storyboard.TargetProperty="RenderTransform.Angle"
+                    From="0"
+                    To="360"
+                    Duration="0:0:2"
+                    RepeatBehavior="Forever" />
+            </Storyboard>
+        </DataTemplate.Resources>
+        <DataTemplate.Triggers>
+            <DataTrigger Binding="{Binding IsRecording}" Value="True">
+                <DataTrigger.EnterActions>
+                    <BeginStoryboard x:Name="beginRotateVinyl" Storyboard="{StaticResource rotateVinyl}" />
+                </DataTrigger.EnterActions>
+                <DataTrigger.ExitActions>
+                    <StopStoryboard BeginStoryboardName="beginRotateVinyl" />
+                </DataTrigger.ExitActions>
+            </DataTrigger>
+        </DataTemplate.Triggers>
+        <Grid>
+            <Image x:Name="recordInProgress" Source="/Images/vinyl.png" Margin="50,20,50,20" >
+                <Image.RenderTransform>
+                    <RotateTransform CenterX="85" CenterY="85" />
+                </Image.RenderTransform>
+            </Image>
+            <Border Background="{DynamicResource ApplicationForegroundBrush}" 
+                    Width="170" Height="90" Margin="50,100,50,10">
+                <Viewbox VerticalAlignment="Top">
+                    <TextBlock Text="00:00:00" FontFamily="{StaticResource FocoBold}" Foreground="{StaticResource ApplicationTextBrush}" Background="{DynamicResource ApplicationForegroundBrush}" />
+                </Viewbox>
+            </Border>
+        </Grid>
+    </DataTemplate>
+
+</ResourceDictionary>

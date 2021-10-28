@@ -38,12 +38,24 @@ namespace Record.Recorder.Core.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string saveFolderLocation {
+        public string outputFolderLocation {
             get {
-                return ((string)(this["saveFolderLocation"]));
+                return ((string)(this["outputFolderLocation"]));
             }
             set {
-                this["saveFolderLocation"] = value;
+                this["outputFolderLocation"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Light")]
+        public string ApplicationTheme {
+            get {
+                return ((string)(this["ApplicationTheme"]));
+            }
+            set {
+                this["ApplicationTheme"] = value;
             }
         }
     }

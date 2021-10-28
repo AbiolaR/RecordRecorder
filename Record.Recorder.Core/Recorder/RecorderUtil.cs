@@ -20,7 +20,7 @@ namespace Record.Recorder.Core
         private static HttpClient client = new HttpClient();
         WaveFileWriter writer = null;
         WaveInEvent recordingDevice = null;
-        private static readonly string dataFolder = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData); //Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "NAudio");
+        private static readonly string dataFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "RecordRecorder"); //Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "NAudio");
         private static readonly string recordingFilePath = Path.Combine(dataFolder, "recording.wav");
         //private static readonly string tempDataFolder = Path.Combine(dataFolder, "temp");
         private static readonly string tempFilePath = Path.Combine(dataFolder, "temp", "temp.wav"); //Path.Combine(dataFolder, "part.wav");
@@ -93,9 +93,15 @@ namespace Record.Recorder.Core
             return recordingDevice;
         }
 
-        public void StartRecording()
+        private async Task<int> GetRecordingDeviceNumberByName(string deviceName)
         {
-            recordingDevice = new WaveInEvent() { DeviceNumber = RecordingDeviceNum };
+            return (await GetRecordingDeviceByName(deviceName)).Key;
+        }
+
+        public async void StartRecording()
+        {
+            int recordingDeviceNumber = await GetRecordingDeviceNumberByName(Properties.Settings.Default["recordingDevice"].ToString());
+            recordingDevice = new WaveInEvent() { DeviceNumber = recordingDeviceNumber };
             recordingDevice.WaveFormat = new WaveFormat(44100, 2);
 
             writer = new WaveFileWriter(recordingFilePath, recordingDevice.WaveFormat);
@@ -108,16 +114,73 @@ namespace Record.Recorder.Core
             recordingDevice.RecordingStopped += (s, a) =>
             {
                 writer?.Dispose();
-                writer = null;
-                recordingDevice.Dispose();
+                writer = null;                
+                recordingDevice?.Dispose();                
             };
 
             recordingDevice.StartRecording();
         }
 
+        public async void AlternativeStartRecording()
+        {
+            int recordingDeviceNumber = await GetRecordingDeviceNumberByName(Properties.Settings.Default["recordingDevice"].ToString());
+
+            using (recordingDevice = new WaveInEvent() { DeviceNumber = recordingDeviceNumber })            
+            recordingDevice.WaveFormat = new WaveFormat(44100, 2);
+            using (writer = new WaveFileWriter(recordingFilePath, recordingDevice.WaveFormat))
+            {
+
+                recordingDevice.DataAvailable += (s, a) =>
+                {
+                    writer.Write(a.Buffer, 0, a.BytesRecorded);
+                };
+
+                recordingDevice.RecordingStopped += (s, a) =>
+                {
+                    writer?.Dispose();
+                    writer = null;
+                    recordingDevice.Dispose();
+                };
+
+                recordingDevice.StartRecording();
+            }
+        }
+
         public void StopRecording()
         {
             if (recordingDevice != null) recordingDevice.StopRecording();
+        }
+
+        public void PlayRecording()
+        {
+            using (var output = new WaveOutEvent())
+            using (var player = new AudioFileReader(recordingFilePath))
+            {               
+                output.Init(player);                
+                output.Play();
+                while (output.PlaybackState == PlaybackState.Playing)
+                {                
+                }
+            }
+        }
+
+        public async void PlayRecordingDevice()
+        {
+            int recordingDeviceNumber = await GetRecordingDeviceNumberByName(Properties.Settings.Default["recordingDevice"].ToString());
+
+            using (recordingDevice = new WaveInEvent() { DeviceNumber = recordingDeviceNumber })
+            recordingDevice.WaveFormat = new WaveFormat(44100, 2);
+            var waveInProvider = new WaveInProvider(recordingDevice);
+            using (var output = new WaveOutEvent())
+            {
+                output.Init(waveInProvider);
+                recordingDevice.StartRecording();
+                output.Play();
+                while (output.PlaybackState == PlaybackState.Playing)
+                {
+                    await Task.Delay(50);
+                }
+            }
         }
 
         public async Task DetectAndSaveTracks()

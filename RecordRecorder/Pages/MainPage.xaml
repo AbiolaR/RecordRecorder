@@ -12,61 +12,32 @@
     <Grid>
         <ScrollViewer VerticalScrollBarVisibility="Auto">
             <StackPanel >
-                <Border Background="#363636" CornerRadius="10" Padding="15" Width="300" Margin="50" BorderBrush="Black">
+                <Border Background="{StaticResource ApplicationForegroundBrush}" CornerRadius="10" Padding="15" Width="300" Height="380" Margin="50" BorderBrush="Black">
                     <Border.Effect>
                         <DropShadowEffect BlurRadius="100"
-                              Color="#424242"
+                              Color="{Binding Source={StaticResource ApplicationShadowBrush}, Converter={local:BurshToColorConverter}, Mode=OneWay}"
                               Opacity="1"
                               ShadowDepth="0"
                               Direction="0" />
-                        <!--<DropShadowEffect ShadowDepth="10" Opacity="0.4" Color="White" />-->
-                    </Border.Effect> 
+                    </Border.Effect>
                     <Grid>
                         <Button x:Name="Settings" Height="20" Width="20" VerticalAlignment="Top" HorizontalAlignment="Right" Style="{StaticResource NavButton}" Command="{Binding GoToSettingsCommand}">
-                            <Image Source="../Images/gear.png" />
+                            <Image Source="{DynamicResource GearIconSource}" />
                         </Button>
 
                         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" TextBlock.TextAlignment="Center">
 
-                            <TextBlock Text="Bitte Album Namen eingeben:" FontFamily="{StaticResource FocoBold}" />
+                            <TextBlock Text="Bitte Album Namen eingeben:" FontFamily="{StaticResource FocoBold}" Foreground="{StaticResource ApplicationTextBrush}" />
                             <TextBox x:Name="AlbumInput" Text="Album"  Width="80" FontFamily="{StaticResource FocoLight}" />
-                            <Grid>
-                                <Image Source="../Images/vinyl.png" IsEnabled="False" Margin="50,20,50,20">
-                                    <Image.RenderTransform>
-                                        <RotateTransform CenterX="85" CenterY="85" />
-                                    </Image.RenderTransform>
-                                    <Image.Style>
-                                        <Style>
-                                            <Style.Triggers>
-                                                <Trigger Property="UIElement.IsEnabled" Value="True">
-                                                    <Trigger.EnterActions>
-                                                        <BeginStoryboard>
-                                                            <Storyboard>
-                                                                <DoubleAnimation
-                                                                Storyboard.TargetProperty="RenderTransform.Angle"
-                                                                From="0"
-                                                                To="360"
-                                                                Duration="0:0:2"
-                                                                RepeatBehavior="Forever" />
-                                                            </Storyboard>
-                                                        </BeginStoryboard>
-                                                    </Trigger.EnterActions>
-                                                </Trigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Image.Style>
-                                </Image>
-                                <Border Background="#363636" Width="170" Height="90" Margin="50,100,50,10">
-                                    <Viewbox VerticalAlignment="Top">
-                                        <TextBlock Text="00:00:00" FontFamily="{StaticResource FocoBold}" Background="#363636" />
-                                    </Viewbox>
-                                </Border>
-                            </Grid>
-                            <Button x:Name="RecordButton" Height="40" Width="200" Content="Record" Style="{StaticResource AppStandardButton}" />
+
+                            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource RecordingProgressCollection}" />
+
+                            <Button x:Name="RecordButton" Command="{Binding PressRecordCommand}" Height="40" Width="200" Content="Record" Style="{StaticResource AppStandardButton}" />
                         </StackPanel>
                     </Grid>
                 </Border>
             </StackPanel>
         </ScrollViewer>
     </Grid>
+
 </local:BasePage>

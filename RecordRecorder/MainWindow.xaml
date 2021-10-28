@@ -25,12 +25,12 @@
                             <!-- Main window outline -->
                             <Grid>
                                 <!-- Opacity mask for corners on grid -->
-                                <Border x:Name="Container" Background="Black" CornerRadius="{Binding WindowCornerRadius, FallbackValue=10}" />
+                                <Border x:Name="Container" Background="{StaticResource ApplicationBackgroundBrush}" CornerRadius="{Binding WindowCornerRadius, FallbackValue=10}" />
 
                                 <!-- Window border and dropshadow -->
-                                <Border CornerRadius="{Binding WindowCornerRadius}" Background="#2b2b2b">
+                                <Border CornerRadius="{Binding WindowCornerRadius}" Background="{StaticResource ApplicationBackgroundBrush}">
                                     <Border.Effect>
-                                        <DropShadowEffect ShadowDepth="0" Opacity="0.2" />
+                                        <DropShadowEffect ShadowDepth="0" Opacity=".4" BlurRadius="10" />
                                     </Border.Effect>
                                 </Border>
 
@@ -67,7 +67,7 @@
 
                                         <!-- Title -->
                                         <Viewbox Grid.Column="0" Grid.ColumnSpan="3" Margin="0">
-                                            <TextBlock Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Title}" FontFamily="{StaticResource Foco}" />
+                                            <TextBlock Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Title}" FontFamily="{StaticResource Foco}" Foreground="{DynamicResource ApplicationTextBrush}" />
                                             <!-- old title 
                                             <TextBlock TextWrapping="Wrap" FontFamily="Foco Bold">
                                                 <Run>Vinyl Rec</Run><InlineUIContainer>
@@ -81,8 +81,8 @@
                                         <!-- Window Buttons -->
                                         <StackPanel Grid.Column="2" Orientation="Horizontal">
                                             <Button Content="-" Style="{StaticResource WindowControlButton}" Command="{Binding MinimizeCommand}" />
-                                            <Button Content="&#63521;" Style="{StaticResource WindowControlButton}" Command="{Binding MaximizeCommand}" />
-                                            <Button Content="X" Style="{StaticResource WindowCloseButton}" Command="{Binding CloseCommand}" />
+                                            <Button Content="&#9633;" Style="{StaticResource WindowControlButton}" Command="{Binding MaximizeCommand}" />
+                                            <Button Content="x" Style="{StaticResource WindowCloseButton}" Command="{Binding CloseCommand}" />
                                         </StackPanel>
                                     </Grid>
 
@@ -111,7 +111,7 @@
             />
     </WindowChrome.WindowChrome>
 
-    <Border Background="#2b2b2b" Opacity="1">
+    <Border Background="{StaticResource ApplicationBackgroundBrush}" Opacity="1">
         <Grid>
             <!--
             <Grid.RowDefinitions>
