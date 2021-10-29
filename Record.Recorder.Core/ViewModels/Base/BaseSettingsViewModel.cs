@@ -90,6 +90,7 @@ namespace Record.Recorder.Core
             recorder.StopRecording();
             SetCurrentPageTo(ApplicationPage.MainPage);
         }
+                
 
         private void TestRecordingDevice()
         {

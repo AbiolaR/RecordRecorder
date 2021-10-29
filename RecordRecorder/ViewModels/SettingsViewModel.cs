@@ -19,6 +19,6 @@ namespace RecordRecorder
         protected override void OpenFolderLocation()
         {
             Process.Start("explorer.exe", OutputFolderLocation);
-        }
+        }        
     }
 }

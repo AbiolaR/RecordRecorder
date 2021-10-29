@@ -149,6 +149,30 @@
         </Setter>
     </Style>
 
+    <!-- Specific Recording Button -->
+    <Style TargetType="Button" x:Key="RecordingButton" BasedOn="{StaticResource AppStandardButton}">
+        <Setter Property="Height" Value="40" />
+        <Setter Property="Width" Value="200" />
+        <Setter Property="Visibility" Value="{Binding IsRecordingInProgress, Converter={local:BooleanToVisibilityConverter}, ConverterParameter=True}" />
+        
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsRecordingAllowed}" Value="True">
+                <DataTrigger.EnterActions>
+                    <BeginStoryboard x:Name="expandButton">
+                        <Storyboard>
+                            <DoubleAnimation
+                                Storyboard.TargetProperty="(Button.Width)"
+                                To="270"
+                                Duration="0:0:.5"
+                                RepeatBehavior="1x"
+                                FillBehavior="Stop"                    
+                                />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </DataTrigger.EnterActions>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
 
 
     <!-- Tab like Menu Button 

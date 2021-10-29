@@ -111,7 +111,7 @@
     <Compile Include="ViewModels\ApplicationViewModel.cs" />
     <Compile Include="ViewModels\Base\BaseViewModel.cs" />
     <Compile Include="ViewModels\Base\RelayCommand.cs" />
-    <Compile Include="ViewModels\RecorderViewModel.cs" />
+    <Compile Include="ViewModels\BaseMainViewModel.cs" />
     <Compile Include="ViewModels\Base\BaseSettingsViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
