@@ -15,6 +15,11 @@ namespace Record.Recorder.Core
         public static IKernel Kernel { get; private set; } = new StandardKernel();
 
         /// <summary>
+        /// A shortcut to access the <see cref="IUIManager"/>
+        /// </summary>
+        public static IUIManager UI => IoC.Get<IUIManager>();
+
+        /// <summary>
         /// Gets a service from the IoC, of the specified type
         /// </summary>
         /// <typeparam name="T">The type to get</typeparam>

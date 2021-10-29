@@ -1,4 +1,5 @@
 ﻿using Record.Recorder.Core;
+using System;
 using System.Windows;
 
 namespace RecordRecorder
@@ -17,12 +18,23 @@ namespace RecordRecorder
             // let the base application do what it needs
             base.OnStartup(e);
 
-            // Setup IoC
-            IoC.Setup();
+            ApplicationSetup();
+
 
             // Show the main window
             Current.MainWindow = new MainWindow();
             Current.MainWindow.Show();
+        }
+
+        // Configures the application reafy for use
+        private void ApplicationSetup()
+        {
+            // Setup IoC
+            IoC.Setup();
+
+            // Bind a UI manager
+            IoC.Kernel.Bind<IUIManager>().ToConstant(new UIManager());
+
         }
     }
 }

@@ -37,10 +37,10 @@ namespace Record.Recorder.Core
 
         public BaseMainViewModel()
         {
-            GoToSettingsCommand = new RelayCommand((o) => SetCurrentPageTo(ApplicationPage.SettingsPage));
+            GoToSettingsCommand = new RelayCommand((o) => NavigateToSettingsPage());
             PressRecordCommand = new RelayCommand((o) => StartRecording());
             PressStopCommand = new RelayCommand((o) => StopRecording());
-            PressPauseCommand = new RelayCommand((o) => ToggleIsRecording());            
+            PressPauseCommand = new RelayCommand((o) => ToggleIsRecording());
 
             timer = new DispatcherTimer(DispatcherPriority.Render);
             timer.Interval = TimeSpan.FromSeconds(1);
@@ -57,6 +57,28 @@ namespace Record.Recorder.Core
 
         protected abstract void ShowNoRecordingDeviceAlert();
         protected abstract void ShowRecordingDeviceNotFoundAlert();
+        protected abstract void RecordingInProgressAlert();
+
+        private void NewRecordingInProgressAlert()
+        {
+            IoC.UI.ShowMessage(new MessageBoxDialogViewModel
+            {
+                Title = "Recording in Progress",
+                Message = "You are currently recording.\nTo abort the recording click on Stop.",
+                OkText = "OK"
+            });
+        }
+
+        private void NavigateToSettingsPage()
+        {
+            if (IsRecordingInProgress)
+            {
+                NewRecordingInProgressAlert();
+                return;
+            }
+
+            SetCurrentPageTo(ApplicationPage.SettingsPage);
+        }
 
         private void StopRecording()
         {
@@ -97,7 +119,7 @@ namespace Record.Recorder.Core
                 ShowNoRecordingDeviceAlert();
                 return false;
             }
-            
+
             var recordingDevice = await recorder.GetRecordingDeviceByName(recordingDeviceName);
             if (recordingDevice.Equals(default(KeyValuePair<int, string>)))
             {
