@@ -86,15 +86,15 @@
         <Grid>
             <Button x:Name="RecordButton" Command="{Binding PressRecordCommand}" 
                     Height="40" Width="200" Content="Record" Style="{StaticResource AppStandardButton}" 
-                    Visibility="{Binding IsRecordingInProgress, Converter={local:BooleanToVisibilyConverter}, ConverterParameter=True}">
+                    Visibility="{Binding IsRecordingInProgress, Converter={local:BooleanToVisibilityConverter}, ConverterParameter=True}">
                 <Button.Triggers>
                     <EventTrigger RoutedEvent="Button.Click">
                         <BeginStoryboard x:Name="splitButton" Storyboard="{StaticResource expandButton}" />
                     </EventTrigger>
                 </Button.Triggers>
             </Button>
-            <Button x:Name="PauseButton" Command="{Binding PressPauseCommand}" Height="40" Width="120" Content="Pause" HorizontalAlignment="Left" Style="{StaticResource PlayToggleButton}" Visibility="{Binding IsRecordingInProgress, Converter={local:BooleanToVisibilyConverter}}"/>
-            <Button x:Name="StopButton" Command="{Binding PressStopCommand}" Height="40" Width="120" Content="Stop" HorizontalAlignment="Right" Style="{StaticResource AppStandardButton}" Visibility="{Binding IsRecordingInProgress, Converter={local:BooleanToVisibilyConverter}}" />
+            <Button x:Name="PauseButton" Command="{Binding PressPauseCommand}" Height="40" Width="120" Content="Pause" HorizontalAlignment="Left" Style="{StaticResource PlayToggleButton}" Visibility="{Binding IsRecordingInProgress, Converter={local:BooleanToVisibilityConverter}}"/>
+            <Button x:Name="StopButton" Command="{Binding PressStopCommand}" Height="40" Width="120" Content="Stop" HorizontalAlignment="Right" Style="{StaticResource AppStandardButton}" Visibility="{Binding IsRecordingInProgress, Converter={local:BooleanToVisibilityConverter}}" />
         </Grid>
         
     </DataTemplate>

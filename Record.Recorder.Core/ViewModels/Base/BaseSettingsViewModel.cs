@@ -78,7 +78,7 @@ namespace Record.Recorder.Core
             SaveRecordingDeviceCommand = new RelayCommand((o) => SaveRecordingDevice(o));
             OpenFolderLocationCommand = new RelayCommand((o) => OpenFolderLocation());
             //UpdateInputVolumeCommand = new RelayCommand((o) => UpdateInputVolume(o));
-            TestRecordingDeviceCommand = new RelayCommand((o) => TestVolume());
+            TestRecordingDeviceCommand = new RelayCommand((o) => TestRecordingDevice());
             SetThemeToLightCommand = new RelayCommand((o) => IsThemeLight = SetThemeToLight());
             SetThemeToDarkCommand = new RelayCommand((o) => IsThemeDark = SetThemeToDark());
 
@@ -91,7 +91,7 @@ namespace Record.Recorder.Core
             SetCurrentPageTo(ApplicationPage.MainPage);
         }
 
-        private void TestVolume()
+        private void TestRecordingDevice()
         {
             ToggleCommmand(() => IsTestingRecordingDevice, () => { recorder.StopRecording(); }, () => { recorder.PlayRecordingDevice(); });
         }

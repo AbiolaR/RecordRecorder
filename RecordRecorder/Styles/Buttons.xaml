@@ -66,7 +66,7 @@
                             SnapsToDevicePixels="True">
                         <Grid>
                             <TextBlock Text="{TemplateBinding Content}"                                    
-                                   Visibility="{Binding IsTestingRecordingDevice, Converter={local:BooleanToVisibilyConverter}, ConverterParameter=True}"
+                                   Visibility="{Binding IsTestingRecordingDevice, Converter={local:BooleanToVisibilityConverter}, ConverterParameter=True}"
                                    Focusable="False" 
                                    FontFamily="{TemplateBinding FontFamily}"
                                    FontSize="{TemplateBinding FontSize}"
@@ -80,13 +80,33 @@
                                    FontFamily="{TemplateBinding FontFamily}"
                                    FontSize="{TemplateBinding FontSize}"
                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                   Visibility="{Binding IsTestingRecordingDevice, Converter={local:BooleanToVisibilyConverter}}"
+                                   Visibility="{Binding IsTestingRecordingDevice, Converter={local:BooleanToVisibilityConverter}}"
                                    />
                         </Grid>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsTestingRecordingDevice}" Value="True">
+                <DataTrigger.EnterActions>
+                    <BeginStoryboard x:Name="beginPulsating">
+                        <Storyboard>
+                            <DoubleAnimation                
+                                Storyboard.TargetProperty="Opacity"
+                                From="1"
+                                To=".5"
+                                Duration="0:0:1"
+                                AutoReverse="True"
+                                RepeatBehavior="Forever" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </DataTrigger.EnterActions>
+                <DataTrigger.ExitActions>
+                    <StopStoryboard BeginStoryboardName="beginPulsating" />
+                </DataTrigger.ExitActions>
+            </DataTrigger>
+        </Style.Triggers>
     </Style>
 
     <!-- Specific Play Pause Toggle Button -->
@@ -106,7 +126,7 @@
                             SnapsToDevicePixels="True">
                         <Grid>
                             <TextBlock Text="{TemplateBinding Content}"                                    
-                                   Visibility="{Binding IsRecording, Converter={local:BooleanToVisibilyConverter}}"
+                                   Visibility="{Binding IsRecording, Converter={local:BooleanToVisibilityConverter}}"
                                    Focusable="False" 
                                    FontFamily="{TemplateBinding FontFamily}"
                                    FontSize="{TemplateBinding FontSize}"
@@ -120,7 +140,7 @@
                                    FontFamily="{TemplateBinding FontFamily}"
                                    FontSize="{TemplateBinding FontSize}"
                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                   Visibility="{Binding IsRecording, Converter={local:BooleanToVisibilyConverter}, ConverterParameter=True}"
+                                   Visibility="{Binding IsRecording, Converter={local:BooleanToVisibilityConverter}, ConverterParameter=True}"
                                    />
                         </Grid>
                     </Border>
