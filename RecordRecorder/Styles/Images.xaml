@@ -5,7 +5,7 @@
     <BitmapImage x:Key="HomeIconDark" UriSource="/Images/home-dark.png" />
     <BitmapImage x:Key="HomeIconLight" UriSource="/Images/home-light.png" />
     <BitmapImage x:Key="GearIconDark" UriSource="/Images/gear-dark.png" />
-    <BitmapImage x:Key="GearIconLight" UriSource="/Images/gear-light.png" />
+    <BitmapImage x:Key="GearIconLight" UriSource="/Images/gear-light-filled.png" />
 
     
     <BitmapImage x:Key="HomeIconSource" UriSource="{Binding ApplicationViewModel.HomeIcon, 

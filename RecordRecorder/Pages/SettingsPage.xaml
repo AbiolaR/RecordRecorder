@@ -29,31 +29,12 @@
                         </Button>
 
                         <StackPanel VerticalAlignment="Top" HorizontalAlignment="Center" TextBlock.TextAlignment="Center">
-                        <!--
-                            
-                        <ComboBox Style="{DynamicResource DropDownBox}" 
-                                      x:Name="inputSources"
-                                      FontSize="12"
-                                        FontFamily="/Fonts/#Foco"
-                                        FontWeight="Bold"
-                                        IsEditable="False"
-                                        IsReadOnly="True"
-                                        SelectedIndex="0"
-                                        SelectedValuePath="Key" 
-                                        DisplayMemberPath="Value"
-                                        RenderTransformOrigin="0.5,0.5" Margin="-44,61,0,174" /> -->
-
-
-
-                            
-                            
-
 
                             <Grid Width="250" Margin="0, 50, 0, 0">
                                 <Grid.ColumnDefinitions>
-                                    <!-- Folder Location -->
+                                    <!-- Information -->
                                     <ColumnDefinition Width="*" />
-                                     <!-- Choose Folder button -->
+                                    <!-- Action button -->
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
@@ -84,6 +65,11 @@
                                         </i:EventTrigger>
                                     </i:Interaction.Triggers>
                                 </ComboBox>
+                                <Button Grid.Row="0" Grid.Column="1" Content="Test" Command="{Binding TestRecordingDeviceCommand}" Style="{StaticResource TestDeviceToggleButton}" FontSize="12" Height="30" Width="45">
+                                    <Button.ToolTip>
+                                        <ToolTip>Play the audio reveiced from the selected recording device</ToolTip>
+                                    </Button.ToolTip>
+                                </Button>
 
                                 <!--
                                 <Label Grid.Row="0" Margin="0, 0, 0, 0" FontFamily="{StaticResource Foco}" Content="{Binding InputVolume}" ContentStringFormat="Input Volume: {0}" />
@@ -94,19 +80,12 @@
                                         </i:EventTrigger>
                                     </i:Interaction.Triggers>
                                 </Slider> -->
-                                
-                                <Button Grid.Row="0" Grid.Column="1" Content="test" Command="{Binding TestVolumeCommand}" Style="{StaticResource AppStandardButton}" FontSize="12" Height="30" Width="45" />
-                                
-                                <!--<StackPanel Grid.Row="0" Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center">
-                                    <TextBlock  Margin="0, 0, 0, 5" Height="25" Text="{Binding InputVolume}" />
-                                    <Button Content="test" Command="{Binding SaveFolderLocationCommand}" Style="{StaticResource AppStandardButton}" FontSize="12" Height="30" Width="45" />
-                                </StackPanel> -->
-                                
-                                
-                                
-                                <Label Grid.Row="1" VerticalAlignment="Top" Margin="0, 0, 0, 35" FontFamily="{StaticResource Foco}" Content="Albums are saved here" Foreground="{StaticResource ApplicationTextBrush}" />
+
+
+
+                                <Label Grid.Row="1" VerticalAlignment="Top" Margin="0, 0, 0, 35" FontSize="14" FontFamily="{StaticResource Foco}" Content="Albums are saved here" Foreground="{StaticResource ApplicationTextBrush}" />
                                 <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="0, 0, 10, 0" 
-                                           FontFamily="{StaticResource FocoLight}" TextTrimming="CharacterEllipsis" Text="{Binding OutputFolderLocation}"
+                                           FontFamily="{StaticResource FocoLight}" FontSize="14" TextTrimming="CharacterEllipsis" Text="{Binding OutputFolderLocation}"
                                            Foreground="{StaticResource ApplicationTextBrush}" Cursor="Hand">
                                     <TextBlock.InputBindings>
                                         <MouseBinding Command="{Binding OpenFolderLocationCommand}" MouseAction="LeftClick" />
@@ -115,34 +94,24 @@
                                         <ToolTip>Open Folder</ToolTip>
                                     </TextBlock.ToolTip>
                                 </TextBlock>
-                                <Button Grid.Row="1" Grid.Column="1" Content="change" Command="{Binding SaveFolderLocationCommand}" Style="{StaticResource AppStandardButton}" FontSize="12" Height="30" Width="45" />
+                                <Button Grid.Row="1" Grid.Column="1" Content="Change" Command="{Binding SaveFolderLocationCommand}" Style="{StaticResource AppStandardButton}" FontSize="12" Height="30" Width="45" />
 
                                 <Expander Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
                                     <Expander.Header>
-                                        <TextBlock Foreground="{StaticResource ApplicationTextBrush}" Text="Appearance"/>
+                                        <TextBlock Foreground="{StaticResource ApplicationTextBrush}" Text="Appearance" FontFamily="{StaticResource Foco}"/>
                                     </Expander.Header>
                                     <StackPanel>
-                                        <Label Foreground="{StaticResource ApplicationTextBrush}" Content="Theme" />
-                                        <RadioButton IsChecked="{Binding IsThemeLight}" Command="{Binding SetThemeToLightCommand}">
-                                            <TextBlock Foreground="{StaticResource ApplicationTextBrush}" Text="Light"/>
+                                        <Label Foreground="{StaticResource ApplicationTextBrush}" FontFamily="{StaticResource FocoBold}" FontSize="14" Content="Theme" />
+                                        <RadioButton IsChecked="{Binding IsThemeLight}" Command="{Binding SetThemeToLightCommand}" VerticalAlignment="Center" >
+                                            <TextBlock Foreground="{StaticResource ApplicationTextBrush}" Text="Light" FontSize="14" FontFamily="{StaticResource FocoLight}" />
                                         </RadioButton>
                                         <RadioButton IsChecked="{Binding IsThemeDark}" Command="{Binding SetThemeToDarkCommand}">
-                                            <TextBlock Foreground="{StaticResource ApplicationTextBrush}" Text="Dark"/>
+                                            <TextBlock Foreground="{StaticResource ApplicationTextBrush}" Text="Dark" FontSize="14" FontFamily="{StaticResource FocoLight}" />
                                         </RadioButton>
                                     </StackPanel>
                                 </Expander>
-                                
-                            </Grid>
-                            
 
-                            <!--
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock TextWrapping="Wrap" TextTrimming="CharacterEllipsis" Text="C:\Users\rasheed_abiola\source\repos\RecordRecorder\RecordRecorder\bin\Debug\netcoreapp3.1\RecordRecorder.dll" Width="Auto"  />
-                            </StackPanel>
-                                <Button Content="Change"  Style="{StaticResource AppStandardButton}" Height="40" Width="80" FontSize="12" Command="{Binding SetNewFolderLocationCommand}" />
-                            -->
-                            
-                            
+                            </Grid>
 
                         </StackPanel>
                     </Grid>

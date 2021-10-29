@@ -1,5 +1,15 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:RecordRecorder">
+
+    <ResourceDictionary.MergedDictionaries>
+        <!-- The order is important -->
+        <ResourceDictionary Source="Colors.xaml" />
+        <ResourceDictionary Source="Fonts.xaml" />
+        <ResourceDictionary Source="Texts.xaml" />
+        <ResourceDictionary Source="Buttons.xaml" />
+        <ResourceDictionary Source="Images.xaml" />
+    </ResourceDictionary.MergedDictionaries>
 
     <DataTemplate x:Key="RecordingProgressCollection">
         <DataTemplate.Resources>
@@ -12,14 +22,34 @@
                     Duration="0:0:2"
                     RepeatBehavior="Forever" />
             </Storyboard>
+            <Storyboard x:Key="flashRecordingTime">
+                <DoubleAnimation                
+                    Storyboard.TargetName="currentRecordingTime"
+                    Storyboard.TargetProperty="Opacity"
+                    From="1"
+                    To="0"
+                    Duration="0:0:1"
+                    AutoReverse="True"
+                    RepeatBehavior="Forever" />
+            </Storyboard>
         </DataTemplate.Resources>
         <DataTemplate.Triggers>
             <DataTrigger Binding="{Binding IsRecording}" Value="True">
                 <DataTrigger.EnterActions>
+                    <ResumeStoryboard BeginStoryboardName="beginRotateVinyl" />
+                </DataTrigger.EnterActions>
+                <DataTrigger.ExitActions>
+                    <PauseStoryboard BeginStoryboardName="beginRotateVinyl" />
+                </DataTrigger.ExitActions>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding IsRecordingInProgress}" Value="True">
+                <DataTrigger.EnterActions>
                     <BeginStoryboard x:Name="beginRotateVinyl" Storyboard="{StaticResource rotateVinyl}" />
+                    <StopStoryboard BeginStoryboardName="beginFlashRecordingTime" />
                 </DataTrigger.EnterActions>
                 <DataTrigger.ExitActions>
                     <StopStoryboard BeginStoryboardName="beginRotateVinyl" />
+                    <BeginStoryboard x:Name="beginFlashRecordingTime" Storyboard="{StaticResource flashRecordingTime}" />
                 </DataTrigger.ExitActions>
             </DataTrigger>
         </DataTemplate.Triggers>
@@ -32,10 +62,41 @@
             <Border Background="{DynamicResource ApplicationForegroundBrush}" 
                     Width="170" Height="90" Margin="50,100,50,10">
                 <Viewbox VerticalAlignment="Top">
-                    <TextBlock Text="00:00:00" FontFamily="{StaticResource FocoBold}" Foreground="{StaticResource ApplicationTextBrush}" Background="{DynamicResource ApplicationForegroundBrush}" />
+                    <TextBlock x:Name="currentRecordingTime" Text="{Binding CurrentRecordingTime}" FontFamily="{StaticResource FocoBold}" Foreground="{StaticResource ApplicationTextBrush}" Background="{DynamicResource ApplicationForegroundBrush}" />
                 </Viewbox>
             </Border>
         </Grid>
+    </DataTemplate>
+
+    
+    <DataTemplate x:Key="RecordingControlCollection">
+        <DataTemplate.Resources>
+            <Storyboard x:Key="expandButton">
+                <DoubleAnimation
+                    Storyboard.TargetName="RecordButton"
+                    Storyboard.TargetProperty="(Button.Width)"
+                    To="270"
+                    Duration="0:0:.5"
+                    RepeatBehavior="1x"
+                    FillBehavior="Stop"                    
+                    />
+            </Storyboard>
+        </DataTemplate.Resources>
+
+        <Grid>
+            <Button x:Name="RecordButton" Command="{Binding PressRecordCommand}" 
+                    Height="40" Width="200" Content="Record" Style="{StaticResource AppStandardButton}" 
+                    Visibility="{Binding IsRecordingInProgress, Converter={local:BooleanToVisibilyConverter}, ConverterParameter=True}">
+                <Button.Triggers>
+                    <EventTrigger RoutedEvent="Button.Click">
+                        <BeginStoryboard x:Name="splitButton" Storyboard="{StaticResource expandButton}" />
+                    </EventTrigger>
+                </Button.Triggers>
+            </Button>
+            <Button x:Name="PauseButton" Command="{Binding PressPauseCommand}" Height="40" Width="120" Content="Pause" HorizontalAlignment="Left" Style="{StaticResource PlayToggleButton}" Visibility="{Binding IsRecordingInProgress, Converter={local:BooleanToVisibilyConverter}}"/>
+            <Button x:Name="StopButton" Command="{Binding PressStopCommand}" Height="40" Width="120" Content="Stop" HorizontalAlignment="Right" Style="{StaticResource AppStandardButton}" Visibility="{Binding IsRecordingInProgress, Converter={local:BooleanToVisibilyConverter}}" />
+        </Grid>
+        
     </DataTemplate>
 
 </ResourceDictionary>

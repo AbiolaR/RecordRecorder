@@ -32,7 +32,7 @@
 
                             <ContentControl Content="{Binding}" ContentTemplate="{StaticResource RecordingProgressCollection}" />
 
-                            <Button x:Name="RecordButton" Command="{Binding PressRecordCommand}" Height="40" Width="200" Content="Record" Style="{StaticResource AppStandardButton}" />
+                            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource RecordingControlCollection}" />
                         </StackPanel>
                     </Grid>
                 </Border>

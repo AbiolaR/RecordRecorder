@@ -20,6 +20,7 @@
     <None Remove="Images\Background\pattern_soft.png" />
     <None Remove="Images\Background\pattern_white.png" />
     <None Remove="Images\gear-dark.png" />
+    <None Remove="Images\gear-light-filled.png" />
     <None Remove="Images\gear-light.png" />
     <None Remove="Images\home-dark.png" />
     <None Remove="Images\home-light.png" />
@@ -47,6 +48,9 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Content>
     <Resource Include="Images\gear-dark.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\gear-light-filled.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\gear-light.png">
