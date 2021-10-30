@@ -171,6 +171,11 @@ namespace Record.Recorder.Core
         public async Task DetectAndSaveTracks(string filePath)
         {
             Dictionary<string, TimeSpan> trackPositions = new Dictionary<string, TimeSpan>();
+            Task<AlbumModel> albumTask = null;
+            if (IsInternetConnected() && "TADB".Equals(IoC.Settings.GetSongDetectionType()))
+            {
+                albumTask = GetAlbumInfoById(IoC.Settings.GetAlbumName());
+            }
 
             using (AudioFileReader reader = new AudioFileReader(filePath))
             {
@@ -183,18 +188,18 @@ namespace Record.Recorder.Core
                     Console.WriteLine(keyValuePair);
                 }*/
             }
-            await ExtractAndSaveTracksAsync(trackPositions, filePath);
+            await ExtractAndSaveTracksAsync(trackPositions, filePath, albumTask);
         }
 
-        private async Task ExtractAndSaveTracksAsync(Dictionary<string, TimeSpan> trackPositions, string recordingPath)
+        private async Task ExtractAndSaveTracksAsync(Dictionary<string, TimeSpan> trackPositions, string recordingPath, Task<AlbumModel> albumTask)
         {
             int trackPositionsAmount = trackPositions.Count / 2;
             var songs = new Dictionary<SongModel, ISampleProvider>();
             var album = new AlbumModel();
 
-            if (IsInternetConnected() && "TADB".Equals(IoC.Settings.GetSongDetectionType()))
+            if (albumTask != null)
             {
-                album = await GetAlbumInfoById(IoC.Settings.GetAlbumName());
+                album = await albumTask;
             }
 
             for (int i = 1; i <= trackPositionsAmount; i++)
@@ -240,28 +245,36 @@ namespace Record.Recorder.Core
 
             Directory.CreateDirectory(Path.Combine(IoC.Settings.GetOutputFolderLocation(), album.Title ?? IoC.Settings.GetAlbumName()));
 
-            string albumThumbLocation = "";
+            Task<string> albumThumbLocationTask = null;
 
             if (!string.IsNullOrEmpty(album.ThumbUrl))
             {
-                albumThumbLocation = DownloadTempImage(album.ThumbUrl);
+                albumThumbLocationTask = DownloadTempImageAsync(album.ThumbUrl);
             }
 
             Parallel.ForEach(songs, song =>
             {
                 var songData = song.Key;
-                string path = TrySave(songData.Title, songData.Album, song.Value, IoC.Settings.GetFileType());
+                songData.Path = TrySave(songData.Title, songData.Album, song.Value, IoC.Settings.GetFileType());
+            });
 
-                var file = TagLib.File.Create(path);
+            string albumThumbLocation = await albumThumbLocationTask;
+
+            Parallel.ForEach(songs, song =>
+            {
+                var songData = song.Key;
+
+                var file = TagLib.File.Create(songData.Path);
 
                 file.Tag.Title = songData.Title;
                 file.Tag.Album = songData.Album;// ?? "Music To Be Murdered By"; //IoC.Settings.GetAlbumName();
                 file.Tag.Track = (uint)songData.Track;
                 file.Tag.Performers = songData.Performers;
+
                 if (!string.IsNullOrEmpty(albumThumbLocation))
-                {
+                {                    
                     var pic = new TagLib.IPicture[1];
-                    pic[0] = new TagLib.Picture(albumThumbLocation); //@"C:\Users\rasheed_abiola\AppData\Local\RecordRecorder\temp\albumcover.png");
+                    pic[0] = new TagLib.Picture(albumThumbLocation);
                     file.Tag.Pictures = pic;
                 }
 
@@ -522,7 +535,7 @@ namespace Record.Recorder.Core
 
         private static async Task<AlbumModel> GetAlbumInfoById(string id)
         {
-            var tadbAlbumTracksModel = await GetAlbumTracksObjectById(id);
+            var tadbAlbumTracksTask = GetAlbumTracksObjectById(id);
             var tadbAlbumInfoModel = await GetAlbumInfoObjectById(id);
 
             var album = new AlbumModel()
@@ -531,6 +544,8 @@ namespace Record.Recorder.Core
                 Year = tadbAlbumInfoModel.album[0].intYearReleased,
                 ThumbUrl = tadbAlbumInfoModel.album[0].strAlbumThumb
             };
+
+            var tadbAlbumTracksModel = await tadbAlbumTracksTask;
 
             foreach (var track in tadbAlbumTracksModel.track)
             {
@@ -588,14 +603,14 @@ namespace Record.Recorder.Core
             }
         }
 
-        private string DownloadTempImage(string url)
+        private async Task<string> DownloadTempImageAsync(string url)
         {
             string fileExtension = Path.GetExtension(@url);
             string fileLocation = Path.Combine(tempFolder, $"albumcover{fileExtension}");
 
             using (WebClient client = new WebClient())
             {
-                client.DownloadFile(new Uri(url), fileLocation);
+                await client.DownloadFileTaskAsync(new Uri(url), fileLocation);
             }
 
             return fileLocation;

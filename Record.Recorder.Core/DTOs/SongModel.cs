@@ -6,5 +6,7 @@
         public string Album { get; set; }
         public int Track { get; set; }
         public string[] Performers { get; set; }
+
+        public string Path { get; set; }
     }
 }
