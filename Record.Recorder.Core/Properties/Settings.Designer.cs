@@ -26,24 +26,24 @@ namespace Record.Recorder.Core.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string recordingDevice {
+        public string RecordingDevice {
             get {
-                return ((string)(this["recordingDevice"]));
+                return ((string)(this["RecordingDevice"]));
             }
             set {
-                this["recordingDevice"] = value;
+                this["RecordingDevice"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string outputFolderLocation {
+        public string OutputFolderLocation {
             get {
-                return ((string)(this["outputFolderLocation"]));
+                return ((string)(this["OutputFolderLocation"]));
             }
             set {
-                this["outputFolderLocation"] = value;
+                this["OutputFolderLocation"] = value;
             }
         }
         

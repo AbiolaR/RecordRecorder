@@ -3,7 +3,7 @@ using System.Windows.Input;
 
 namespace Record.Recorder.Core
 {
-    public abstract class BaseSettingsViewModel : BaseViewModel
+    public class SettingsViewModel : BaseViewModel
     {
 
 
@@ -50,31 +50,41 @@ namespace Record.Recorder.Core
         //public string InputVolume { get => inputVolume; set { inputVolume = value; OnPropertyChanged(nameof(InputVolume)); } }
         public string UnsavedInputVolume { get => unsavedInputVolume; set { unsavedInputVolume = value; OnPropertyChanged(nameof(UnsavedInputVolume)); } }
         public bool IsTestingRecordingDevice { get => isTestingRecordingDevice; set { isTestingRecordingDevice = value; OnPropertyChanged(nameof(IsTestingRecordingDevice)); } }
-        public bool IsThemeDark { get => isThemeDark; 
-            set {
+        public bool IsThemeDark
+        {
+            get => isThemeDark;
+            set
+            {
                 Properties.Settings.Default["ApplicationTheme"] = "Dark";
                 Properties.Settings.Default.Save();
-                isThemeDark = value; 
-                isThemeLight = !value; 
-                OnPropertyChanged(nameof(IsThemeDark)); 
-                OnPropertyChanged(nameof(IsThemeLight)); } }
-        public bool IsThemeLight { get => isThemeLight; 
-            set {
+                isThemeDark = value;
+                isThemeLight = !value;
+                OnPropertyChanged(nameof(IsThemeDark));
+                OnPropertyChanged(nameof(IsThemeLight));
+            }
+        }
+        public bool IsThemeLight
+        {
+            get => isThemeLight;
+            set
+            {
                 Properties.Settings.Default["ApplicationTheme"] = "Light";
                 Properties.Settings.Default.Save();
-                isThemeLight = value; 
-                isThemeDark = !value; 
-                OnPropertyChanged(nameof(IsThemeLight)); 
-                OnPropertyChanged(nameof(IsThemeDark)); } }
+                isThemeLight = value;
+                isThemeDark = !value;
+                OnPropertyChanged(nameof(IsThemeLight));
+                OnPropertyChanged(nameof(IsThemeDark));
+            }
+        }
 
 
-        public BaseSettingsViewModel()
+        public SettingsViewModel()
         {
             // Commands
             GoToHomeCommand = new RelayCommand((o) => NavigateToMainPage());
             UpdateDevicesCommand = new RelayCommand((o) => UpdateRecordingDevices());
             CheckIfDeviceIsSelectedCommand = new RelayCommand((o) => CheckIfSavedDeviceIsAvailable());
-            SaveFolderLocationCommand = new RelayCommand((o) => ChooseFolderLocation());
+            SaveFolderLocationCommand = new RelayCommand((o) => SaveOutputFolderLocation());
             SaveRecordingDeviceCommand = new RelayCommand((o) => SaveRecordingDevice(o));
             OpenFolderLocationCommand = new RelayCommand((o) => OpenFolderLocation());
             //UpdateInputVolumeCommand = new RelayCommand((o) => UpdateInputVolume(o));
@@ -90,7 +100,7 @@ namespace Record.Recorder.Core
             recorder.StopRecording();
             SetCurrentPageTo(ApplicationPage.MainPage);
         }
-                
+
 
         private void TestRecordingDevice()
         {
@@ -111,10 +121,10 @@ namespace Record.Recorder.Core
         async private void LoadSettingsData()
         {
             IsThemeDark = "Dark".Equals(Properties.Settings.Default["ApplicationTheme"].ToString());
-            OutputFolderLocation = Properties.Settings.Default["outputFolderLocation"].ToString();
+            OutputFolderLocation = Properties.Settings.Default["OutputFolderLocation"].ToString();
             //UnsavedInputVolume = InputVolume = Properties.Settings.Default["inputVolume"].ToString();
             RecordingDevices = await recorder.GetRecordingDevices();
-            var recDevice = await recorder.GetRecordingDeviceByName(Properties.Settings.Default["recordingDevice"].ToString());
+            var recDevice = await recorder.GetRecordingDeviceByName(Properties.Settings.Default["RecordingDevice"].ToString());
 
             if (recDevice.Equals(default(KeyValuePair<int, string>)))
             {
@@ -136,12 +146,12 @@ namespace Record.Recorder.Core
             IsTestingRecordingDevice = false;
 
             RecordingDevices = await recorder.GetRecordingDevices();
-            RecordingDevice = await recorder.GetRecordingDeviceByName(Properties.Settings.Default["recordingDevice"].ToString());
+            RecordingDevice = await recorder.GetRecordingDeviceByName(Properties.Settings.Default["RecordingDevice"].ToString());
         }
 
         async private void CheckIfSavedDeviceIsAvailable()
         {
-            var recDevice = await recorder.GetRecordingDeviceByName(Properties.Settings.Default["recordingDevice"].ToString());
+            var recDevice = await recorder.GetRecordingDeviceByName(Properties.Settings.Default["RecordingDevice"].ToString());
 
             if (recDevice.Equals(default(KeyValuePair<int, string>)))
             {
@@ -157,22 +167,28 @@ namespace Record.Recorder.Core
                 var keyValuePair = (KeyValuePair<int, string>)o;
                 if (keyValuePair.Key != -2)
                 {
-                    Properties.Settings.Default["recordingDevice"] = keyValuePair.Value;
+                    Properties.Settings.Default["RecordingDevice"] = keyValuePair.Value;
                     Properties.Settings.Default.Save();
                     RecordingDevice = (keyValuePair);
                 }
             }
         }
 
-        protected void SaveOutputFolderLocation(string location)
+        private async void SaveOutputFolderLocation()
         {
-            Properties.Settings.Default["outputFolderLocation"] = location;
-            Properties.Settings.Default.Save();
-            OutputFolderLocation = location;
+            var path = await IoC.UI.ChooseFolderLocation();
+            if (!string.IsNullOrEmpty(path))
+            {
+                Properties.Settings.Default["OutputFolderLocation"] = path;
+                Properties.Settings.Default.Save();
+                OutputFolderLocation = path;
+            }
         }
 
+        private async void OpenFolderLocation()
+        {
+            await IoC.UI.OpenFolderLocation(OutputFolderLocation);
+        }
 
-        protected abstract void ChooseFolderLocation();
-        protected abstract void OpenFolderLocation();
     }
 }

@@ -100,7 +100,7 @@ namespace Record.Recorder.Core
 
         public async void StartRecording()
         {
-            int recordingDeviceNumber = await GetRecordingDeviceNumberByName(Properties.Settings.Default["recordingDevice"].ToString());
+            int recordingDeviceNumber = await GetRecordingDeviceNumberByName(Properties.Settings.Default["RecordingDevice"].ToString());
             recordingDevice = new WaveInEvent() { DeviceNumber = recordingDeviceNumber };
             recordingDevice.WaveFormat = new WaveFormat(44100, 2);
 
@@ -123,7 +123,7 @@ namespace Record.Recorder.Core
 
         public async void AlternativeStartRecording()
         {
-            int recordingDeviceNumber = await GetRecordingDeviceNumberByName(Properties.Settings.Default["recordingDevice"].ToString());
+            int recordingDeviceNumber = await GetRecordingDeviceNumberByName(Properties.Settings.Default["RecordingDevice"].ToString());
 
             using (recordingDevice = new WaveInEvent() { DeviceNumber = recordingDeviceNumber })            
             recordingDevice.WaveFormat = new WaveFormat(44100, 2);
@@ -166,7 +166,7 @@ namespace Record.Recorder.Core
 
         public async void PlayRecordingDevice()
         {
-            int recordingDeviceNumber = await GetRecordingDeviceNumberByName(Properties.Settings.Default["recordingDevice"].ToString());
+            int recordingDeviceNumber = await GetRecordingDeviceNumberByName(Properties.Settings.Default["RecordingDevice"].ToString());
 
             using (recordingDevice = new WaveInEvent() { DeviceNumber = recordingDeviceNumber })
             recordingDevice.WaveFormat = new WaveFormat(44100, 2);

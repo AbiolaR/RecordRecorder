@@ -94,6 +94,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataModels\ApplicationColor.cs" />
+    <Compile Include="DataModels\DialogAnswer.cs" />
     <Compile Include="DataModels\ApplicationImage.cs" />
     <Compile Include="DataModels\ApplicationPage.cs" />
     <Compile Include="DTOs\ShazamModel.cs" />
@@ -112,8 +113,10 @@
     <Compile Include="ViewModels\ApplicationViewModel.cs" />
     <Compile Include="ViewModels\Base\BaseViewModel.cs" />
     <Compile Include="ViewModels\Base\RelayCommand.cs" />
-    <Compile Include="ViewModels\BaseMainViewModel.cs" />
-    <Compile Include="ViewModels\Base\BaseSettingsViewModel.cs" />
+    <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\SettingsViewModel.cs" />
+    <Compile Include="ViewModels\Dialogs\BaseDialogViewModel.cs" />
+    <Compile Include="ViewModels\Dialogs\MessageBoxButtonDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\MessageBoxDialogViewModel.cs" />
   </ItemGroup>
   <ItemGroup>

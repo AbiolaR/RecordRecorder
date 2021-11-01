@@ -40,9 +40,9 @@ namespace Record.Recorder.Core
             BindViewModels();
 
             // Set necessary default settings data
-            if (string.IsNullOrEmpty(Properties.Settings.Default["outputFolderLocation"].ToString()))
+            if (string.IsNullOrEmpty(Properties.Settings.Default["OutputFolderLocation"].ToString()))
             {
-                Properties.Settings.Default["outputFolderLocation"] = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic);
+                Properties.Settings.Default["OutputFolderLocation"] = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic);
             }
 
             if ("Dark".Equals(Properties.Settings.Default["ApplicationTheme"].ToString())) Get<ApplicationViewModel>().SetThemeToDark();

@@ -68,25 +68,13 @@
         </Grid>
     </DataTemplate>
 
-    
+
     <DataTemplate x:Key="RecordingControlCollection">
-        <DataTemplate.Resources>
-            <Storyboard x:Key="expandButton">
-                <DoubleAnimation
-                    Storyboard.TargetName="RecordButton"
-                    Storyboard.TargetProperty="(Button.Width)"
-                    To="270"
-                    Duration="0:0:.5"
-                    RepeatBehavior="1x"
-                    FillBehavior="Stop"                    
-                    />
-            </Storyboard>
-        </DataTemplate.Resources>
 
         <Grid>
             <Button x:Name="RecordButton" Command="{Binding PressRecordCommand}" Content="Record" Style="{StaticResource RecordingButton}" />
-            <Button x:Name="PauseButton" Command="{Binding PressPauseCommand}" Height="40" Width="120" Content="Pause" HorizontalAlignment="Left" Style="{StaticResource PlayToggleButton}" Visibility="{Binding IsRecordingInProgress, Converter={local:BooleanToVisibilityConverter}}"/>
-            <Button x:Name="StopButton" Command="{Binding PressStopCommand}" Height="40" Width="120" Content="Stop" HorizontalAlignment="Right" Style="{StaticResource AppStandardButton}" Visibility="{Binding IsRecordingInProgress, Converter={local:BooleanToVisibilityConverter}}" />
+            <Button x:Name="PauseButton" Command="{Binding PressPauseCommand}" Height="40" Width="120" Content="Pause" HorizontalAlignment="Left" Margin="10, 0, 0, 0" Style="{StaticResource PlayToggleButton}" Visibility="{Binding IsRecordingInProgress, Converter={local:BooleanToVisibilityConverter}}"/>
+            <Button x:Name="StopButton" Command="{Binding PressStopCommand}" Height="40" Width="120" Content="Stop" HorizontalAlignment="Right" Margin="0, 0, 10, 0" Style="{StaticResource AppStandardButton}" Visibility="{Binding IsRecordingInProgress, Converter={local:BooleanToVisibilityConverter}}" />
         </Grid>
         
     </DataTemplate>

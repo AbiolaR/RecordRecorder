@@ -9,6 +9,8 @@
         /// The current page of the application
         /// </summary>
         public ApplicationPage CurrentPage { get; set; } = ApplicationPage.MainPage;
+        public bool IsFocused { get; set; } = true;
+        public bool IsRecordingInProgress { get; set; } = false;
         
         public ApplicationColor ApplicationForegroundColor { get; set; } = ApplicationColor.ForegroundLight;
         public ApplicationColor ApplicationBackgroundColor { get; set; } = ApplicationColor.BackgroundLight;
