@@ -8,7 +8,6 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Record.Recorder.Core
@@ -37,9 +36,6 @@ namespace Record.Recorder.Core
         async public Task<SortedDictionary<int, string>> GetRecordingDevices()
         {
             var recordingDevices = new SortedDictionary<int, string>();
-            //var recordingDevicesFullName = new Dictionary<int, string>();
-            //recordingDevices.Add(-2, "Bitte Aufnahmegerät auswählen"); // placeholder
-
             await Task.Run(() =>
             {
 
@@ -63,7 +59,18 @@ namespace Record.Recorder.Core
                         }
                     }
                 }
+
+                foreach (var device in recordingDevices.ToList())
+                {
+                    if ("Microsoft Sound Mapper".Equals(device.Value))
+                    {
+                        recordingDevices.Remove(device.Key);
+                        break;
+                    }
+                }
             });
+
+
 
 
             return recordingDevices;
@@ -83,7 +90,8 @@ namespace Record.Recorder.Core
                         recordingDevice = new KeyValuePair<int, string>(n, deviceName);
                     }
                 }
-            } else
+            }
+            else
             {
                 SortedDictionary<int, string> recordingDevices = await GetRecordingDevices();
                 recordingDevice = recordingDevices.FirstOrDefault(device => device.Value == deviceName);
@@ -114,8 +122,8 @@ namespace Record.Recorder.Core
             recordingDevice.RecordingStopped += (s, a) =>
             {
                 writer?.Dispose();
-                writer = null;                
-                recordingDevice?.Dispose();                
+                writer = null;
+                recordingDevice?.Dispose();
             };
 
             recordingDevice.StartRecording();
@@ -125,8 +133,8 @@ namespace Record.Recorder.Core
         {
             int recordingDeviceNumber = await GetRecordingDeviceNumberByName(Properties.Settings.Default["RecordingDevice"].ToString());
 
-            using (recordingDevice = new WaveInEvent() { DeviceNumber = recordingDeviceNumber })            
-            recordingDevice.WaveFormat = new WaveFormat(44100, 2);
+            using (recordingDevice = new WaveInEvent() { DeviceNumber = recordingDeviceNumber })
+                recordingDevice.WaveFormat = new WaveFormat(44100, 2);
             using (writer = new WaveFileWriter(recordingFilePath, recordingDevice.WaveFormat))
             {
 
@@ -155,11 +163,11 @@ namespace Record.Recorder.Core
         {
             using (var output = new WaveOutEvent())
             using (var player = new AudioFileReader(recordingFilePath))
-            {               
-                output.Init(player);                
+            {
+                output.Init(player);
                 output.Play();
                 while (output.PlaybackState == PlaybackState.Playing)
-                {                
+                {
                 }
             }
         }
@@ -169,7 +177,7 @@ namespace Record.Recorder.Core
             int recordingDeviceNumber = await GetRecordingDeviceNumberByName(Properties.Settings.Default["RecordingDevice"].ToString());
 
             using (recordingDevice = new WaveInEvent() { DeviceNumber = recordingDeviceNumber })
-            recordingDevice.WaveFormat = new WaveFormat(44100, 2);
+                recordingDevice.WaveFormat = new WaveFormat(44100, 2);
             var waveInProvider = new WaveInProvider(recordingDevice);
             using (var output = new WaveOutEvent())
             {

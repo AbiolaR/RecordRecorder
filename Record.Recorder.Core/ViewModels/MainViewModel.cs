@@ -20,13 +20,19 @@ namespace Record.Recorder.Core
         public ICommand PressPauseCommand { get; set; }
         public ICommand PressStopCommand { get; set; }
 
+        private static readonly string ALBUMNAME = "AlbumName";
+        private static readonly string RECORDINGDEVICE = "RecordingDevice";
+        private static readonly string ZEROTIMERVALUE = "00:00:00";
+
         private bool isRecording, isRecordingInProgress, isRecordingAllowed = false;
 
         public bool IsRecording { get => isRecording; set { isRecording = value; OnPropertyChanged(nameof(IsRecording)); } }
         public bool IsRecordingInProgress { get => isRecordingInProgress; set { isRecordingInProgress = value; OnPropertyChanged(nameof(IsRecordingInProgress)); } }
         public bool IsRecordingAllowed { get => isRecordingAllowed; set { isRecordingAllowed = value; OnPropertyChanged(nameof(IsRecordingAllowed)); } }
 
-        private string currentRecordingTime = "00:00:00";
+        public string AlbumName { get => Properties.Settings.Default[ALBUMNAME].ToString(); set { Properties.Settings.Default[ALBUMNAME] = value; Properties.Settings.Default.Save(); } }
+
+        private string currentRecordingTime = ZEROTIMERVALUE;
         private readonly DispatcherTimer timer;
         private readonly Stopwatch stopwatch = new Stopwatch();
 
@@ -60,7 +66,7 @@ namespace Record.Recorder.Core
         {
             if (IsRecordingInProgress)
             {
-                ShowRecordingInProgressDialog();                
+                ShowRecordingInProgressDialog();
                 return;
             }
 
@@ -83,7 +89,7 @@ namespace Record.Recorder.Core
             if (await CheckForRecordingDevice())
             {
                 IsRecordingAllowed = true;
-                CurrentRecordingTime = "00:00:00";
+                CurrentRecordingTime = ZEROTIMERVALUE;
                 await Task.Delay(500);
                 IsRecording = true;
                 IsRecordingInProgress = true;
@@ -100,7 +106,7 @@ namespace Record.Recorder.Core
 
         private async Task<bool> CheckForRecordingDevice()
         {
-            string recordingDeviceName = Properties.Settings.Default["RecordingDevice"].ToString();
+            string recordingDeviceName = Properties.Settings.Default[RECORDINGDEVICE].ToString();
 
             if (string.IsNullOrEmpty(recordingDeviceName))
             {
@@ -111,7 +117,7 @@ namespace Record.Recorder.Core
             var recordingDevice = await recorder.GetRecordingDeviceByName(recordingDeviceName);
             if (recordingDevice.Equals(default(KeyValuePair<int, string>)))
             {
-                ShowRecordingDeviceNotFoundDialog();                
+                ShowRecordingDeviceNotFoundDialog();
                 return false;
             }
             return true;
@@ -123,9 +129,9 @@ namespace Record.Recorder.Core
         {
             await IoC.UI.ShowMessage(new MessageBoxDialogViewModel
             {
-                Title = "Recording in Progress",
-                Message = "You are currently recording.\nTo abort the recording click on Stop.",
-                OkText = "OK"
+                Title = Text.RecordingInProgress,
+                Message = Text.RecordingInProgressMessage,
+                OkText = Text.OK
             });
         }
 
@@ -133,10 +139,10 @@ namespace Record.Recorder.Core
         {
             var viewModel = new MessageBoxButtonDialogViewModel
             {
-                Title = "Recording Device Not Found",
-                Message = "The saved recording device could not be found.\nPlease make sure it is plugged in or choose one in the settings.",
-                OkText = "OK",
-                ButtonText = "Settings"
+                Title = Text.RecordingDeviceNotFound,
+                Message = Text.RecordingDeviceNotFoundMessage,
+                OkText = Text.OK,
+                ButtonText = Text.Settings
             };
 
             await IoC.UI.ShowMessageWithOption(viewModel);
@@ -151,9 +157,9 @@ namespace Record.Recorder.Core
         {
             var viewModel = new MessageBoxDialogViewModel
             {
-                Title = "Recording Device Not Set",
-                Message = "No recording device has been saved.\nPlease choose one and make sure it works in the settings.",
-                OkText = "Settings"
+                Title = Text.RecordingDeviceNotSet,
+                Message = Text.RecordingDeviceNotSetMessage,
+                OkText = Text.Settings
             };
             await IoC.UI.ShowMessage(viewModel);
 

@@ -47,6 +47,8 @@ namespace Record.Recorder.Core
 
             if ("Dark".Equals(Properties.Settings.Default["ApplicationTheme"].ToString())) Get<ApplicationViewModel>().SetThemeToDark();
 
+            // Reset album name at startup
+            Properties.Settings.Default["AlbumName"] = "";
         }
 
         /// <summary>

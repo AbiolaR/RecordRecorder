@@ -58,5 +58,17 @@ namespace Record.Recorder.Core.Properties {
                 this["ApplicationTheme"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string AlbumName {
+            get {
+                return ((string)(this["AlbumName"]));
+            }
+            set {
+                this["AlbumName"] = value;
+            }
+        }
     }
 }

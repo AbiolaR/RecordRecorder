@@ -110,6 +110,16 @@
     <Compile Include="Recorder\Helpers\AudioFileReaderExt.cs" />
     <Compile Include="Recorder\Helpers\AudioFileType.cs" />
     <Compile Include="Recorder\RecorderUtil.cs" />
+    <Compile Include="Resources\Languages\Text.de.Designer.cs">
+      <DependentUpon>Text.de.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Resources\Languages\Text.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Text.resx</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\ApplicationViewModel.cs" />
     <Compile Include="ViewModels\Base\BaseViewModel.cs" />
     <Compile Include="ViewModels\Base\RelayCommand.cs" />
@@ -127,7 +137,19 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Languages\Text.de.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Text.de.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Record.Recorder.Core</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Languages\Text.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Text.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Record.Recorder.Core</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
