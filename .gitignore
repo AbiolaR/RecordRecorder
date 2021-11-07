@@ -102,7 +102,7 @@ StyleCopReport.xml
 _Chutzpah*
 
 # Audio Test Resource files
-#Record.Recorder.Core.UnitTests\Resources\Audio\*
+Audio\*.wav
 #.wav
 
 # Visual C++ cache files
