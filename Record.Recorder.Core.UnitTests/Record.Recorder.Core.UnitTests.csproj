@@ -7,6 +7,24 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Audio\full12min.wav" />
+    <None Remove="Resources\Audio\MusicToBeMurderedBy.wav" />
+    <None Remove="Resources\Audio\recorded3.wav" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\Audio\full12min.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Audio\MusicToBeMurderedBy.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Audio\recorded3.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Moq" Version="4.16.1" />
     <PackageReference Include="Ninject" Version="3.3.4" />
     <PackageReference Include="NMock3" Version="3.5.44" />
@@ -21,7 +39,6 @@
 
   <ItemGroup>
     <Folder Include="Output\Audio\" />
-    <Folder Include="Resources\" />
   </ItemGroup>
 
 </Project>
