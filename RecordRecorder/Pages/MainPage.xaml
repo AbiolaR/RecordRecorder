@@ -1,4 +1,4 @@
-﻿<local:BasePage x:TypeArguments="local:MainViewModel" x:Class="RecordRecorder.MainPage"
+﻿<local:BasePage x:TypeArguments="core:MainViewModel" x:Class="RecordRecorder.MainPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -27,8 +27,8 @@
 
                         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" TextBlock.TextAlignment="Center">
 
-                            <TextBlock Text="Bitte Album Namen eingeben:" FontFamily="{StaticResource FocoBold}" Foreground="{StaticResource ApplicationTextBrush}" />
-                            <TextBox x:Name="AlbumInput" Text="Album"  Width="80" FontFamily="{StaticResource FocoLight}" />
+                            <!-- <TextBlock Text="Bitte Album Namen eingeben:" FontFamily="{StaticResource FocoBold}" Foreground="{StaticResource ApplicationTextBrush}" /> -->
+                            <TextBox x:Name="AlbumInput" Text="{Binding AlbumName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource WatermarkTextBox}" />
 
                             <ContentControl Content="{Binding}" ContentTemplate="{StaticResource RecordingProgressCollection}" />
 

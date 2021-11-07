@@ -1,0 +1,24 @@
+﻿<local:BaseDialogUserControl x:Class="RecordRecorder.DialogMessageBox"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:RecordRecorder"
+             xmlns:core="clr-namespace:Record.Recorder.Core;assembly=Record.Recorder.Core"
+             mc:Ignorable="d" >
+    <Grid Background="{StaticResource ApplicationBackgroundBrush}" Margin="10" >
+        <Grid.RowDefinitions>
+            <!-- Content -->
+            <RowDefinition Height="*" />
+            <!-- Spacing -->
+            <RowDefinition Height="10" />
+            <!-- Button Row -->
+            <RowDefinition Height="30" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="{Binding Message}"  Foreground="{StaticResource ApplicationTextBrush}" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" Width="{Binding WindowMinimumWidth}"/>
+
+        <Button Grid.Row="2" Content="{Binding OkText}" Style="{StaticResource DialogOkButton}" CommandParameter="{x:Static core:DialogAnswer.OK}" />
+
+    </Grid>
+</local:BaseDialogUserControl>

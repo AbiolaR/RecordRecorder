@@ -1,4 +1,5 @@
 ﻿using Record.Recorder.Core;
+using System.ComponentModel;
 using System.Windows;
 
 namespace RecordRecorder
@@ -12,7 +13,23 @@ namespace RecordRecorder
         {
             InitializeComponent();
 
-            this.DataContext = new WindowViewModel(this);
+            DataContext = new WindowViewModel(this);
+        }
+
+        protected async override void OnClosing(CancelEventArgs e)
+        {
+            if (IoC.Get<ApplicationViewModel>().IsRecordingInProgress)
+            {
+                e.Cancel = true;
+
+                await IoC.UI.ShowMessage(new MessageBoxDialogViewModel
+                {
+                    Title = "Recording in Progress",
+                    Message = "You are currently recording.\nTo abort the recording click on Stop.",
+                    OkText = "OK"
+                });
+
+            }            
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using Record.Recorder.Core;
-using System;
+using System.Threading;
 using System.Windows;
 
 namespace RecordRecorder
@@ -35,6 +35,33 @@ namespace RecordRecorder
             // Bind a UI manager
             IoC.Kernel.Bind<IUIManager>().ToConstant(new UIManager());
 
+            // Bind a settings manager
+            IoC.Kernel.Bind<ISettingsManager>().ToConstant(new SettingsManager());
+
+            Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("de");
+
+            //SetupLanguageDictionary();
+
         }
+
+        private void SetupLanguageDictionary()
+        {
+            var dictionary = new ResourceDictionary{ Source = new System.Uri(@"..\Resources\Languages\english.xaml", System.UriKind.Relative) };
+            
+            switch (Thread.CurrentThread.CurrentCulture.ToString())
+            {
+                case "de":
+                    Resources.MergedDictionaries.RemoveAt(0);
+                    dictionary.Source = new System.Uri(@"..\Resources\Languages\german.xaml", System.UriKind.Relative);
+                    Resources.MergedDictionaries.Add(dictionary);
+                    break;
+
+                /*default:
+                    //dictionary.Source = new System.Uri(@"..\Resources\Languages\english.xaml", System.UriKind.Relative);
+                    break;*/
+
+            }
+        }
+
     }
 }

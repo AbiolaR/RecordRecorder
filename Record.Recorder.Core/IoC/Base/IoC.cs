@@ -20,6 +20,11 @@ namespace Record.Recorder.Core
         public static IUIManager UI => IoC.Get<IUIManager>();
 
         /// <summary>
+        /// A shortcut to access the <see cref="IUIManager"/>
+        /// </summary>
+        public static ISettingsManager Settings => IoC.Get<ISettingsManager>();
+
+        /// <summary>
         /// Gets a service from the IoC, of the specified type
         /// </summary>
         /// <typeparam name="T">The type to get</typeparam>
@@ -40,13 +45,15 @@ namespace Record.Recorder.Core
             BindViewModels();
 
             // Set necessary default settings data
-            if (string.IsNullOrEmpty(Properties.Settings.Default["outputFolderLocation"].ToString()))
+            if (string.IsNullOrEmpty(Properties.Settings.Default["OutputFolderLocation"].ToString()))
             {
-                Properties.Settings.Default["outputFolderLocation"] = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic);
+                Properties.Settings.Default["OutputFolderLocation"] = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic);
             }
 
             if ("Dark".Equals(Properties.Settings.Default["ApplicationTheme"].ToString())) Get<ApplicationViewModel>().SetThemeToDark();
 
+            // Reset album name at startup
+            Properties.Settings.Default["AlbumName"] = "";
         }
 
         /// <summary>

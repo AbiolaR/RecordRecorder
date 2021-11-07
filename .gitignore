@@ -101,6 +101,10 @@ StyleCopReport.xml
 # Chutzpah Test files
 _Chutzpah*
 
+# Audio Test Resource files
+#Record.Recorder.Core.UnitTests\Resources\Audio\*
+#.wav
+
 # Visual C++ cache files
 ipch/
 *.aps

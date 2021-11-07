@@ -7,13 +7,13 @@ namespace RecordRecorder
     /// <summary>
     /// The view model for the custom modern window 
     /// </summary>
-    class WindowViewModel : BaseViewModel
+    public class WindowViewModel : BaseViewModel
     {
         #region Private Properties
         /// <summary>
         /// The window this view model controls
         /// </summary>
-        private Window _window;
+        protected Window _window;
 
         private bool isDocked = false;
 
@@ -216,6 +216,27 @@ namespace RecordRecorder
             OnPropertyChanged(nameof(WindowRadius));
             OnPropertyChanged(nameof(WindowCornerRadius));
         }
+
+        /*protected async virtual void CloseWindow()
+        {
+            if(IoC.Get<ApplicationViewModel>().IsRecordingInProgress)
+            {                
+                await IoC.UI.ShowMessage(new MessageBoxDialogViewModel
+                {
+                    Title = "Recording in Progress",
+                    Message = "You are currently recording.\nTo abort the recording click on Stop.",
+                    OkText = "OK"
+                });
+            }
+            else
+            {
+                try
+                {
+                    _window.Close();
+                }
+                catch { }
+            }
+        }*/
 
         #endregion
     }

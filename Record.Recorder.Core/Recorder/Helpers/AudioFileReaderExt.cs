@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Record.Recorder.Core
 {
@@ -27,6 +28,8 @@ namespace Record.Recorder.Core
                 silencePositions.TryGetValue("End: " + i, out TimeSpan end);
                 silencePositions.TryGetValue("Start: " + (i + 1), out TimeSpan nextStart);
 
+                if (end.Equals(reader.TotalTime)) break;
+
                 trackPositions.Add("Start: " + i, TimeSpan.FromMilliseconds(end.TotalMilliseconds + 1));
                 if (nextStart.TotalMilliseconds == 0)
                 {
@@ -46,11 +49,38 @@ namespace Record.Recorder.Core
             double dB = 20 * Math.Log10(Math.Abs(amplitude));
             return dB < threshold;
         }
-        private static Dictionary<string, TimeSpan> GetSilencePositions(this AudioFileReader reader, sbyte silenceThreshold = -40)
+
+        private static void ParallelWhile(Func<bool> condition, System.Action body)
+        {
+            Parallel.ForEach(IterateUntilFalse(condition), ignored => body());
+        }
+
+        private static IEnumerable<bool> IterateUntilFalse(Func<bool> condition)
+        {
+            while (condition()) yield return true;
+        }
+
+        private static void StorePossibleSilenceEndPosition(this AudioFileReader reader, ArrayList possibleSilencePositions, int silenceStart, int counterSilence)
         {
             double silenceSamples;
             double silenceDuration;
             double silenceEnd;
+
+            silenceSamples = (double)silenceStart / reader.WaveFormat.Channels;
+            silenceDuration = silenceSamples / reader.WaveFormat.SampleRate * 1000;
+
+            possibleSilencePositions.Add(TimeSpan.FromMilliseconds(silenceDuration));
+
+            silenceEnd = silenceStart + counterSilence;
+            silenceSamples = silenceEnd / reader.WaveFormat.Channels;
+            silenceDuration = silenceSamples / reader.WaveFormat.SampleRate * 1000;
+
+            possibleSilencePositions.Add(TimeSpan.FromMilliseconds(silenceDuration));
+        }
+
+        private static Dictionary<string, TimeSpan> GetSilencePositions(this AudioFileReader reader, sbyte silenceThreshold = -40)
+        {
+
             long oldPosition = reader.Position;
             ArrayList possibleSilencePositions = new ArrayList();
             int counter = 0, counterSilence = 0, silenceStart = 0;
@@ -76,16 +106,8 @@ namespace Record.Recorder.Core
                     {
                         if (silenceFound)
                         {
-                            silenceSamples = (double)silenceStart / reader.WaveFormat.Channels;
-                            silenceDuration = (silenceSamples / reader.WaveFormat.SampleRate) * 1000;
+                            StorePossibleSilenceEndPosition(reader, possibleSilencePositions, silenceStart, counterSilence);
 
-                            possibleSilencePositions.Add(TimeSpan.FromMilliseconds(silenceDuration));
-
-                            silenceEnd = silenceStart + counterSilence;
-                            silenceSamples = silenceEnd / reader.WaveFormat.Channels;
-                            silenceDuration = (silenceSamples / reader.WaveFormat.SampleRate) * 1000;
-
-                            possibleSilencePositions.Add(TimeSpan.FromMilliseconds(silenceDuration));
                             counterSilence = 0;
                             silenceFound = false;
                         }
@@ -93,6 +115,11 @@ namespace Record.Recorder.Core
 
                     counter++;
                 }
+            }
+
+            if (silenceFound)
+            {
+                StorePossibleSilenceEndPosition(reader, possibleSilencePositions, silenceStart, counterSilence);
             }
 
             // reset position
@@ -109,7 +136,7 @@ namespace Record.Recorder.Core
 
                 TimeSpan difference = end.Subtract(start);
 
-                if (difference.TotalSeconds > 4 || start.TotalMilliseconds == 0)
+                if (difference.TotalSeconds > 2 || start.TotalMilliseconds == 0)
                 {
                     silencePositions.Add("Start: " + j, start);
                     silencePositions.Add("End: " + j, end);
@@ -119,6 +146,6 @@ namespace Record.Recorder.Core
 
             return silencePositions;
         }
-        
+
     }
 }

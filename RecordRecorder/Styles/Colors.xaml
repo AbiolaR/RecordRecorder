@@ -5,13 +5,13 @@
 
 
     <Color x:Key="ForegroundDark">#363636</Color>
-    <Color x:Key="ForegroundLight">LightGray</Color> <!--#bdc4c9-->
+    <Color x:Key="ForegroundLight">#f0f0f0</Color> <!--#bdc4c9-->
     <Color x:Key="BackgroundDark">#2b2b2b</Color>
-    <Color x:Key="BackgroundLight">White</Color>
+    <Color x:Key="BackgroundLight">#c2c2c2</Color>
     <Color x:Key="TextDark">Black</Color>
     <Color x:Key="TextLight">White</Color>
     <Color x:Key="ShadowDark">#424242</Color>
-    <Color x:Key="ShadowLight">#bdc4c9</Color>
+    <Color x:Key="ShadowLight">White</Color>
     <!-- LightGray -->
 
 

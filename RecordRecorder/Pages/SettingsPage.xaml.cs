@@ -1,4 +1,6 @@
-﻿namespace RecordRecorder
+﻿using Record.Recorder.Core;
+
+namespace RecordRecorder
 {
     /// <summary>
     /// Interaction logic for SettingsPage.xaml

@@ -10,7 +10,7 @@ namespace Record.Recorder.Core
     /// <summary>
     /// A view model for the Recorder
     /// </summary>
-    public abstract class BaseMainViewModel : BaseViewModel
+    public class MainViewModel : BaseViewModel
     {
         /// <summary>
         /// The command to switch to the settings page
@@ -20,13 +20,19 @@ namespace Record.Recorder.Core
         public ICommand PressPauseCommand { get; set; }
         public ICommand PressStopCommand { get; set; }
 
+        private static readonly string ALBUMNAME = "AlbumName";
+        private static readonly string RECORDINGDEVICE = "RecordingDevice";
+        private static readonly string ZEROTIMERVALUE = "00:00:00";
+
         private bool isRecording, isRecordingInProgress, isRecordingAllowed = false;
 
         public bool IsRecording { get => isRecording; set { isRecording = value; OnPropertyChanged(nameof(IsRecording)); } }
         public bool IsRecordingInProgress { get => isRecordingInProgress; set { isRecordingInProgress = value; OnPropertyChanged(nameof(IsRecordingInProgress)); } }
         public bool IsRecordingAllowed { get => isRecordingAllowed; set { isRecordingAllowed = value; OnPropertyChanged(nameof(IsRecordingAllowed)); } }
 
-        private string currentRecordingTime = "00:00:00";
+        public string AlbumName { get => Properties.Settings.Default[ALBUMNAME].ToString(); set { Properties.Settings.Default[ALBUMNAME] = value; Properties.Settings.Default.Save(); } }
+
+        private string currentRecordingTime = ZEROTIMERVALUE;
         private readonly DispatcherTimer timer;
         private readonly Stopwatch stopwatch = new Stopwatch();
 
@@ -35,7 +41,7 @@ namespace Record.Recorder.Core
 
         public string CurrentRecordingTime { get => currentRecordingTime; set { currentRecordingTime = value; OnPropertyChanged(nameof(CurrentRecordingTime)); } }
 
-        public BaseMainViewModel()
+        public MainViewModel()
         {
             GoToSettingsCommand = new RelayCommand((o) => NavigateToSettingsPage());
             PressRecordCommand = new RelayCommand((o) => StartRecording());
@@ -55,25 +61,12 @@ namespace Record.Recorder.Core
         }
 
 
-        protected abstract void ShowNoRecordingDeviceAlert();
-        protected abstract void ShowRecordingDeviceNotFoundAlert();
-        protected abstract void RecordingInProgressAlert();
-
-        private void NewRecordingInProgressAlert()
-        {
-            IoC.UI.ShowMessage(new MessageBoxDialogViewModel
-            {
-                Title = "Recording in Progress",
-                Message = "You are currently recording.\nTo abort the recording click on Stop.",
-                OkText = "OK"
-            });
-        }
 
         private void NavigateToSettingsPage()
         {
             if (IsRecordingInProgress)
             {
-                NewRecordingInProgressAlert();
+                ShowRecordingInProgressDialog();
                 return;
             }
 
@@ -84,6 +77,7 @@ namespace Record.Recorder.Core
         {
             IsRecording = false;
             IsRecordingInProgress = false;
+            IoC.Get<ApplicationViewModel>().IsRecordingInProgress = false;
             IsRecordingAllowed = false;
             stopwatch.Stop();
             timer.Stop();
@@ -95,10 +89,11 @@ namespace Record.Recorder.Core
             if (await CheckForRecordingDevice())
             {
                 IsRecordingAllowed = true;
-                CurrentRecordingTime = "00:00:00";
+                CurrentRecordingTime = ZEROTIMERVALUE;
                 await Task.Delay(500);
                 IsRecording = true;
                 IsRecordingInProgress = true;
+                IoC.Get<ApplicationViewModel>().IsRecordingInProgress = true;
                 stopwatch.Start();
                 timer.Start();
             }
@@ -106,27 +101,74 @@ namespace Record.Recorder.Core
 
         private void ToggleIsRecording()
         {
-            //IsRecording = !IsRecording;
             ToggleCommmand(() => IsRecording, () => { stopwatch.Stop(); timer.Stop(); }, () => { stopwatch.Start(); timer.Start(); });
         }
 
         private async Task<bool> CheckForRecordingDevice()
         {
-            string recordingDeviceName = Properties.Settings.Default["recordingDevice"].ToString();
+            string recordingDeviceName = Properties.Settings.Default[RECORDINGDEVICE].ToString();
 
             if (string.IsNullOrEmpty(recordingDeviceName))
             {
-                ShowNoRecordingDeviceAlert();
+                ShowNoRecordingDeviceDialog();
                 return false;
             }
 
             var recordingDevice = await recorder.GetRecordingDeviceByName(recordingDeviceName);
             if (recordingDevice.Equals(default(KeyValuePair<int, string>)))
             {
-                ShowRecordingDeviceNotFoundAlert();
+                ShowRecordingDeviceNotFoundDialog();
                 return false;
             }
             return true;
         }
+
+        #region Show Dialog Methods
+
+        private async void ShowRecordingInProgressDialog()
+        {
+            await IoC.UI.ShowMessage(new MessageBoxDialogViewModel
+            {
+                Title = Text.RecordingInProgress,
+                Message = Text.RecordingInProgressMessage,
+                OkText = Text.OK
+            });
+        }
+
+        private async void ShowRecordingDeviceNotFoundDialog()
+        {
+            var viewModel = new MessageBoxButtonDialogViewModel
+            {
+                Title = Text.RecordingDeviceNotFound,
+                Message = Text.RecordingDeviceNotFoundMessage,
+                OkText = Text.OK,
+                ButtonText = Text.Settings
+            };
+
+            await IoC.UI.ShowMessageWithOption(viewModel);
+
+            if (viewModel.Answer == DialogAnswer.Option1)
+            {
+                NavigateToSettingsPage();
+            }
+        }
+
+        private async void ShowNoRecordingDeviceDialog()
+        {
+            var viewModel = new MessageBoxDialogViewModel
+            {
+                Title = Text.RecordingDeviceNotSet,
+                Message = Text.RecordingDeviceNotSetMessage,
+                OkText = Text.Settings
+            };
+            await IoC.UI.ShowMessage(viewModel);
+
+            if (viewModel.Answer == DialogAnswer.OK)
+            {
+                NavigateToSettingsPage();
+            }
+        }
+
+        #endregion
     }
 }

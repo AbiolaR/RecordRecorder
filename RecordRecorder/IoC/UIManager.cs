@@ -1,6 +1,8 @@
 ﻿using Record.Recorder.Core;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Forms;
 
 namespace RecordRecorder
 {
@@ -9,6 +11,7 @@ namespace RecordRecorder
     /// </summary>
     public class UIManager : IUIManager
     {
+
         /// <summary>
         /// Displays a message box to the user
         /// </summary>
@@ -16,7 +19,60 @@ namespace RecordRecorder
         /// <returns></returns>
         public Task ShowMessage(MessageBoxDialogViewModel viewModel)
         {
-            return Task.Run(() => MessageBox.Show(viewModel.Message, viewModel.Title));
+            return new DialogMessageBox().ShowDialog(viewModel);
+            //return Task.FromResult(0);
+        }
+
+        public Task ShowMessageWithOption(MessageBoxButtonDialogViewModel viewModel)
+        {
+            return new DialogMessageOptionBox().ShowDialog(viewModel);
+        }
+
+
+        public Task<string> ChooseFolderLocation()
+        {
+            var tcs = new TaskCompletionSource<string>();
+            var path = "";
+
+            System.Windows.Application.Current.Dispatcher.Invoke(() =>
+            {
+                try
+                {
+                    using var dialog = new FolderBrowserDialog();
+                    if (DialogResult.OK.Equals(dialog.ShowDialog()))
+                    {
+                        path = dialog.SelectedPath;
+                        //SaveOutputFolderLocation(dialog.SelectedPath);
+                    }
+                }
+                finally
+                {
+                    tcs.TrySetResult(path);
+                }
+
+            });
+
+            return tcs.Task;
+        }
+
+        public Task OpenFolderLocation(string path)
+        {
+            var tcs = new TaskCompletionSource<bool>();
+
+            System.Windows.Application.Current.Dispatcher.Invoke(() =>
+            {
+                try
+                {
+                    Process.Start("explorer.exe", path);
+                }
+                finally
+                {
+                    tcs.TrySetResult(true);
+                }
+
+            });
+
+            return tcs.Task;
         }
     }
 }

@@ -13,5 +13,16 @@ namespace Record.Recorder.Core
         /// <param name="viewModel">The view model</param>
         /// <returns></returns>
         Task ShowMessage(MessageBoxDialogViewModel viewModel);
+
+        /// <summary>
+        /// Displays a message box to the user with an additional button
+        /// </summary>
+        /// <param name="viewModel">The view model</param>
+        /// <returns></returns>
+        Task ShowMessageWithOption(MessageBoxButtonDialogViewModel viewModel);
+
+        Task<string> ChooseFolderLocation();
+
+        Task OpenFolderLocation(string path);
     }
 }
