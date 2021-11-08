@@ -169,7 +169,7 @@ namespace Record.Recorder.Core
             }
         }
 
-        public async Task DetectAndSaveTracksAsync(string filePath)
+        public async Task DetectAndSaveTracksAsync(string recordingPath)
         {
             var trackPositions = new TrackPositionCollection();
             Task<AlbumData> albumTask = null;
@@ -178,13 +178,13 @@ namespace Record.Recorder.Core
                 albumTask = GetAlbumInfoById(IoC.Settings.GetAlbumName());
             }
 
-            using (AudioFileReader reader = new AudioFileReader(filePath))
+            using (AudioFileReader reader = new AudioFileReader(recordingPath))
             {
                 trackPositions = reader.GetTrackPositions();
             }
             GC.Collect();
 
-            var trackDataCollection = await ExtractTrackDataAsync(trackPositions, filePath, albumTask);
+            var trackDataCollection = await ExtractTrackDataAsync(trackPositions, recordingPath, albumTask);
             await SaveTracksAsync(trackDataCollection);
         }
 
