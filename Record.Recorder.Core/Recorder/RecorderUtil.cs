@@ -24,10 +24,9 @@ namespace Record.Recorder.Core
         WaveInEvent recordingDevice = null;
         private static readonly string dataFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "RecordRecorder"); //Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "NAudio");
         private static readonly string recordingFilePath = Path.Combine(dataFolder, "recording.wav");
-        //private static readonly string tempDataFolder = Path.Combine(dataFolder, "temp");
-        private static readonly string tempFolder = Path.Combine(dataFolder, "temp");
-        private static readonly string tempFile = Path.Combine(tempFolder, "temp");
-        private static readonly string tempFilePath = Path.Combine(tempFolder, "temp.wav"); //Path.Combine(dataFolder, "part.wav");
+        private static readonly string tempDataFolder = Path.Combine(dataFolder, "temp");
+        private static readonly string tempFile = Path.Combine(tempDataFolder, "temp");
+        private static readonly string tempFilePath = Path.Combine(tempDataFolder, "temp.wav"); //Path.Combine(dataFolder, "part.wav");
         public string OutputFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic); //@"C:\Users\rasheed_abiola\Desktop\NAudio\recorded3.wav";
         public string OutputFolder = "Test2";
         public string fileType = AudioFileType.WAV;
@@ -35,7 +34,7 @@ namespace Record.Recorder.Core
 
         public RecorderUtil()
         {
-            Directory.CreateDirectory(tempFolder);
+            Directory.CreateDirectory(tempDataFolder);
         }
 
         async public Task<SortedDictionary<int, string>> GetRecordingDevices()
@@ -515,7 +514,7 @@ namespace Record.Recorder.Core
         private async Task<string> DownloadTempImageAsync(string url)
         {
             string fileExtension = Path.GetExtension(@url);
-            string fileLocation = Path.Combine(tempFolder, $"albumcover{fileExtension}");
+            string fileLocation = Path.Combine(tempDataFolder, $"albumcover{fileExtension}");
 
             try
             {
