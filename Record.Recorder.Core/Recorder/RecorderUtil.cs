@@ -182,11 +182,6 @@ namespace Record.Recorder.Core
                 trackPositions = reader.GetTrackPositions();
                 reader.Dispose();
                 GC.Collect();
-                /*Console.WriteLine("DONE");
-                foreach (KeyValuePair<String, TimeSpan> keyValuePair in trackPositions)
-                {
-                    Console.WriteLine(keyValuePair);
-                }*/
             }
             await ExtractAndSaveTracksAsync(trackPositions, filePath, albumTask);
         }
@@ -272,7 +267,7 @@ namespace Record.Recorder.Core
                 var file = TagLib.File.Create(songData.Path);
 
                 file.Tag.Title = songData.Title;
-                file.Tag.Album = songData.Album;// ?? "Music To Be Murdered By"; //IoC.Settings.GetAlbumName();
+                file.Tag.Album = songData.Album;
                 file.Tag.Track = (uint)songData.Track;
                 file.Tag.Performers = songData.Performers;
 
