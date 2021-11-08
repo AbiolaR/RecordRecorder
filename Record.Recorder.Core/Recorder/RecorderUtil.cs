@@ -169,7 +169,7 @@ namespace Record.Recorder.Core
             }
         }
 
-        public async Task DetectAndSaveTracks(string filePath)
+        public async Task DetectAndSaveTracksAsync(string filePath)
         {
             var trackPositions = new TrackPositionCollection();
             Task<AlbumData> albumTask = null;
@@ -183,17 +183,18 @@ namespace Record.Recorder.Core
                 trackPositions = reader.GetTrackPositions();
             }
             GC.Collect();
-            await ExtractAndSaveTracksAsync(trackPositions, filePath, albumTask);
+
+            var trackDataCollection = await ExtractTrackDataAsync(trackPositions, filePath, albumTask);
+            await SaveTracksAsync(trackDataCollection);
         }
 
-        private async Task ExtractAndSaveTracksAsync(TrackPositionCollection trackPositions, string recordingPath, Task<AlbumData> albumTask)
+        private async Task<TrackDataCollection> ExtractTrackDataAsync(TrackPositionCollection trackPositions, string recordingPath, Task<AlbumData> albumTask)
         {
-            var trackDataCollection = new TrackDataCollection();
-            var album = new AlbumData();
+            var trackDataCollection = new TrackDataCollection { Album = new AlbumData { Title = IoC.Settings.GetAlbumName() } };
 
             if (albumTask != null)
             {
-                album = await albumTask;
+                trackDataCollection.Album = await albumTask;
             }
 
             foreach (var trackPosition in trackPositions)
@@ -206,7 +207,6 @@ namespace Record.Recorder.Core
 
                 var trackData = new TrackData()
                 {
-                    Album = IoC.Settings.GetAlbumName(),
                     Title = $"Track {trackPosition.Number}",
                     Track = trackPosition.Number,
                     Data = song
@@ -218,7 +218,7 @@ namespace Record.Recorder.Core
                     {
                         case "TADB":
                             TrackData tempSongData;
-                            if (album.Tracks.TryGetValue(trackPosition.Number, out tempSongData))
+                            if (trackDataCollection.Album.Tracks.TryGetValue(trackPosition.Number, out tempSongData))
                             {
                                 trackData = tempSongData;
                             }
@@ -240,13 +240,18 @@ namespace Record.Recorder.Core
                 trackDataCollection.Add(trackData);
             }
 
-            Directory.CreateDirectory(Path.Combine(IoC.Settings.GetOutputFolderLocation(), album.Title ?? IoC.Settings.GetAlbumName()));
+            return trackDataCollection;
+        }
 
-            Task<string> albumThumbLocationTask = DownloadTempImageAsync(album.ThumbUrl);
+        private async Task SaveTracksAsync(TrackDataCollection trackDataCollection)
+        {
+            Directory.CreateDirectory(Path.Combine(IoC.Settings.GetOutputFolderLocation(), trackDataCollection.Album.Title ?? IoC.Settings.GetAlbumName()));
+
+            Task<string> albumThumbLocationTask = DownloadTempImageAsync(trackDataCollection.Album.ThumbUrl);
 
             Parallel.ForEach(trackDataCollection, trackData =>
             {
-                trackData.Path = TrySave(trackData.Title, trackData.Album, trackData.Data, IoC.Settings.GetFileType());
+                trackData.Path = TrySave(trackData.Title, trackDataCollection.Album.Title, trackData.Data, IoC.Settings.GetFileType());
             });
 
             /*foreach (var song in songs)
@@ -262,7 +267,7 @@ namespace Record.Recorder.Core
                 var file = TagLib.File.Create(trackData.Path);
 
                 file.Tag.Title = trackData.Title;
-                file.Tag.Album = trackData.Album;
+                file.Tag.Album = trackDataCollection.Album.Title;
                 file.Tag.Track = (uint)trackData.Track;
                 file.Tag.Performers = trackData.Performers;
 
@@ -444,7 +449,6 @@ namespace Record.Recorder.Core
                 album.Tracks.Add(trackNum, new TrackData
                 {
                     Title = track.strTrack,
-                    Album = track.strAlbum,
                     Track = trackNum,
                     Performers = new[] { track.strArtist }
                 });

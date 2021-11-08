@@ -32,7 +32,7 @@ namespace Record.Recorder.Core.UnitTests
 
             IoC.Kernel.Bind<ISettingsManager>().ToConstant(mockSettings.Object);
 
-            var path = Path.Combine(TestContext.CurrentContext.WorkDirectory, @"Resources\Audio\full12min.wav");
+            var path = Path.Combine(TestContext.CurrentContext.WorkDirectory, @"Resources\Audio\MusicToBeMurderedBy.wav");
 
             var mockRecorder = new Mock<RecorderUtil>();
 
@@ -48,7 +48,7 @@ namespace Record.Recorder.Core.UnitTests
 
             Task.Run(async () =>
             {
-                await mockRecorder.Object.DetectAndSaveTracks(path);
+                await mockRecorder.Object.DetectAndSaveTracksAsync(path);
             }).GetAwaiter().GetResult();
 
             Assert.Pass();
