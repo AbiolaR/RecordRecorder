@@ -11,6 +11,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Record.Recorder.Core
@@ -18,19 +19,20 @@ namespace Record.Recorder.Core
     public delegate void Notify();
     public class RecorderUtil
     {
-        public static event Notify ProgressIndeterminateStarted;
+        //public static event Notify ProgressIndeterminateStarted;
         private static HttpClient client = new HttpClient();
         WaveFileWriter writer = null;
         WaveInEvent recordingDevice = null;
-        private static readonly string dataFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "RecordRecorder"); //Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "NAudio");
+
+        private static readonly string dataFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Assembly.GetCallingAssembly().GetName().Name); //Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "NAudio");
         private static readonly string recordingFilePath = Path.Combine(dataFolder, "recording.wav");
         private static readonly string tempDataFolder = Path.Combine(dataFolder, "temp");
         private static readonly string tempFile = Path.Combine(tempDataFolder, "temp");
         private static readonly string tempFilePath = Path.Combine(tempDataFolder, "temp.wav"); //Path.Combine(dataFolder, "part.wav");
-        public string OutputFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic); //@"C:\Users\rasheed_abiola\Desktop\NAudio\recorded3.wav";
-        public string OutputFolder = "Test2";
-        public string fileType = AudioFileType.WAV;
-        public int RecordingDeviceNum { get; set; } = 999;
+        //public string OutputFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic); //@"C:\Users\rasheed_abiola\Desktop\NAudio\recorded3.wav";
+        //public string OutputFolder = "Test2";
+        //public string fileType = AudioFileType.WAV;
+        //public int RecordingDeviceNum { get; set; } = 999;
 
         public RecorderUtil()
         {
@@ -169,8 +171,8 @@ namespace Record.Recorder.Core
 
         public async Task DetectAndSaveTracks(string filePath)
         {
-            Dictionary<string, TimeSpan> trackPositions = new Dictionary<string, TimeSpan>();
-            Task<AlbumModel> albumTask = null;
+            var trackPositions = new TrackPositionCollection();
+            Task<AlbumData> albumTask = null;
             if (IsInternetConnected() && "TADB".Equals(IoC.Settings.GetSongDetectionType()))
             {
                 albumTask = GetAlbumInfoById(IoC.Settings.GetAlbumName());
@@ -179,38 +181,35 @@ namespace Record.Recorder.Core
             using (AudioFileReader reader = new AudioFileReader(filePath))
             {
                 trackPositions = reader.GetTrackPositions();
-                reader.Dispose();
-                GC.Collect();
             }
+            GC.Collect();
             await ExtractAndSaveTracksAsync(trackPositions, filePath, albumTask);
         }
 
-        private async Task ExtractAndSaveTracksAsync(Dictionary<string, TimeSpan> trackPositions, string recordingPath, Task<AlbumModel> albumTask)
+        private async Task ExtractAndSaveTracksAsync(TrackPositionCollection trackPositions, string recordingPath, Task<AlbumData> albumTask)
         {
-            int trackPositionsAmount = trackPositions.Count / 2;
-            var songs = new Dictionary<SongModel, ISampleProvider>();
-            var album = new AlbumModel();
+            var trackDataCollection = new TrackDataCollection();
+            var album = new AlbumData();
 
             if (albumTask != null)
             {
                 album = await albumTask;
             }
 
-            for (int i = 1; i <= trackPositionsAmount; i++)
+            foreach (var trackPosition in trackPositions)
             {
-                trackPositions.TryGetValue("Start: " + i, out TimeSpan start);
-                trackPositions.TryGetValue("End: " + i, out TimeSpan end);
-                end = TimeSpan.FromMilliseconds(end.TotalMilliseconds + 700);
+                var end = TimeSpan.FromMilliseconds(trackPosition.End.TotalMilliseconds + 700);
 
                 var song = new AudioFileReader(recordingPath)
-                                                .Skip(start)
-                                                .Take(end.Subtract(start));
+                                                .Skip(trackPosition.Start)
+                                                .Take(end.Subtract(trackPosition.Start));
 
-                var songData = new SongModel()
+                var trackData = new TrackData()
                 {
                     Album = IoC.Settings.GetAlbumName(),
-                    Title = $"Track {i}",
-                    Track = i,
+                    Title = $"Track {trackPosition.Number}",
+                    Track = trackPosition.Number,
+                    Data = song
                 };
 
                 if (IsInternetConnected())
@@ -218,19 +217,19 @@ namespace Record.Recorder.Core
                     switch (IoC.Settings.GetSongDetectionType())
                     {
                         case "TADB":
-                            SongModel tempSongData;
-                            if (album.Tracks.TryGetValue(i, out tempSongData))
+                            TrackData tempSongData;
+                            if (album.Tracks.TryGetValue(trackPosition.Number, out tempSongData))
                             {
-                                songData = tempSongData;
+                                trackData = tempSongData;
                             }
                             break;
 
                         case "Shazam":
-                            var shazamModel = await GetTrackNameAsync(GetMonoSampleAsBytes(start, recordingPath));
+                            var shazamModel = await GetTrackNameAsync(GetMonoSampleAsBytes(trackPosition.Start, recordingPath));
                             if (shazamModel.matches.Length > 0)
                             {
-                                songData.Title = shazamModel.track.title;
-                                songData.Performers = new[] { shazamModel.track.subtitle };
+                                trackData.Title = shazamModel.track.title;
+                                trackData.Performers = new[] { shazamModel.track.subtitle };
                             }
                             break;
                     }
@@ -238,17 +237,16 @@ namespace Record.Recorder.Core
 
                 }
 
-                songs.Add(songData, song);
+                trackDataCollection.Add(trackData);
             }
 
             Directory.CreateDirectory(Path.Combine(IoC.Settings.GetOutputFolderLocation(), album.Title ?? IoC.Settings.GetAlbumName()));
 
             Task<string> albumThumbLocationTask = DownloadTempImageAsync(album.ThumbUrl);
 
-            Parallel.ForEach(songs, song =>
+            Parallel.ForEach(trackDataCollection, trackData =>
             {
-                var songData = song.Key;
-                songData.Path = TrySave(songData.Title, songData.Album, song.Value, IoC.Settings.GetFileType());
+                trackData.Path = TrySave(trackData.Title, trackData.Album, trackData.Data, IoC.Settings.GetFileType());
             });
 
             /*foreach (var song in songs)
@@ -259,16 +257,14 @@ namespace Record.Recorder.Core
 
             string albumThumbLocation = await albumThumbLocationTask;
 
-            Parallel.ForEach(songs, song =>
+            Parallel.ForEach(trackDataCollection, trackData =>
             {
-                var songData = song.Key;
+                var file = TagLib.File.Create(trackData.Path);
 
-                var file = TagLib.File.Create(songData.Path);
-
-                file.Tag.Title = songData.Title;
-                file.Tag.Album = songData.Album;
-                file.Tag.Track = (uint)songData.Track;
-                file.Tag.Performers = songData.Performers;
+                file.Tag.Title = trackData.Title;
+                file.Tag.Album = trackData.Album;
+                file.Tag.Track = (uint)trackData.Track;
+                file.Tag.Performers = trackData.Performers;
 
                 if (!string.IsNullOrEmpty(albumThumbLocation))
                 {
@@ -419,15 +415,15 @@ namespace Record.Recorder.Core
             }
         }
 
-        private static async Task<AlbumModel> GetAlbumInfoById(string id)
+        private static async Task<AlbumData> GetAlbumInfoById(string id)
         {
             var tadbAlbumTracksTask = GetAlbumTracksObjectById(id);
             var tadbAlbumInfoModel = await GetAlbumInfoObjectById(id);
-            AlbumModel album;
+            AlbumData album;
 
             if (tadbAlbumInfoModel != null)
             {
-                album = new AlbumModel()
+                album = new AlbumData()
                 {
                     Title = tadbAlbumInfoModel.album[0].strAlbum,
                     Year = tadbAlbumInfoModel.album[0].intYearReleased,
@@ -435,7 +431,7 @@ namespace Record.Recorder.Core
                     ThumbUrl = tadbAlbumInfoModel.album[0].strAlbumThumb
                 };
             }
-            else { album = new AlbumModel(); }
+            else { album = new AlbumData(); }
 
             var tadbAlbumTracksModel = await tadbAlbumTracksTask;
 
@@ -445,7 +441,7 @@ namespace Record.Recorder.Core
             {
                 var trackNum = Convert.ToInt32(track.intTrackNumber);
 
-                album.Tracks.Add(trackNum, new SongModel
+                album.Tracks.Add(trackNum, new TrackData
                 {
                     Title = track.strTrack,
                     Album = track.strAlbum,

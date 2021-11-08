@@ -159,11 +159,12 @@
     <Compile Include="DataModels\DialogAnswer.cs" />
     <Compile Include="DataModels\ApplicationImage.cs" />
     <Compile Include="DataModels\ApplicationPage.cs" />
-    <Compile Include="DTOs\AlbumModel.cs" />
+    <Compile Include="DTOs\AlbumData.cs" />
     <Compile Include="DTOs\ShazamModel.cs" />
-    <Compile Include="DTOs\SongModel.cs" />
+    <Compile Include="DTOs\TrackData.cs" />
     <Compile Include="DTOs\TADBAlbumInfoModel.cs" />
     <Compile Include="DTOs\TADBAlbumTracksModel.cs" />
+    <Compile Include="DTOs\TrackPosition.cs" />
     <Compile Include="Helpers\ExpressionHelpers.cs" />
     <Compile Include="IoC\Interfaces\ISettingsManager.cs" />
     <Compile Include="IoC\Interfaces\IUIManager.cs" />

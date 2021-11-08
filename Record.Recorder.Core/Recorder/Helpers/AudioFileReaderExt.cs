@@ -8,18 +8,17 @@ namespace Record.Recorder.Core
 {
     static class AudioFileReaderExt
     {
-        public static Dictionary<string, TimeSpan> GetTrackPositions(this AudioFileReader reader, sbyte silenceThreshold = -40)
+        public static TrackPositionCollection GetTrackPositions(this AudioFileReader reader, sbyte silenceThreshold = -40)
         {
             Dictionary<string, TimeSpan> silencePositions = GetSilencePositions(reader, silenceThreshold);
-            Dictionary<string, TimeSpan> trackPositions = new Dictionary<string, TimeSpan>();
+            var trackPositions = new TrackPositionCollection();
             int i = 1, silencePositionsAmount = silencePositions.Count / 2;
 
             silencePositions.TryGetValue("Start: 1", out TimeSpan firstStart);
 
             if (firstStart.TotalMilliseconds != 0)
             {
-                trackPositions.Add("Start: 1", TimeSpan.FromMilliseconds(0));
-                trackPositions.Add("End: 1", TimeSpan.FromMilliseconds(firstStart.TotalMilliseconds - 1));
+                trackPositions.Add(i, TimeSpan.FromMilliseconds(0), TimeSpan.FromMilliseconds(firstStart.TotalMilliseconds - 1));
                 i++;
             }
 
@@ -30,14 +29,16 @@ namespace Record.Recorder.Core
 
                 if (end.Equals(reader.TotalTime)) break;
 
-                trackPositions.Add("Start: " + i, TimeSpan.FromMilliseconds(end.TotalMilliseconds + 1));
+                var trackPosition = new TrackPosition { Number = i, Start = TimeSpan.FromMilliseconds(end.TotalMilliseconds + 1) };
                 if (nextStart.TotalMilliseconds == 0)
                 {
-                    trackPositions.Add("End: " + i, reader.TotalTime);
+                    trackPosition.End = reader.TotalTime;
+                    trackPositions.Add(trackPosition);
                 }
                 else
                 {
-                    trackPositions.Add("End: " + i, TimeSpan.FromMilliseconds(nextStart.TotalMilliseconds - 1));
+                    trackPosition.End = TimeSpan.FromMilliseconds(nextStart.TotalMilliseconds - 1);
+                    trackPositions.Add(trackPosition);
                 }
             }
 
