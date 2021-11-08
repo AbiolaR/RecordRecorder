@@ -224,7 +224,11 @@ namespace Record.Recorder.Core
                     switch (IoC.Settings.GetSongDetectionType())
                     {
                         case "TADB":
-                            album.Tracks.TryGetValue(i, out songData);
+                            SongModel tempSongData;
+                            if (album.Tracks.TryGetValue(i, out tempSongData))
+                            {
+                                songData = tempSongData;
+                            }
                             break;
 
                         case "Shazam":
@@ -245,18 +249,19 @@ namespace Record.Recorder.Core
 
             Directory.CreateDirectory(Path.Combine(IoC.Settings.GetOutputFolderLocation(), album.Title ?? IoC.Settings.GetAlbumName()));
 
-            Task<string> albumThumbLocationTask = null;
-
-            if (!string.IsNullOrEmpty(album.ThumbUrl))
-            {
-                albumThumbLocationTask = DownloadTempImageAsync(album.ThumbUrl);
-            }
-
+            Task<string> albumThumbLocationTask = DownloadTempImageAsync(album.ThumbUrl);
+            
             Parallel.ForEach(songs, song =>
             {
                 var songData = song.Key;
                 songData.Path = TrySave(songData.Title, songData.Album, song.Value, IoC.Settings.GetFileType());
             });
+
+            /*foreach (var song in songs)
+            {
+                var songData = song.Key;
+                songData.Path = TrySave(songData.Title, songData.Album, song.Value, IoC.Settings.GetFileType());
+            }*/
 
             string albumThumbLocation = await albumThumbLocationTask;
 
@@ -447,7 +452,7 @@ namespace Record.Recorder.Core
             WaveFileWriter.CreateWaveFile16(tempPath, song);
 
             using (var reader = new AudioFileReader(tempPath))
-            using (var writer = new LameMP3FileWriter(fileName, song.WaveFormat, 128))
+            using (var writer = new LameMP3FileWriter(fileName, song.WaveFormat, LAMEPreset.MEDIUM_FAST))
                 reader.CopyTo(writer);
 
         }
@@ -537,15 +542,21 @@ namespace Record.Recorder.Core
         {
             var tadbAlbumTracksTask = GetAlbumTracksObjectById(id);
             var tadbAlbumInfoModel = await GetAlbumInfoObjectById(id);
+            AlbumModel album;
 
-            var album = new AlbumModel()
-            {
-                Title = tadbAlbumInfoModel.album[0].strAlbum,
-                Year = tadbAlbumInfoModel.album[0].intYearReleased,
-                ThumbUrl = tadbAlbumInfoModel.album[0].strAlbumThumb
-            };
+            if (tadbAlbumInfoModel != null) {
+                album = new AlbumModel()
+                {
+                    Title = tadbAlbumInfoModel.album[0].strAlbum,
+                    Year = tadbAlbumInfoModel.album[0].intYearReleased,
+                    Genre = tadbAlbumInfoModel.album[0].strGenre,
+                    ThumbUrl = tadbAlbumInfoModel.album[0].strAlbumThumb
+                };
+            } else { album = new AlbumModel(); }
 
             var tadbAlbumTracksModel = await tadbAlbumTracksTask;
+
+            if (tadbAlbumTracksModel == null) { return album; }
 
             foreach (var track in tadbAlbumTracksModel.track)
             {
@@ -575,11 +586,17 @@ namespace Record.Recorder.Core
                     { "x-rapidapi-key", "80605243fcmsh7987f9cd1918fa5p141b05jsn0085912743db" },
                 },
             };
-            using (var response = await client.SendAsync(request))
+            try
             {
-                response.EnsureSuccessStatusCode();
-                var body = await response.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<TADBAlbumTracksModel>(body);
+                using (var response = await client.SendAsync(request))
+                {
+                    response.EnsureSuccessStatusCode();
+                    var body = await response.Content.ReadAsStringAsync();
+                    return JsonConvert.DeserializeObject<TADBAlbumTracksModel>(body);
+                }
+            } catch
+            {
+                return null;
             }
         }
 
@@ -595,11 +612,17 @@ namespace Record.Recorder.Core
                     { "x-rapidapi-key", "80605243fcmsh7987f9cd1918fa5p141b05jsn0085912743db" },
                 },
             };
-            using (var response = await client.SendAsync(request))
+            try
             {
-                response.EnsureSuccessStatusCode();
-                var body = await response.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<TADBAlbumInfoModel>(body);
+                using (var response = await client.SendAsync(request))
+                {
+                    response.EnsureSuccessStatusCode();
+                    var body = await response.Content.ReadAsStringAsync();
+                    return JsonConvert.DeserializeObject<TADBAlbumInfoModel>(body);
+                }
+            } catch
+            {
+                return null;
             }
         }
 
@@ -608,12 +631,18 @@ namespace Record.Recorder.Core
             string fileExtension = Path.GetExtension(@url);
             string fileLocation = Path.Combine(tempFolder, $"albumcover{fileExtension}");
 
-            using (WebClient client = new WebClient())
+            try
             {
-                await client.DownloadFileTaskAsync(new Uri(url), fileLocation);
+                using (WebClient client = new WebClient())
+                {
+                    await client.DownloadFileTaskAsync(new Uri(url), fileLocation);
+                }
+            } catch
+            {
+                return "";
             }
-
-            return fileLocation;
+            
+            return fileLocation;           
         }
 
     }

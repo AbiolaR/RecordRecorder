@@ -32,11 +32,11 @@ namespace Record.Recorder.Core.UnitTests
 
             IoC.Kernel.Bind<ISettingsManager>().ToConstant(mockSettings.Object);
 
-            var path = Path.Combine(TestContext.CurrentContext.WorkDirectory, @"Resources\Audio\MusicToBeMurderedBy.wav");
+            var path = Path.Combine(TestContext.CurrentContext.WorkDirectory, @"Resources\Audio\full12min.wav");
 
             var mockRecorder = new Mock<RecorderUtil>();
 
-            mockRecorder.Setup(recorder => recorder.IsInternetConnected()).Returns(true);
+            mockRecorder.Setup(recorder => recorder.IsInternetConnected()).Returns(false);
 
             DirectoryInfo di = new DirectoryInfo(@"C:\Users\rasheed_abiola\Music\Test");
 
