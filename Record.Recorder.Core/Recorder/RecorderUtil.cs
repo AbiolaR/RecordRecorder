@@ -250,7 +250,7 @@ namespace Record.Recorder.Core
             Directory.CreateDirectory(Path.Combine(IoC.Settings.GetOutputFolderLocation(), album.Title ?? IoC.Settings.GetAlbumName()));
 
             Task<string> albumThumbLocationTask = DownloadTempImageAsync(album.ThumbUrl);
-            
+
             Parallel.ForEach(songs, song =>
             {
                 var songData = song.Key;
@@ -277,7 +277,7 @@ namespace Record.Recorder.Core
                 file.Tag.Performers = songData.Performers;
 
                 if (!string.IsNullOrEmpty(albumThumbLocation))
-                {                    
+                {
                     var pic = new TagLib.IPicture[1];
                     pic[0] = new TagLib.Picture(albumThumbLocation);
                     file.Tag.Pictures = pic;
@@ -287,123 +287,10 @@ namespace Record.Recorder.Core
             });
         }
 
-
-        private async Task SlowExtractAndSaveTracksAsync(Dictionary<string, TimeSpan> trackPositions, string recordingPath)
-        {
-            int trackPositionsAmount = trackPositions.Count / 2;
-
-
-
-            Parallel.For(1, trackPositionsAmount + 1, i =>
-            {
-                //for (int i = 1; i <= trackPositionsAmount; i++)
-                {
-                    trackPositions.TryGetValue("Start: " + i, out TimeSpan start);
-                    trackPositions.TryGetValue("End: " + i, out TimeSpan end);
-                    end = TimeSpan.FromMilliseconds(end.TotalMilliseconds + 700);
-
-                    var song = new AudioFileReader(recordingPath)
-                                                    .Skip(start)
-                                                    .Take(end.Subtract(start));
-
-                    if (IsInternetConnected())
-                    {
-                        var shazamModel = new ShazamModel();//await GetTrackNameAsync(GetMonoSampleAsBytes(start, recordingPath));
-                        if (shazamModel.matches.Length > 0)
-                        {
-                            //string filePath = Path.Combine(IoC.Settings.GetOutputFolderLocation(), IoC.Settings.GetAlbumName(), $"{shazamModel.track.title}{fileType}");
-
-
-                            string filePath = TrySave(shazamModel.track.title, "", song, AudioFileType.MP3);
-
-                            // setting the metadata
-                            var file = TagLib.File.Create(filePath);
-                            file.Tag.Title = shazamModel.track.title;
-                            file.Tag.Track = (uint)i;
-                            file.Tag.Performers = new[] { shazamModel.track.subtitle };
-                            file.Save();
-                            //file.Tag.Genres = shazamModel.track.genres.primary;
-                        }
-                        else
-                        {
-                            TrySave($"Track{i}", "", song, AudioFileType.MP3);
-                        }
-
-                    }
-                    else
-                    {
-                        string path = TrySave($"Track{i}", "", song, AudioFileType.MP3);
-
-
-
-
-                        var file = TagLib.File.Create(path);
-                        file.Tag.Track = (uint)i;
-                        file.Save();
-
-                        /*
-                var file1 = TagLib.File.Create(@"C:\Users\rasheed_abiola\Music\Test\Track 1.wav");
-                var file2 = TagLib.File.Create(@"C:\Users\rasheed_abiola\Music\Test\Track 2.wav");
-
-                Console.WriteLine(file1.ToString());
-                Console.WriteLine(file2.ToString());*/
-                        /*file.GetTag(TagLib.TagTypes.RiffInfo).Album = "Testttt";
-
-
-                        //new TagLib.Riff.InfoTag()
-                        Console.WriteLine(file.GetTag(TagLib.TagTypes.RiffInfo).Track);*/
-
-
-                        /*
-                        var file = TagLib.File.Create(path);
-
-
-
-                        var tag = (TagLib.Riff.InfoTag)file.GetTag(TagLib.TagTypes.RiffInfo, true); ////// */
-
-
-                        /*
-                        tag.AlbumArtists = new[] { "Eminem" };
-                        tag.Performers = songData.Performers;
-
-                        tag.Album = "Test1";
-                        tag.Track = (uint)song.Key.Track;
-                        tag.Title = song.Key.Title;
-
-
-                        var movieIdTag = (TagLib.Riff.MovieIdTag)file.GetTag(TagLib.TagTypes.MovieId, true);
-                        movieIdTag.Track = (uint)songData.Track;
-                        movieIdTag.Album = "Test2";*/
-
-                        /*
-                        var coll = new TagLib.ByteVectorCollection();
-                        coll.Add(TagLib.ByteVector.FromString("Music To Be Murdered By", 23));
-
-                        tag.SetValue(new TagLib.ByteVector("IPRD"), coll);
-
-                        coll = new TagLib.ByteVectorCollection();
-                        coll.Add(TagLib.ByteVector.FromUInt((uint)songData.Track));
-                        tag.SetValue(new TagLib.ByteVector("ITRK"), coll);       ///// */
-
-                        //var tag = (TagLib.Id3v2.Tag)file.GetTag(TagLib.TagTypes.Id3v2, true);                    
-                        //tag.SetTextFrame("TRCK", i.ToString());
-
-                        /*file.Tag.Title = "Test1";
-                        file.Tag.Pictures
-                        file.Tag.Performers = new[] { "Test 2" };
-                        file.Tag.Artists = new[] { "Test 3" };
-                        file.Tag.AlbumArtists = new[] { "Test 4" };
-                        file.Save();*/
-                    }
-                }
-            });
-        }
-
         public virtual bool IsInternetConnected()
         {
             return true;
         }
-
 
         private string TrySave(string fileName, string albumName, ISampleProvider song, string audioFileType)
         {
@@ -544,7 +431,8 @@ namespace Record.Recorder.Core
             var tadbAlbumInfoModel = await GetAlbumInfoObjectById(id);
             AlbumModel album;
 
-            if (tadbAlbumInfoModel != null) {
+            if (tadbAlbumInfoModel != null)
+            {
                 album = new AlbumModel()
                 {
                     Title = tadbAlbumInfoModel.album[0].strAlbum,
@@ -552,7 +440,8 @@ namespace Record.Recorder.Core
                     Genre = tadbAlbumInfoModel.album[0].strGenre,
                     ThumbUrl = tadbAlbumInfoModel.album[0].strAlbumThumb
                 };
-            } else { album = new AlbumModel(); }
+            }
+            else { album = new AlbumModel(); }
 
             var tadbAlbumTracksModel = await tadbAlbumTracksTask;
 
@@ -594,7 +483,8 @@ namespace Record.Recorder.Core
                     var body = await response.Content.ReadAsStringAsync();
                     return JsonConvert.DeserializeObject<TADBAlbumTracksModel>(body);
                 }
-            } catch
+            }
+            catch
             {
                 return null;
             }
@@ -620,7 +510,8 @@ namespace Record.Recorder.Core
                     var body = await response.Content.ReadAsStringAsync();
                     return JsonConvert.DeserializeObject<TADBAlbumInfoModel>(body);
                 }
-            } catch
+            }
+            catch
             {
                 return null;
             }
@@ -637,12 +528,13 @@ namespace Record.Recorder.Core
                 {
                     await client.DownloadFileTaskAsync(new Uri(url), fileLocation);
                 }
-            } catch
+            }
+            catch
             {
                 return "";
             }
-            
-            return fileLocation;           
+
+            return fileLocation;
         }
 
     }
