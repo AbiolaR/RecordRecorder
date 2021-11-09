@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace Record.Recorder.Core
@@ -81,7 +82,9 @@ namespace Record.Recorder.Core
 
         private static Dictionary<string, TimeSpan> GetSilencePositions(this AudioFileReader reader, sbyte silenceThreshold = -40)
         {
-
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+            Console.WriteLine(TimeSpan.FromMilliseconds(stopwatch.ElapsedMilliseconds));
             long oldPosition = reader.Position;
             ArrayList possibleSilencePositions = new ArrayList();
             int counter = 0, counterSilence = 0, silenceStart = 0;
@@ -98,7 +101,6 @@ namespace Record.Recorder.Core
                 {
                     if (IsSilence(buffer[n], silenceThreshold))
                     {
-
                         if (!silenceFound) silenceStart = counter;
                         counterSilence++;
                         silenceFound = true;
@@ -122,6 +124,7 @@ namespace Record.Recorder.Core
             {
                 StorePossibleSilenceEndPosition(reader, possibleSilencePositions, silenceStart, counterSilence);
             }
+            Console.WriteLine(TimeSpan.FromMilliseconds(stopwatch.ElapsedMilliseconds));
 
             // reset position
             reader.Position = oldPosition;
@@ -144,6 +147,7 @@ namespace Record.Recorder.Core
                     j++;
                 }
             }
+            Console.WriteLine(TimeSpan.FromMilliseconds(stopwatch.ElapsedMilliseconds));
 
             return silencePositions;
         }
