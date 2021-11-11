@@ -10,6 +10,8 @@ namespace RecordRecorder
         public MainPage()
         {
             InitializeComponent();
+
+            ViewModel = IoC.MainVM;
         }
     }
 }

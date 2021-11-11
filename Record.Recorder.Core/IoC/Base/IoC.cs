@@ -25,6 +25,16 @@ namespace Record.Recorder.Core
         public static ISettingsManager Settings => IoC.Get<ISettingsManager>();
 
         /// <summary>
+        /// A shortcut access to the <see cref="ApplicationViewModel"/>
+        /// </summary>
+        public static ApplicationViewModel ApplicationVM => Get<ApplicationViewModel>();
+
+        /// <summary>
+        /// A shortcut access to the <see cref="MainViewModel"/>
+        /// </summary>
+        public static MainViewModel MainVM => Get<MainViewModel>();
+
+        /// <summary>
         /// Gets a service from the IoC, of the specified type
         /// </summary>
         /// <typeparam name="T">The type to get</typeparam>
@@ -62,6 +72,7 @@ namespace Record.Recorder.Core
         private static void BindViewModels()
         {
             Kernel.Bind<ApplicationViewModel>().ToConstant(new ApplicationViewModel());
+            Kernel.Bind<MainViewModel>().ToConstant(new MainViewModel());
         }
     }
 }

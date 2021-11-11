@@ -6,6 +6,7 @@ using NAudio.Wave.SampleProviders;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -33,6 +34,7 @@ namespace Record.Recorder.Core
         //public string OutputFolder = "Test2";
         //public string fileType = AudioFileType.WAV;
         //public int RecordingDeviceNum { get; set; } = 999;
+        public double loadingVal = 0;
 
         public RecorderUtil()
         {
@@ -179,8 +181,8 @@ namespace Record.Recorder.Core
             }
 
             using (AudioFileReader reader = new AudioFileReader(recordingPath))
-            {
-                trackPositions = reader.GetTrackPositions();
+            {                
+                trackPositions = reader.GetTrackPositions(.99);
             }
             GC.Collect();
 
@@ -284,7 +286,7 @@ namespace Record.Recorder.Core
 
         public virtual bool IsInternetConnected()
         {
-            return true;
+            return false;
         }
 
         private string TrySave(string fileName, string albumName, ISampleProvider song, string audioFileType)

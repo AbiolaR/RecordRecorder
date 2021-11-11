@@ -9,9 +9,9 @@ namespace Record.Recorder.Core
 {
     static class AudioFileReaderExt
     {
-        public static TrackPositionCollection GetTrackPositions(this AudioFileReader reader, sbyte silenceThreshold = -40)
+        public static TrackPositionCollection GetTrackPositions(this AudioFileReader reader, double weight, sbyte silenceThreshold = -40)
         {
-            Dictionary<string, TimeSpan> silencePositions = GetSilencePositions(reader, silenceThreshold);
+            Dictionary<string, TimeSpan> silencePositions = GetSilencePositions(reader, weight, silenceThreshold);
             var trackPositions = new TrackPositionCollection();
             int i = 1, silencePositionsAmount = silencePositions.Count / 2;
 
@@ -80,7 +80,7 @@ namespace Record.Recorder.Core
             possibleSilencePositions.Add(TimeSpan.FromMilliseconds(silenceDuration));
         }
 
-        private static Dictionary<string, TimeSpan> GetSilencePositions(this AudioFileReader reader, sbyte silenceThreshold = -40)
+        private static Dictionary<string, TimeSpan> GetSilencePositions(this AudioFileReader reader, double weight, sbyte silenceThreshold = -40)
         {
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
@@ -91,6 +91,11 @@ namespace Record.Recorder.Core
             bool eof = false, silenceFound = false;
 
             var buffer = new float[reader.WaveFormat.SampleRate * 4];
+            double denominator = reader.TotalTime.TotalSeconds * reader.WaveFormat.Channels * reader.WaveFormat.SampleRate / buffer.Length;
+
+            var mainVM = IoC.MainVM;
+
+
             while (!eof)
             {
                 int samplesRead = reader.Read(buffer, 0, buffer.Length);
@@ -118,6 +123,8 @@ namespace Record.Recorder.Core
 
                     counter++;
                 }
+                //mainVM.IncreaseLoadingValue(weight, denominator);                if (mainVM.BGWorker)
+                mainVM.BGWorker.ReportProgress((int)denominator, weight);
             }
 
             if (silenceFound)

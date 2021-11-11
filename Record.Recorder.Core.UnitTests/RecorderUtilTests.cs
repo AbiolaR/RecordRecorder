@@ -1,6 +1,7 @@
 using Moq;
 using NUnit.Framework;
 using System;
+using System.ComponentModel;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -32,11 +33,19 @@ namespace Record.Recorder.Core.UnitTests
 
             IoC.Kernel.Bind<ISettingsManager>().ToConstant(mockSettings.Object);
 
+            var mockMainVM = new Mock<MainViewModel>();
+            var bgw = new BackgroundWorker();
+            bgw.WorkerReportsProgress = true;
+            mockMainVM.Setup(mainVM => mainVM.BGWorker).Returns(bgw);
+            IoC.Kernel.Bind<MainViewModel>().ToConstant(mockMainVM.Object);
+
             var path = Path.Combine(TestContext.CurrentContext.WorkDirectory, @"Resources\Audio\full12min.wav");
 
             var mockRecorder = new Mock<RecorderUtil>();
 
             mockRecorder.Setup(recorder => recorder.IsInternetConnected()).Returns(false);
+
+
 
             DirectoryInfo di = new DirectoryInfo(@"C:\Users\rasheed_abiola\Music\Test");
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -32,11 +33,16 @@ namespace Record.Recorder.Core
 
         public string AlbumName { get => Properties.Settings.Default[ALBUMNAME].ToString(); set { Properties.Settings.Default[ALBUMNAME] = value; Properties.Settings.Default.Save(); } }
 
+        private double loadingVal = 0;
+        public double LoadingVal { get => loadingVal; set { loadingVal = value; OnPropertyChanged(nameof(LoadingVal)); } }
+
         private string currentRecordingTime = ZEROTIMERVALUE;
         private readonly DispatcherTimer timer;
         private readonly Stopwatch stopwatch = new Stopwatch();
 
         private readonly RecorderUtil recorder = new RecorderUtil();
+
+        public virtual BackgroundWorker BGWorker { get; }
 
 
         public string CurrentRecordingTime { get => currentRecordingTime; set { currentRecordingTime = value; OnPropertyChanged(nameof(CurrentRecordingTime)); } }
@@ -47,6 +53,8 @@ namespace Record.Recorder.Core
             PressRecordCommand = new RelayCommand((o) => StartRecording());
             PressStopCommand = new RelayCommand((o) => StopRecording());
             PressPauseCommand = new RelayCommand((o) => ToggleIsRecording());
+
+            BGWorker = new BackgroundWorker();
 
             timer = new DispatcherTimer(DispatcherPriority.Render);
             timer.Interval = TimeSpan.FromSeconds(1);
@@ -85,8 +93,18 @@ namespace Record.Recorder.Core
         }
 
         private async void StartRecording()
-        {
-            if (await CheckForRecordingDevice())
+        {          
+            BGWorker.ProgressChanged += new ProgressChangedEventHandler(progChanged);
+            BGWorker.DoWork += new DoWorkEventHandler(startSaving);
+            BGWorker.WorkerReportsProgress = true;
+            BGWorker.RunWorkerAsync();
+            //progress2.RunWorkerAsync();
+            //progress.ProgressChanged += OnProgressReported;
+            //IncreaseLoadingValue(1, 5);
+            /*Task task = recorder.DetectAndSaveTracksAsync(@"C:\Users\rasheed_abiola\source\repos\RecordRecorder\Record.Recorder.Core.UnitTests\Resources\Audio\full12min.wav", progress, progress2);
+
+            await task;*/
+            /*if (await CheckForRecordingDevice())
             {
                 IsRecordingAllowed = true;
                 CurrentRecordingTime = ZEROTIMERVALUE;
@@ -96,7 +114,28 @@ namespace Record.Recorder.Core
                 IoC.Get<ApplicationViewModel>().IsRecordingInProgress = true;
                 stopwatch.Start();
                 timer.Start();
-            }
+            }*/
+        }
+
+        private async void startSaving(object sender, DoWorkEventArgs e)
+        {
+            await recorder.DetectAndSaveTracksAsync(@"C:\Users\rasheed_abiola\source\repos\RecordRecorder\Record.Recorder.Core.UnitTests\Resources\Audio\full12min.wav");
+        }
+
+        private void progChanged(object sender, ProgressChangedEventArgs e)
+        {
+            LoadingVal += 1d / (double)e.ProgressPercentage * (double)e.UserState * 100;
+        }
+
+        private void OnProgressReported(object sender, Dictionary<string, double> e)
+        {
+            //Console.WriteLine(sender);
+            //Console.WriteLine(e);
+
+            e.TryGetValue("Weight", out double weight);
+            e.TryGetValue("Denominator", out double denominator);
+
+            LoadingVal += 1 / denominator * weight;
         }
 
         private void ToggleIsRecording()
@@ -121,6 +160,11 @@ namespace Record.Recorder.Core
                 return false;
             }
             return true;
+        }
+
+        public void IncreaseLoadingValue(double weight, double denominator)
+        {
+            LoadingVal += 1 / denominator * weight;
         }
 
         #region Show Dialog Methods

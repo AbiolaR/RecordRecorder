@@ -21,6 +21,10 @@
                               Direction="0" />
                     </Border.Effect>
                     <Grid>
+                        <Border BorderBrush="Red" BorderThickness="1" Width="50" Height="20" VerticalAlignment="Top">
+                            <TextBlock Text="{Binding LoadingVal}" Foreground="{StaticResource ApplicationTextBrush}"  Background="{StaticResource ApplicationForegroundBrush}"  />
+                        </Border>
+                            <ProgressBar Value="{Binding LoadingVal}" Visibility="Visible" Width="200" Height="20" VerticalAlignment="Top" />
                         <Button x:Name="Settings" Height="20" Width="20" VerticalAlignment="Top" HorizontalAlignment="Right" Style="{StaticResource NavButton}" Command="{Binding GoToSettingsCommand}">
                             <Image Source="{DynamicResource GearIconSource}" />
                         </Button>

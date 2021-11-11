@@ -19,5 +19,7 @@
 
         public ApplicationImage HomeIcon { get; set; } = ApplicationImage.HomeDark;
         public ApplicationImage GearIcon { get; set; } = ApplicationImage.GearDark;
+
+        public int LoadingNum { get; set; } = 0;
     }
 }
