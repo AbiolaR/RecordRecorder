@@ -3,7 +3,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Threading.Tasks;
 
 namespace Record.Recorder.Core
 {
@@ -50,16 +49,6 @@ namespace Record.Recorder.Core
         {
             double dB = 20 * Math.Log10(Math.Abs(amplitude));
             return dB < threshold;
-        }
-
-        private static void ParallelWhile(Func<bool> condition, System.Action body)
-        {
-            Parallel.ForEach(IterateUntilFalse(condition), ignored => body());
-        }
-
-        private static IEnumerable<bool> IterateUntilFalse(Func<bool> condition)
-        {
-            while (condition()) yield return true;
         }
 
         private static void StorePossibleSilenceEndPosition(this AudioFileReader reader, ArrayList possibleSilencePositions, int silenceStart, int counterSilence)

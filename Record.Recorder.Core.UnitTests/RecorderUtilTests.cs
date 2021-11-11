@@ -34,8 +34,10 @@ namespace Record.Recorder.Core.UnitTests
             IoC.Kernel.Bind<ISettingsManager>().ToConstant(mockSettings.Object);
 
             var mockMainVM = new Mock<MainViewModel>();
-            var bgw = new BackgroundWorker();
-            bgw.WorkerReportsProgress = true;
+            var bgw = new BackgroundWorker
+            {
+                WorkerReportsProgress = true
+            };
             mockMainVM.Setup(mainVM => mainVM.BGWorker).Returns(bgw);
             IoC.Kernel.Bind<MainViewModel>().ToConstant(mockMainVM.Object);
 

@@ -38,9 +38,7 @@ namespace RecordRecorder
             IoC.Kernel.Bind<IUIManager>().ToConstant(new UIManager());
 
             // Bind a settings manager
-            IoC.Kernel.Bind<ISettingsManager>().ToConstant(new SettingsManager());
-
-            Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("de");
+            IoC.Kernel.Bind<ISettingsManager>().ToConstant(new SettingsManager());            
 
             // Set necessary default settings data
             if (string.IsNullOrEmpty(IoC.Settings.OutputFolderLocation))
@@ -63,26 +61,17 @@ namespace RecordRecorder
                     break;
             }
 
-            //SetupLanguageDictionary();
-
+            SetupLanguage();
         }
 
-        private void SetupLanguageDictionary()
+        private void SetupLanguage()
         {
-            var dictionary = new ResourceDictionary{ Source = new System.Uri(@"..\Resources\Languages\english.xaml", System.UriKind.Relative) };
             
             switch (Thread.CurrentThread.CurrentCulture.ToString())
             {
                 case "de":
-                    Resources.MergedDictionaries.RemoveAt(0);
-                    dictionary.Source = new System.Uri(@"..\Resources\Languages\german.xaml", System.UriKind.Relative);
-                    Resources.MergedDictionaries.Add(dictionary);
+                    Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("de");
                     break;
-
-                /*default:
-                    //dictionary.Source = new System.Uri(@"..\Resources\Languages\english.xaml", System.UriKind.Relative);
-                    break;*/
-
             }
         }
 

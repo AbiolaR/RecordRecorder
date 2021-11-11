@@ -21,8 +21,7 @@ namespace Record.Recorder.Core
     public delegate void Notify();
     public class RecorderUtil
     {
-        //public static event Notify ProgressIndeterminateStarted;
-        private static HttpClient client = new HttpClient();
+        private static readonly HttpClient client = new HttpClient();
         WaveFileWriter writer = null;
         WaveInEvent recordingDevice = null;
 
@@ -31,11 +30,6 @@ namespace Record.Recorder.Core
         private static readonly string tempDataFolder = Path.Combine(dataFolder, "temp");
         private static readonly string tempFile = Path.Combine(tempDataFolder, "temp");
         private static readonly string tempFilePath = Path.Combine(tempDataFolder, "temp.wav"); //Path.Combine(dataFolder, "part.wav");
-        //public string OutputFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic); //@"C:\Users\rasheed_abiola\Desktop\NAudio\recorded3.wav";
-        //public string OutputFolder = "Test2";
-        //public string fileType = AudioFileType.WAV;
-        //public int RecordingDeviceNum { get; set; } = 999;
-        public double loadingVal = 0;
 
         public RecorderUtil()
         {
@@ -183,7 +177,7 @@ namespace Record.Recorder.Core
 
             using (AudioFileReader reader = new AudioFileReader(recordingPath))
             {
-                trackPositions = reader.GetTrackPositions(.99);
+                trackPositions = reader.GetTrackPositions(.70);
             }
             GC.Collect();
 
@@ -193,6 +187,8 @@ namespace Record.Recorder.Core
 
         private async Task<TrackDataCollection> ExtractTrackDataAsync(TrackPositionCollection trackPositions, string recordingPath, Task<AlbumData> albumTask)
         {
+            double weight = .05;
+
             var trackDataCollection = new TrackDataCollection { Album = new AlbumData { Title = Settings.AlbumName } };
 
             if (albumTask != null)
@@ -241,6 +237,7 @@ namespace Record.Recorder.Core
                 }
 
                 trackDataCollection.Add(trackData);
+                IoC.MainVM.BGWorker.ReportProgress(trackPositions.Count, weight);
             }
 
             return trackDataCollection;
@@ -250,18 +247,13 @@ namespace Record.Recorder.Core
         {
             Directory.CreateDirectory(Path.Combine(Settings.OutputFolderLocation, trackDataCollection.Album.Title ?? Settings.AlbumName));
 
-            Task<string> albumThumbLocationTask = DownloadTempImageAsync(trackDataCollection.Album.ThumbUrl);
+            Task<string> albumThumbLocationTask = DownloadTempImageAsync(trackDataCollection.Album.ThumbUrl ?? "");
 
             Parallel.ForEach(trackDataCollection, trackData =>
             {
-                trackData.Path = TrySave(trackData.Title, trackDataCollection.Album.Title, trackData.Data, Settings.SaveFileType);
+                trackData.Path = TrySave(trackData.Title, trackDataCollection.Album.Title, trackData.Data, AudioFileType.MP3);//Settings.SaveFileType);
             });
-
-            /*foreach (var song in songs)
-            {
-                var songData = song.Key;
-                songData.Path = TrySave(songData.Title, songData.Album, song.Value, IoC.Settings.GetFileType());
-            }*/
+            IoC.MainVM.BGWorker.ReportProgress(1, .2);
 
             string albumThumbLocation = await albumThumbLocationTask;
 
@@ -283,6 +275,7 @@ namespace Record.Recorder.Core
 
                 file.Save();
             });
+            IoC.MainVM.BGWorker.ReportProgress(1, .05);
         }
 
         public virtual bool IsInternetConnected()
@@ -359,23 +352,6 @@ namespace Record.Recorder.Core
                 }
             }
 
-        }
-
-        private void SaveAsFlac2(string fileName, ISampleProvider song, string songName)
-        {
-            string tempPath = $"{tempFile}{songName}{AudioFileType.WAV}";
-            WaveFileWriter.CreateWaveFile16(tempPath, song);
-
-            Stream OutFlacStream = new MemoryStream();
-            CUETools.Codecs.IAudioSource audioSource = new CUETools.Codecs.WAVReader(tempPath, null);
-
-            CUETools.Codecs.AudioBuffer buff = new CUETools.Codecs.AudioBuffer(audioSource, 0x10000);
-            FlakeWriter flakeWriter = new FlakeWriter(fileName, OutFlacStream, audioSource.PCM);
-            flakeWriter.CompressionLevel = 8;
-            while (audioSource.Read(buff, -1) != 0)
-            {
-                flakeWriter.Write(buff);
-            }
         }
 
         private static byte[] GetMonoSampleAsBytes(TimeSpan start, string recordingPath)

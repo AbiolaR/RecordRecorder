@@ -53,6 +53,11 @@
                     <BeginStoryboard x:Name="beginFlashRecordingTime" Storyboard="{StaticResource flashRecordingTime}" />
                 </DataTrigger.ExitActions>
             </DataTrigger>
+            <DataTrigger Binding="{Binding IsRecordingSaved}" Value="True">
+                <DataTrigger.EnterActions>
+                    <StopStoryboard BeginStoryboardName="beginFlashRecordingTime" />
+                </DataTrigger.EnterActions>
+            </DataTrigger>
         </DataTemplate.Triggers>
         <Grid>
             <Image x:Name="recordInProgress" Source="/Images/vinyl.png" Margin="50,20,50,20" >
@@ -73,7 +78,8 @@
     <DataTemplate x:Key="RecordingControlCollection">
 
         <Grid>
-            <Button x:Name="RecordButton" Command="{Binding PressRecordCommand}" Content="{x:Static core:Text.Record}" Style="{StaticResource RecordingButton}" />
+            <Button x:Name="RecordButton" Command="{Binding PressRecordCommand}" Content="{x:Static core:Text.Record}" Style="{StaticResource SaveRecordingButton}" />
+            <!--<Button x:Name="SaveButton" Command="{Binding SaveRecordingCommand}" Content="{x:Static core:Text.Save}" Style="{StaticResource SaveRecordingButton}" />-->
             <Button x:Name="PauseButton" Command="{Binding PressPauseCommand}" Height="40" Width="120" Content="{x:Static core:Text.Pause}" HorizontalAlignment="Left" Margin="10, 0, 0, 0" Style="{StaticResource PlayToggleButton}" Visibility="{Binding IsRecordingInProgress, Converter={local:BooleanToVisibilityConverter}}"/>
             <Button x:Name="StopButton" Command="{Binding PressStopCommand}" Height="40" Width="120" Content="{x:Static core:Text.Stop}" HorizontalAlignment="Right" Margin="0, 0, 10, 0" Style="{StaticResource AppStandardButton}" Visibility="{Binding IsRecordingInProgress, Converter={local:BooleanToVisibilityConverter}}" />
         </Grid>

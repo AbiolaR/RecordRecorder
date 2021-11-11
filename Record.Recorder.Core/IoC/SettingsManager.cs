@@ -5,7 +5,7 @@ namespace Record.Recorder.Core
 {
     public class SettingsManager : ISettingsManager
     {
-        private static Properties.Settings Settings = Properties.Settings.Default;
+        private static readonly Properties.Settings Settings = Properties.Settings.Default;
         private static readonly string RECORDINGDEVICE = "RecordingDevice";
         private static readonly string APPLICATIONTHEME = "ApplicationTheme";
         private static readonly string OUTPUTFOLDERLOCATION = "OutputFolderLocation";

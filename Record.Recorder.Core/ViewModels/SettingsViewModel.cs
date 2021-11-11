@@ -23,12 +23,6 @@ namespace Record.Recorder.Core
         public ICommand SetThemeToLightCommand { get; set; }
         public ICommand SetThemeToDarkCommand { get; set; }
 
-        private static readonly string DARK = "Dark";
-        private static readonly string LIGHT = "Light";
-        private static readonly string APPLICATIONTHEME = "ApplicationTheme";
-        private static readonly string OUTPUTFOLDERLOCATION = "OutputFolderLocation";
-        private static readonly string RECORDINGDEVICE = "RecordingDevice";
-
         protected readonly RecorderUtil recorder = new RecorderUtil();
 
         private KeyValuePair<int, string> noRecordingDevice = new KeyValuePair<int, string>(-2, Text.DeviceNameWatermark);

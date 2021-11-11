@@ -183,6 +183,9 @@ Wähle bitte eins in den Einstellungen aus und stell sicher, dass es funktionier
     <value>Eine Aufnahme ist gerade noch am laufen.
 Zum abbrechen der Aufnahme auf Stopp klicken.</value>
   </data>
+  <data name="Save" xml:space="preserve">
+    <value>Speichern</value>
+  </data>
   <data name="Settings" xml:space="preserve">
     <value>Einstellungen</value>
   </data>

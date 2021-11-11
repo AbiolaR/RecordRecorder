@@ -183,6 +183,9 @@ Please choose one and make sure it works in the settings.</value>
     <value>A recording is currently in progress.
 To abort the recording click on Stop.</value>
   </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
   <data name="Settings" xml:space="preserve">
     <value>Settings</value>
   </data>
