@@ -8,11 +8,17 @@
     <Setting Name="OutputFolderLocation" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="ApplicationTheme" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Light</Value>
+    <Setting Name="ApplicationTheme" Type="Record.Recorder.Type.ApplicationTheme" Scope="User">
+      <Value Profile="(Default)">LIGHT</Value>
     </Setting>
     <Setting Name="AlbumName" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="SaveFileType" Type="System.String" Scope="User">
+      <Value Profile="(Default)">.mp3</Value>
+    </Setting>
+    <Setting Name="SongDetectionType" Type="Record.Recorder.Type.SongDetectionType" Scope="User">
+      <Value Profile="(Default)">TADB</Value>
     </Setting>
   </Settings>
 </SettingsFile>

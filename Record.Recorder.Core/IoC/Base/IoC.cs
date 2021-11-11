@@ -53,17 +53,6 @@ namespace Record.Recorder.Core
         {
             // Bind all required view models
             BindViewModels();
-
-            // Set necessary default settings data
-            if (string.IsNullOrEmpty(Properties.Settings.Default["OutputFolderLocation"].ToString()))
-            {
-                Properties.Settings.Default["OutputFolderLocation"] = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic);
-            }
-
-            if ("Dark".Equals(Properties.Settings.Default["ApplicationTheme"].ToString())) Get<ApplicationViewModel>().SetThemeToDark();
-
-            // Reset album name at startup
-            Properties.Settings.Default["AlbumName"] = "";
         }
 
         /// <summary>

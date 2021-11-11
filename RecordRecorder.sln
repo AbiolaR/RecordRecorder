@@ -7,9 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RecordRecorder", "RecordRec
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Record.Recorder.Core", "Record.Recorder.Core\Record.Recorder.Core.csproj", "{534FC041-2B2B-4480-A66B-327652FE6ADB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Record.Recorder.Core.UnitTests", "Record.Recorder.Core.UnitTests\Record.Recorder.Core.UnitTests.csproj", "{0189E454-5F4F-4DCE-8077-DCE03D140C87}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Record.Recorder.Core.UnitTests", "Record.Recorder.Core.UnitTests\Record.Recorder.Core.UnitTests.csproj", "{0189E454-5F4F-4DCE-8077-DCE03D140C87}"
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Record.Recorder.Installer", "Record.Recorder.Installer\Record.Recorder.Installer.vdproj", "{3FA6A12F-8596-4A66-A640-DFA66A7EA9AA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Record.Recorder.Type", "Record.Recorder.Type\Record.Recorder.Type.csproj", "{2AB0B1F2-F370-4149-A8A2-05FE546A2E42}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,6 +33,10 @@ Global
 		{0189E454-5F4F-4DCE-8077-DCE03D140C87}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3FA6A12F-8596-4A66-A640-DFA66A7EA9AA}.Debug|Any CPU.ActiveCfg = Debug
 		{3FA6A12F-8596-4A66-A640-DFA66A7EA9AA}.Release|Any CPU.ActiveCfg = Release
+		{2AB0B1F2-F370-4149-A8A2-05FE546A2E42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2AB0B1F2-F370-4149-A8A2-05FE546A2E42}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2AB0B1F2-F370-4149-A8A2-05FE546A2E42}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2AB0B1F2-F370-4149-A8A2-05FE546A2E42}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

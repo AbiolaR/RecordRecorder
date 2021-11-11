@@ -219,6 +219,12 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Record.Recorder.Type\Record.Recorder.Type.csproj">
+      <Project>{2ab0b1f2-f370-4149-a8a2-05fe546a2e42}</Project>
+      <Name>Record.Recorder.Type</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

@@ -35,6 +35,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Record.Recorder.Core\Record.Recorder.Core.csproj" />
+    <ProjectReference Include="..\Record.Recorder.Type\Record.Recorder.Type.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,4 +1,6 @@
 ﻿using Record.Recorder.Core;
+using Record.Recorder.Type;
+using System;
 using System.Threading;
 using System.Windows;
 
@@ -39,6 +41,27 @@ namespace RecordRecorder
             IoC.Kernel.Bind<ISettingsManager>().ToConstant(new SettingsManager());
 
             Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("de");
+
+            // Set necessary default settings data
+            if (string.IsNullOrEmpty(IoC.Settings.OutputFolderLocation))
+            {
+                IoC.Settings.OutputFolderLocation = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic);
+            }
+
+            // Reset album name at startup
+            IoC.Settings.AlbumName = "";
+
+            // Set Theme
+            switch (IoC.Settings.ApplicationTheme)
+            {
+                case ApplicationTheme.DARK:
+                    IoC.ApplicationVM.SetThemeToDark();
+                    break;
+
+                default:
+                    IoC.ApplicationVM.SetThemeToLight();
+                    break;
+            }
 
             //SetupLanguageDictionary();
 

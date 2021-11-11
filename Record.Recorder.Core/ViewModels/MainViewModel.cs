@@ -31,7 +31,7 @@ namespace Record.Recorder.Core
         public bool IsRecordingInProgress { get => isRecordingInProgress; set { isRecordingInProgress = value; OnPropertyChanged(nameof(IsRecordingInProgress)); } }
         public bool IsRecordingAllowed { get => isRecordingAllowed; set { isRecordingAllowed = value; OnPropertyChanged(nameof(IsRecordingAllowed)); } }
 
-        public string AlbumName { get => Properties.Settings.Default[ALBUMNAME].ToString(); set { Properties.Settings.Default[ALBUMNAME] = value; Properties.Settings.Default.Save(); } }
+        public string AlbumName { get => IoC.Settings.AlbumName; set => IoC.Settings.AlbumName = value; }
 
         private double loadingVal = 0;
         public double LoadingVal { get => loadingVal; set { loadingVal = value; OnPropertyChanged(nameof(LoadingVal)); } }
@@ -145,7 +145,7 @@ namespace Record.Recorder.Core
 
         private async Task<bool> CheckForRecordingDevice()
         {
-            string recordingDeviceName = Properties.Settings.Default[RECORDINGDEVICE].ToString();
+            string recordingDeviceName = IoC.Settings.RecordingDeviceName;
 
             if (string.IsNullOrEmpty(recordingDeviceName))
             {

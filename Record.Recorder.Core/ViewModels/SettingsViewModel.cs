@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Record.Recorder.Type;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -35,8 +36,8 @@ namespace Record.Recorder.Core
         private SortedDictionary<int, string> recordingDevices = new SortedDictionary<int, string>();
         private string outputFolderLocation, unsavedInputVolume; //inputVolume
         private bool isTestingRecordingDevice = false;
-        private bool isThemeDark = false;
-        private bool isThemeLight = true;
+        private bool isThemeDark;
+        private bool isThemeLight;
 
         public KeyValuePair<int, string> RecordingDevice
         {
@@ -60,8 +61,7 @@ namespace Record.Recorder.Core
             get => isThemeDark;
             set
             {
-                Properties.Settings.Default[APPLICATIONTHEME] = DARK;
-                Properties.Settings.Default.Save();
+                IoC.Settings.ApplicationTheme = ApplicationTheme.DARK;
                 isThemeDark = value;
                 isThemeLight = !value;
                 OnPropertyChanged(nameof(IsThemeDark));
@@ -73,8 +73,7 @@ namespace Record.Recorder.Core
             get => isThemeLight;
             set
             {
-                Properties.Settings.Default[APPLICATIONTHEME] = LIGHT;
-                Properties.Settings.Default.Save();
+                IoC.Settings.ApplicationTheme = ApplicationTheme.LIGHT;
                 isThemeLight = value;
                 isThemeDark = !value;
                 OnPropertyChanged(nameof(IsThemeLight));
@@ -112,7 +111,8 @@ namespace Record.Recorder.Core
             if (await CheckForRecordingDevice())
             {
                 ToggleCommmand(() => IsTestingRecordingDevice, () => { recorder.StopRecording(); }, () => { recorder.PlayRecordingDevice(); });
-            } else
+            }
+            else
             {
                 ShowPleaseChooseDeviceDialog();
             }
@@ -120,7 +120,7 @@ namespace Record.Recorder.Core
 
         private async Task<bool> CheckForRecordingDevice()
         {
-            string recordingDeviceName = Properties.Settings.Default[RECORDINGDEVICE].ToString();
+            string recordingDeviceName = IoC.Settings.RecordingDeviceName;
 
             if (string.IsNullOrEmpty(recordingDeviceName))
             {
@@ -148,11 +148,20 @@ namespace Record.Recorder.Core
 
         async private void LoadSettingsData()
         {
-            IsThemeDark = DARK.Equals(Properties.Settings.Default[APPLICATIONTHEME].ToString());
-            OutputFolderLocation = Properties.Settings.Default[OUTPUTFOLDERLOCATION].ToString();
+            switch(IoC.Settings.ApplicationTheme)
+            {
+                case ApplicationTheme.DARK:
+                    IsThemeDark = true;
+                    break;
+
+                default:
+                    IsThemeLight = true;
+                    break;
+            }
+            OutputFolderLocation = IoC.Settings.OutputFolderLocation;
             //UnsavedInputVolume = InputVolume = Properties.Settings.Default["inputVolume"].ToString();
             RecordingDevices = await recorder.GetRecordingDevices();
-            var recDevice = await recorder.GetRecordingDeviceByName(Properties.Settings.Default[RECORDINGDEVICE].ToString());
+            var recDevice = await recorder.GetRecordingDeviceByName(IoC.Settings.RecordingDeviceName);
 
             if (recDevice.Equals(default(KeyValuePair<int, string>)))
             {
@@ -174,12 +183,12 @@ namespace Record.Recorder.Core
             IsTestingRecordingDevice = false;
 
             RecordingDevices = await recorder.GetRecordingDevices();
-            RecordingDevice = await recorder.GetRecordingDeviceByName(Properties.Settings.Default[RECORDINGDEVICE].ToString());
+            RecordingDevice = await recorder.GetRecordingDeviceByName(IoC.Settings.RecordingDeviceName);
         }
 
         async private void CheckIfSavedDeviceIsAvailable()
         {
-            var recDevice = await recorder.GetRecordingDeviceByName(Properties.Settings.Default[RECORDINGDEVICE].ToString());
+            var recDevice = await recorder.GetRecordingDeviceByName(IoC.Settings.RecordingDeviceName);
 
             if (recDevice.Equals(default(KeyValuePair<int, string>)))
             {
@@ -195,9 +204,8 @@ namespace Record.Recorder.Core
                 var keyValuePair = (KeyValuePair<int, string>)o;
                 if (keyValuePair.Key != -2)
                 {
-                    Properties.Settings.Default[RECORDINGDEVICE] = keyValuePair.Value;
-                    Properties.Settings.Default.Save();
-                    RecordingDevice = (keyValuePair);
+                    IoC.Settings.RecordingDeviceName = keyValuePair.Value;
+                    RecordingDevice = keyValuePair;
                 }
             }
         }
@@ -207,8 +215,7 @@ namespace Record.Recorder.Core
             var path = await IoC.UI.ChooseFolderLocation();
             if (!string.IsNullOrEmpty(path))
             {
-                Properties.Settings.Default[OUTPUTFOLDERLOCATION] = path;
-                Properties.Settings.Default.Save();
+                IoC.Settings.OutputFolderLocation = path;
                 OutputFolderLocation = path;
             }
         }

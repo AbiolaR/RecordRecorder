@@ -1,20 +1,14 @@
-﻿namespace Record.Recorder.Core
+﻿using Record.Recorder.Type;
+
+namespace Record.Recorder.Core
 {
     public interface ISettingsManager
     {
-        string GetRecordingDeviceName();
-        void SetRecordingDeviceName(string value);
-        
-        string GetOutputFolderLocation();
-        void SetOutputFolderLocation(string value);
-        
-        string GetAlbumName();
-        void SetAlbumName(string value);
-
-        string GetFileType();
-        void SetFileType(string value);
-
-        string GetSongDetectionType();
-        void SetSongDetectionType(string value);
+        string RecordingDeviceName { get; set; }
+        string OutputFolderLocation { get; set; }
+        ApplicationTheme ApplicationTheme { get; set; }
+        string AlbumName { get; set; }
+        string SaveFileType { get; set; }
+        SongDetectionType SongDetectionType { get; set; }
     }
 }

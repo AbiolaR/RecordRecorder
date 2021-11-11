@@ -6,7 +6,6 @@ using NAudio.Wave.SampleProviders;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -14,6 +13,8 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Reflection;
 using System.Threading.Tasks;
+using Record.Recorder.Type;
+using static Record.Recorder.Core.IoC;
 
 namespace Record.Recorder.Core
 {
@@ -113,7 +114,7 @@ namespace Record.Recorder.Core
 
         public async void StartRecording()
         {
-            int recordingDeviceNumber = await GetRecordingDeviceNumberByName(Properties.Settings.Default["RecordingDevice"].ToString());
+            int recordingDeviceNumber = await GetRecordingDeviceNumberByName(Settings.RecordingDeviceName);
             recordingDevice = new WaveInEvent() { DeviceNumber = recordingDeviceNumber };
             recordingDevice.WaveFormat = new WaveFormat(44100, 2);
 
@@ -154,7 +155,7 @@ namespace Record.Recorder.Core
 
         public async void PlayRecordingDevice()
         {
-            int recordingDeviceNumber = await GetRecordingDeviceNumberByName(Properties.Settings.Default["RecordingDevice"].ToString());
+            int recordingDeviceNumber = await GetRecordingDeviceNumberByName(Settings.RecordingDeviceName);
 
             using (recordingDevice = new WaveInEvent() { DeviceNumber = recordingDeviceNumber })
                 recordingDevice.WaveFormat = new WaveFormat(44100, 2);
@@ -175,13 +176,13 @@ namespace Record.Recorder.Core
         {
             var trackPositions = new TrackPositionCollection();
             Task<AlbumData> albumTask = null;
-            if (IsInternetConnected() && "TADB".Equals(IoC.Settings.GetSongDetectionType()))
+            if (IsInternetConnected() && SongDetectionType.TADB.Equals(Settings.SongDetectionType))
             {
-                albumTask = GetAlbumInfoById(IoC.Settings.GetAlbumName());
+                albumTask = GetAlbumInfoById(Settings.AlbumName);
             }
 
             using (AudioFileReader reader = new AudioFileReader(recordingPath))
-            {                
+            {
                 trackPositions = reader.GetTrackPositions(.99);
             }
             GC.Collect();
@@ -192,11 +193,11 @@ namespace Record.Recorder.Core
 
         private async Task<TrackDataCollection> ExtractTrackDataAsync(TrackPositionCollection trackPositions, string recordingPath, Task<AlbumData> albumTask)
         {
-            var trackDataCollection = new TrackDataCollection { Album = new AlbumData { Title = IoC.Settings.GetAlbumName() } };
+            var trackDataCollection = new TrackDataCollection { Album = new AlbumData { Title = Settings.AlbumName } };
 
             if (albumTask != null)
             {
-                trackDataCollection.Album = await albumTask;
+                trackDataCollection.Album = await albumTask;                
             }
 
             foreach (var trackPosition in trackPositions)
@@ -216,9 +217,9 @@ namespace Record.Recorder.Core
 
                 if (IsInternetConnected())
                 {
-                    switch (IoC.Settings.GetSongDetectionType())
+                    switch (Settings.SongDetectionType)
                     {
-                        case "TADB":
+                        case SongDetectionType.TADB:
                             TrackData tempSongData;
                             if (trackDataCollection.Album.Tracks.TryGetValue(trackPosition.Number, out tempSongData))
                             {
@@ -226,7 +227,7 @@ namespace Record.Recorder.Core
                             }
                             break;
 
-                        case "Shazam":
+                        case SongDetectionType.SPOTIFY:
                             var shazamModel = await GetTrackNameAsync(GetMonoSampleAsBytes(trackPosition.Start, recordingPath));
                             if (shazamModel.matches.Length > 0)
                             {
@@ -247,13 +248,13 @@ namespace Record.Recorder.Core
 
         private async Task SaveTracksAsync(TrackDataCollection trackDataCollection)
         {
-            Directory.CreateDirectory(Path.Combine(IoC.Settings.GetOutputFolderLocation(), trackDataCollection.Album.Title ?? IoC.Settings.GetAlbumName()));
+            Directory.CreateDirectory(Path.Combine(Settings.OutputFolderLocation, trackDataCollection.Album.Title ?? Settings.AlbumName));
 
             Task<string> albumThumbLocationTask = DownloadTempImageAsync(trackDataCollection.Album.ThumbUrl);
 
             Parallel.ForEach(trackDataCollection, trackData =>
             {
-                trackData.Path = TrySave(trackData.Title, trackDataCollection.Album.Title, trackData.Data, IoC.Settings.GetFileType());
+                trackData.Path = TrySave(trackData.Title, trackDataCollection.Album.Title, trackData.Data, Settings.SaveFileType);
             });
 
             /*foreach (var song in songs)
@@ -291,7 +292,7 @@ namespace Record.Recorder.Core
 
         private string TrySave(string fileName, string albumName, ISampleProvider song, string audioFileType)
         {
-            string filePathNoType = Path.Combine(IoC.Settings.GetOutputFolderLocation(), albumName, fileName);
+            string filePathNoType = Path.Combine(Settings.OutputFolderLocation, albumName, fileName);
             string filePathWithType = GetValidPath(filePathNoType, audioFileType);
 
             switch (audioFileType)

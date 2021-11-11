@@ -49,10 +49,10 @@ namespace Record.Recorder.Core.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Light")]
-        public string ApplicationTheme {
+        [global::System.Configuration.DefaultSettingValueAttribute("LIGHT")]
+        public global::Record.Recorder.Type.ApplicationTheme ApplicationTheme {
             get {
-                return ((string)(this["ApplicationTheme"]));
+                return ((global::Record.Recorder.Type.ApplicationTheme)(this["ApplicationTheme"]));
             }
             set {
                 this["ApplicationTheme"] = value;
@@ -68,6 +68,30 @@ namespace Record.Recorder.Core.Properties {
             }
             set {
                 this["AlbumName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(".mp3")]
+        public string SaveFileType {
+            get {
+                return ((string)(this["SaveFileType"]));
+            }
+            set {
+                this["SaveFileType"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("TADB")]
+        public global::Record.Recorder.Type.SongDetectionType SongDetectionType {
+            get {
+                return ((global::Record.Recorder.Type.SongDetectionType)(this["SongDetectionType"]));
+            }
+            set {
+                this["SongDetectionType"] = value;
             }
         }
     }

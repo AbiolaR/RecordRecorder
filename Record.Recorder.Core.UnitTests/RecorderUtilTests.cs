@@ -3,6 +3,7 @@ using NUnit.Framework;
 using System;
 using System.ComponentModel;
 using System.IO;
+using Record.Recorder.Type;
 using System.Threading.Tasks;
 
 namespace Record.Recorder.Core.UnitTests
@@ -26,11 +27,10 @@ namespace Record.Recorder.Core.UnitTests
 
             var mockSettings = new Mock<ISettingsManager>();
 
-            mockSettings.Setup(settings => settings.GetOutputFolderLocation()).Returns(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyMusic), "Test"));
-            mockSettings.Setup(settings => settings.GetAlbumName()).Returns("2334279");
-            mockSettings.Setup(settings => settings.GetFileType()).Returns(AudioFileType.FLAC);
-            mockSettings.Setup(settings => settings.GetSongDetectionType()).Returns("TADB");
-
+            mockSettings.Setup(settings => settings.OutputFolderLocation).Returns(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyMusic), "Test"));
+            mockSettings.Setup(settings => settings.AlbumName).Returns("2334279");
+            mockSettings.Setup(settings => settings.SaveFileType).Returns(AudioFileType.FLAC);
+            mockSettings.Setup(settings => settings.SongDetectionType).Returns(SongDetectionType.TADB);
             IoC.Kernel.Bind<ISettingsManager>().ToConstant(mockSettings.Object);
 
             var mockMainVM = new Mock<MainViewModel>();

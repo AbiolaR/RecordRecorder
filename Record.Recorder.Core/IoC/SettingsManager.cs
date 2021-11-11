@@ -1,4 +1,7 @@
-﻿namespace Record.Recorder.Core
+﻿using Record.Recorder.Type;
+using System;
+
+namespace Record.Recorder.Core
 {
     public class SettingsManager : ISettingsManager
     {
@@ -7,59 +10,21 @@
         private static readonly string APPLICATIONTHEME = "ApplicationTheme";
         private static readonly string OUTPUTFOLDERLOCATION = "OutputFolderLocation";
         private static readonly string ALBUMNAME = "AlbumName";
-        
+        private static readonly string SAVEFILETYPE = "SaveFileType";
+        private static readonly string SONGDETECTIONTYPE = "SongDetectionType";
 
-        public string GetRecordingDeviceName()
-        {
-            return Settings[RECORDINGDEVICE].ToString();
-        }
 
-        public void SetRecordingDeviceName(string value)
+        public string RecordingDeviceName { get => Settings[RECORDINGDEVICE].ToString(); set => SetAndSave(RECORDINGDEVICE, value); }
+        public string OutputFolderLocation { get => Settings[OUTPUTFOLDERLOCATION].ToString(); set => SetAndSave(OUTPUTFOLDERLOCATION, value); }
+        public ApplicationTheme ApplicationTheme { get => (ApplicationTheme)Settings[APPLICATIONTHEME]; set => SetAndSave(APPLICATIONTHEME, value); }
+        public string AlbumName { get => Settings[ALBUMNAME].ToString(); set => SetAndSave(ALBUMNAME, value); }
+        public string SaveFileType { get => Settings[SAVEFILETYPE].ToString(); set => SetAndSave(SAVEFILETYPE, value); }
+        public SongDetectionType SongDetectionType { get => (SongDetectionType)Settings[SONGDETECTIONTYPE]; set => SetAndSave(SONGDETECTIONTYPE, value); }
+
+        private void SetAndSave(string setting, object value)
         {
-            Settings[RECORDINGDEVICE] = value;
+            Settings[setting] = value;
             Settings.Save();
-        }
-
-        public string GetOutputFolderLocation()
-        {
-            return Settings[OUTPUTFOLDERLOCATION].ToString();
-        }
-
-        public void SetOutputFolderLocation(string value)
-        {
-            Settings[OUTPUTFOLDERLOCATION] = value;
-            Settings.Save();
-        }
-
-        public string GetAlbumName()
-        {
-            return Settings[ALBUMNAME].ToString();
-        }
-
-        public void SetAlbumName(string value)
-        {
-            Settings[ALBUMNAME] = value;
-            Settings.Save();
-        }
-
-        public string GetFileType()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void SetFileType(string value)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public string GetSongDetectionType()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void SetSongDetectionType(string value)
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

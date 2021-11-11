@@ -123,7 +123,6 @@ namespace Record.Recorder.Core
 
                     counter++;
                 }
-                //mainVM.IncreaseLoadingValue(weight, denominator);                if (mainVM.BGWorker)
                 mainVM.BGWorker.ReportProgress((int)denominator, weight);
             }
 
