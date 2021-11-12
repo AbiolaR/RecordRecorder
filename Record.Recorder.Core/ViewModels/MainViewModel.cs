@@ -123,12 +123,21 @@ namespace Record.Recorder.Core
             stopwatch.Reset();
         }
 
-        private void SaveRecording()
+        private async void SaveRecording()
         {
+
+            var viewModel = IoC.SavingProgressVM;
+            viewModel.Title = "Saving songs";
+            viewModel.Message = "Songs are being detected...";
+            viewModel.OkText = "Close";
+            viewModel.ButtonText = "Open Folder";
             
-            BGWorker.RunWorkerAsync();
-            
-            
+            await IoC.UI.ShowProgressDialogWithOption(viewModel);
+            if (viewModel.Answer == DialogAnswer.Option1)
+            {
+                await IoC.UI.OpenFolderLocation(IoC.Settings.OutputFolderLocation);
+            }
+
         }
 
         private async void StartSaving(object sender, DoWorkEventArgs e)

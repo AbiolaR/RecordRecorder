@@ -6,6 +6,7 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:local="clr-namespace:RecordRecorder" 
         mc:Ignorable="d"
+        Loaded="Window_Loaded"
         WindowStyle="None"
         AllowsTransparency="True"
         WindowStartupLocation="CenterOwner"

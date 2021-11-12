@@ -24,5 +24,7 @@ namespace Record.Recorder.Core
         Task<string> ChooseFolderLocation();
 
         Task OpenFolderLocation(string path);
+
+        Task ShowProgressDialogWithOption(ProgressBoxDialogViewModel viewModel);
     }
 }

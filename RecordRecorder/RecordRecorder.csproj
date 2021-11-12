@@ -106,6 +106,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Dialogs\DialogSavingProgressBox.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Dialogs\DialogMessageOptionBox.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -124,6 +127,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Update="Dialogs\DialogSavingProgressBox.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Dialogs\DialogMessageOptionBox.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>

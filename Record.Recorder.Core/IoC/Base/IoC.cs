@@ -35,6 +35,11 @@ namespace Record.Recorder.Core
         public static MainViewModel MainVM => Get<MainViewModel>();
 
         /// <summary>
+        /// A shortcut access to the <see cref="ProgressBoxDialogViewModel"/>
+        /// </summary>
+        public static ProgressBoxDialogViewModel SavingProgressVM => Get<ProgressBoxDialogViewModel>();
+
+        /// <summary>
         /// Gets a service from the IoC, of the specified type
         /// </summary>
         /// <typeparam name="T">The type to get</typeparam>
@@ -62,6 +67,7 @@ namespace Record.Recorder.Core
         {
             Kernel.Bind<ApplicationViewModel>().ToConstant(new ApplicationViewModel());
             Kernel.Bind<MainViewModel>().ToConstant(new MainViewModel());
+            Kernel.Bind<ProgressBoxDialogViewModel>().ToConstant(new ProgressBoxDialogViewModel());
         }
     }
 }

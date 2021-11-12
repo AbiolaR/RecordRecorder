@@ -11,8 +11,10 @@ namespace RecordRecorder
     {
 
         private DialogWindowViewModel viewModel;
-
         public DialogWindowViewModel ViewModel { get => viewModel; set { viewModel = value; DataContext = viewModel; } }
+
+        private BaseDialogViewModel contentViewModel;
+        public BaseDialogViewModel ContentViewModel { get => contentViewModel; set { contentViewModel = value; } }
 
         public DialogWindow()
         {
@@ -20,8 +22,13 @@ namespace RecordRecorder
         }
 
         protected override void OnClosing(CancelEventArgs e)
+        {            
+            IoC.Get<ApplicationViewModel>().IsFocused = true;            
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            IoC.Get<ApplicationViewModel>().IsFocused = true;
+            ContentViewModel.OnDialogOpen();
         }
     }
 }

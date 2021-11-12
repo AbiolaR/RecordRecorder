@@ -177,7 +177,7 @@ namespace Record.Recorder.Core
 
             using (AudioFileReader reader = new AudioFileReader(recordingPath))
             {
-                trackPositions = reader.GetTrackPositions(.70);
+                trackPositions = reader.GetTrackPositions(.83);
             }
             GC.Collect();
 
@@ -188,7 +188,7 @@ namespace Record.Recorder.Core
         private async Task<TrackDataCollection> ExtractTrackDataAsync(TrackPositionCollection trackPositions, string recordingPath, Task<AlbumData> albumTask)
         {
             double weight = .05;
-
+            IoC.SavingProgressVM.Message = "Song data is being found...";
             var trackDataCollection = new TrackDataCollection { Album = new AlbumData { Title = Settings.AlbumName } };
 
             if (albumTask != null)
@@ -237,7 +237,7 @@ namespace Record.Recorder.Core
                 }
 
                 trackDataCollection.Add(trackData);
-                IoC.MainVM.BGWorker.ReportProgress(trackPositions.Count, weight);
+                IoC.SavingProgressVM.BGWorker.ReportProgress(trackPositions.Count, weight);
             }
 
             return trackDataCollection;
@@ -249,11 +249,12 @@ namespace Record.Recorder.Core
 
             Task<string> albumThumbLocationTask = DownloadTempImageAsync(trackDataCollection.Album.ThumbUrl ?? "");
 
+            IoC.SavingProgressVM.Message = "Songs are being saved...";
             Parallel.ForEach(trackDataCollection, trackData =>
             {
                 trackData.Path = TrySave(trackData.Title, trackDataCollection.Album.Title, trackData.Data, AudioFileType.MP3);//Settings.SaveFileType);
             });
-            IoC.MainVM.BGWorker.ReportProgress(1, .2);
+            IoC.SavingProgressVM.BGWorker.ReportProgress(1, .2);
 
             string albumThumbLocation = await albumThumbLocationTask;
 
@@ -275,12 +276,12 @@ namespace Record.Recorder.Core
 
                 file.Save();
             });
-            IoC.MainVM.BGWorker.ReportProgress(1, .05);
+            IoC.SavingProgressVM.BGWorker.ReportProgress(1, .05);
         }
 
         public virtual bool IsInternetConnected()
         {
-            return false;
+            return true;
         }
 
         private string TrySave(string fileName, string albumName, ISampleProvider song, string audioFileType)

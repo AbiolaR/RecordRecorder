@@ -74,5 +74,10 @@ namespace RecordRecorder
 
             return tcs.Task;
         }
+
+        public Task ShowProgressDialogWithOption(ProgressBoxDialogViewModel viewModel)
+        {
+            return new DialogSavingProgressBox().ShowDialog(viewModel);
+        }
     }
 }

@@ -82,7 +82,7 @@ namespace Record.Recorder.Core
             var buffer = new float[reader.WaveFormat.SampleRate * 4];
             double denominator = reader.TotalTime.TotalSeconds * reader.WaveFormat.Channels * reader.WaveFormat.SampleRate / buffer.Length;
 
-            var mainVM = IoC.MainVM;
+            var progressVM = IoC.SavingProgressVM;
 
 
             while (!eof)
@@ -112,7 +112,7 @@ namespace Record.Recorder.Core
 
                     counter++;
                 }
-                mainVM.BGWorker.ReportProgress((int)denominator, weight);
+                progressVM.BGWorker.ReportProgress((int)denominator, weight);
             }
 
             if (silenceFound)

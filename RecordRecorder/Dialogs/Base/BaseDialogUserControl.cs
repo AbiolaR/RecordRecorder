@@ -71,6 +71,7 @@ namespace RecordRecorder
                     dialogWindow.ViewModel.Title = string.IsNullOrEmpty(viewModel.Title) ? Title : viewModel.Title;
 
                     dialogWindow.Content = this;
+                    dialogWindow.ContentViewModel = viewModel;
 
                     DataContext = viewModel;
                     CloseCommand = new RelayCommand((o) => CloseDialog(viewModel, o));

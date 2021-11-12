@@ -9,10 +9,9 @@ namespace Record.Recorder.Core
     /// A base view model for any dialogs 
     /// </summary>
     public class BaseDialogViewModel : BaseViewModel
-    {
-        
+    {        
         public string Title { get; set; }
         public DialogAnswer Answer { get; set; } = DialogAnswer.None;
-
+        public virtual void OnDialogOpen() { }
     }
 }
