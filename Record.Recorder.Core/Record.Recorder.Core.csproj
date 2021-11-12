@@ -40,21 +40,6 @@
     <Reference Include="CUETools.Codecs.FLAKE, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\CUETools.Codecs.FLAKE.1.0.5\lib\netstandard2.0\CUETools.Codecs.FLAKE.dll</HintPath>
     </Reference>
-    <Reference Include="FFMpegCore, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\FFMpegCore.4.6.0\lib\netstandard2.0\FFMpegCore.dll</HintPath>
-    </Reference>
-    <Reference Include="GroupDocs.Metadata, Version=21.8.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <HintPath>..\packages\GroupDocs.Metadata.21.8.0\lib\net20\GroupDocs.Metadata.dll</HintPath>
-    </Reference>
-    <Reference Include="Id3.Files, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ID3.Files.0.3.0\lib\net40\Id3.Files.dll</HintPath>
-    </Reference>
-    <Reference Include="Id3.Net, Version=0.6.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ID3.0.6.0\lib\net40\Id3.Net.dll</HintPath>
-    </Reference>
-    <Reference Include="Instances, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Instances.1.6.0\lib\netstandard2.0\Instances.dll</HintPath>
-    </Reference>
     <Reference Include="JetBrains.Annotations, Version=2018.3.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
       <HintPath>..\packages\JetBrains.Annotations.2018.3.0\lib\net20\JetBrains.Annotations.dll</HintPath>
     </Reference>

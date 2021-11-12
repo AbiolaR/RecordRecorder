@@ -4,6 +4,7 @@ using NAudio.Lame;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using Newtonsoft.Json;
+using Record.Recorder.Type;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,8 +13,8 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Record.Recorder.Type;
 using static Record.Recorder.Core.IoC;
 
 namespace Record.Recorder.Core
@@ -193,7 +194,7 @@ namespace Record.Recorder.Core
 
             if (albumTask != null)
             {
-                trackDataCollection.Album = await albumTask;                
+                trackDataCollection.Album = await albumTask;
             }
 
             foreach (var trackPosition in trackPositions)
@@ -220,6 +221,7 @@ namespace Record.Recorder.Core
                             if (trackDataCollection.Album.Tracks.TryGetValue(trackPosition.Number, out tempSongData))
                             {
                                 trackData = tempSongData;
+                                trackData.Data = song;
                             }
                             break;
 
@@ -254,6 +256,7 @@ namespace Record.Recorder.Core
             {
                 trackData.Path = TrySave(trackData.Title, trackDataCollection.Album.Title, trackData.Data, AudioFileType.MP3);//Settings.SaveFileType);
             });
+            GC.Collect();
             IoC.SavingProgressVM.BGWorker.ReportProgress(1, .2);
 
             string albumThumbLocation = await albumThumbLocationTask;
@@ -281,7 +284,7 @@ namespace Record.Recorder.Core
 
         public virtual bool IsInternetConnected()
         {
-            return true;
+            return false;
         }
 
         private string TrySave(string fileName, string albumName, ISampleProvider song, string audioFileType)
@@ -296,7 +299,7 @@ namespace Record.Recorder.Core
                     break;
 
                 case AudioFileType.MP3:
-                    SaveAsMp3(filePathWithType, song, fileName);
+                    SaveAsMp3(filePathWithType, song);
                     break;
 
                 case AudioFileType.FLAC:
@@ -324,16 +327,14 @@ namespace Record.Recorder.Core
             return filePathWithType;
         }
 
-        private void SaveAsMp3(string fileName, ISampleProvider song, string songName)
+        private void SaveAsMp3(string fileName, ISampleProvider song)
         {
-
-            string tempPath = $"{tempFile}{songName}{AudioFileType.WAV}";
-            WaveFileWriter.CreateWaveFile16(tempPath, song);
-
-            using (var reader = new AudioFileReader(tempPath))
             using (var writer = new LameMP3FileWriter(fileName, song.WaveFormat, LAMEPreset.MEDIUM_FAST))
-                reader.CopyTo(writer);
-
+            using (var wavStream = new MemoryStream())
+            {
+                WaveFileWriter.WriteWavFileToStream(wavStream, new SampleToWaveProvider(song));
+                wavStream.CopyTo(writer);
+            }
         }
 
         private void SaveAsFlac(string fileName, ISampleProvider song, string songName)
@@ -352,7 +353,6 @@ namespace Record.Recorder.Core
                     flakeWriter.Write(buffer);
                 }
             }
-
         }
 
         private static byte[] GetMonoSampleAsBytes(TimeSpan start, string recordingPath)
@@ -402,6 +402,7 @@ namespace Record.Recorder.Core
 
         private static async Task<AlbumData> GetAlbumInfoById(string id)
         {
+            var pattern = new Regex("[<>:\"/\\|?*]");
             var tadbAlbumTracksTask = GetAlbumTracksObjectById(id);
             var tadbAlbumInfoModel = await GetAlbumInfoObjectById(id);
             AlbumData album;
@@ -428,7 +429,7 @@ namespace Record.Recorder.Core
 
                 album.Tracks.Add(trackNum, new TrackData
                 {
-                    Title = track.strTrack,
+                    Title = pattern.Replace(track.strTrack, ""),
                     Track = trackNum,
                     Performers = new[] { track.strArtist }
                 });
