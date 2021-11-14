@@ -7,6 +7,7 @@
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <StartupObject>RecordRecorder.App</StartupObject>
     <AssemblyName>Vinyl Recorder</AssemblyName>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
 
   <ItemGroup>

@@ -284,7 +284,7 @@ namespace Record.Recorder.Core
 
         public virtual bool IsInternetConnected()
         {
-            return false;
+            return true;
         }
 
         private string TrySave(string fileName, string albumName, ISampleProvider song, string audioFileType)
