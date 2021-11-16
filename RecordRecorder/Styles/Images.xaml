@@ -6,8 +6,9 @@
     <BitmapImage x:Key="HomeIconLight" UriSource="/Images/home-light.png" />
     <BitmapImage x:Key="GearIconDark" UriSource="/Images/gear-dark.png" />
     <BitmapImage x:Key="GearIconLight" UriSource="/Images/gear-light-filled.png" />
+    <BitmapImage x:Key="SearchIconDark" UriSource="/Images/search-dark.png" />
+    <BitmapImage x:Key="SearchIconLight" UriSource="/Images/search-light.png" />
 
-    
     <BitmapImage x:Key="HomeIconSource" UriSource="{Binding ApplicationViewModel.HomeIcon, 
                                                                         Source={x:Static local:ViewModelLocator.Instance}, 
                                                                         Converter={local:ApplicationImageSourceConverter}}" />
@@ -15,6 +16,10 @@
     <BitmapImage x:Key="GearIconSource" UriSource="{Binding ApplicationViewModel.GearIcon, 
                                                                         Source={x:Static local:ViewModelLocator.Instance}, 
                                                                         Converter={local:ApplicationImageSourceConverter}}" />
+
+    <!--<BitmapImage x:Key="SearchIconSource" UriSource="{Binding ApplicationViewModel.SearchIcon, 
+                                                                        Source={x:Static local:ViewModelLocator.Instance}, 
+                                                                        Converter={local:ApplicationImageSourceConverter}}" /> -->
 
 
 </ResourceDictionary>

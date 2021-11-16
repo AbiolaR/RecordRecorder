@@ -21,6 +21,7 @@ namespace Record.Recorder.Core
         public ICommand PressPauseCommand { get; set; }
         public ICommand PressStopCommand { get; set; }
         public ICommand SaveRecordingCommand { get; set; }
+        public ICommand SearchForAlbumCommand { get; set; }
 
         private static readonly string ZEROTIMERVALUE = "00:00:00";
 
@@ -54,6 +55,7 @@ namespace Record.Recorder.Core
             PressStopCommand = new RelayCommand((o) => StopRecording());
             PressPauseCommand = new RelayCommand((o) => ToggleIsRecording());
             SaveRecordingCommand = new RelayCommand((o) => SaveRecording());
+            SearchForAlbumCommand = new RelayCommand((o) => SearchForAlbum());
 
             BGWorker = new BackgroundWorker();
             BGWorker.ProgressChanged += new ProgressChangedEventHandler(ProgressChanged);
@@ -73,6 +75,11 @@ namespace Record.Recorder.Core
                     CurrentRecordingTime = string.Format("{0:00}:{1:00}:{2:00}", timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds);
                 }
             };
+        }
+
+        private async void SearchForAlbum()
+        {
+            await IoC.UI.OpenBrowserWindow();
         }
 
         private void NavigateToSettingsPage()

@@ -21,21 +21,16 @@
                               Direction="0" />
                     </Border.Effect>
                     <Grid>
-                        <!--<Grid VerticalAlignment="Top" Width="200" Height="20">
-                            <ProgressBar Value="{Binding LoadingVal}" VerticalAlignment="Top" Width="Auto" Height="20" />
-                            <TextBlock Text="{Binding LoadingVal}" Foreground="{StaticResource ApplicationTextBrush}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                        </Grid>-->
                         <Button x:Name="Settings" Height="20" Width="20" VerticalAlignment="Top" HorizontalAlignment="Right" Style="{StaticResource NavButton}" Command="{Binding GoToSettingsCommand}">
                             <Image Source="{DynamicResource GearIconSource}" />
                         </Button>
+                        <Button x:Name="Search" Height="20" Width="20" VerticalAlignment="Top" HorizontalAlignment="Left" Style="{StaticResource NavButton}" Command="{Binding SearchForAlbumCommand}">
+                            <Image Source="{DynamicResource SearchIconLight}" />
+                        </Button>
 
                         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" TextBlock.TextAlignment="Center">
-
-                            <!-- <TextBlock Text="Bitte Album Namen eingeben:" FontFamily="{StaticResource FocoBold}" Foreground="{StaticResource ApplicationTextBrush}" /> -->
                             <TextBox x:Name="AlbumInput" Text="{Binding AlbumName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource WatermarkTextBox}" />
-
                             <ContentControl Content="{Binding}" ContentTemplate="{StaticResource RecordingProgressCollection}" />
-
                             <ContentControl Content="{Binding}" ContentTemplate="{StaticResource RecordingControlCollection}" />
                         </StackPanel>
                     </Grid>

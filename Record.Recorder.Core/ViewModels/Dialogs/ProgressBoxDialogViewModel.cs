@@ -35,7 +35,7 @@ namespace Record.Recorder.Core
         private async void StartSaving(object sender, DoWorkEventArgs e)
         {
             IoC.Settings.SongDetectionType = Type.SongDetectionType.SPOTIFY;
-            await recorder.DetectAndSaveTracksAsync(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyMusic), @"Test\Resources\full12min.wav"));// @"C:\Users\rasheed_abiola\source\repos\RecordRecorder\Record.Recorder.Core.UnitTests\Resources\Audio\full12min.wav");
+            await recorder.DetectAndSaveTracksAsync(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyMusic), @"Test\Resources\MusicToBeMurderedBy.wav"));// @"C:\Users\rasheed_abiola\source\repos\RecordRecorder\Record.Recorder.Core.UnitTests\Resources\Audio\full12min.wav");
             BGWorker.CancelAsync();
             BGWorker.Dispose();
             ProgressValue = 100;
