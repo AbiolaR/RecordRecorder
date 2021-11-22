@@ -36,14 +36,14 @@ namespace Record.Recorder.Core
         private readonly string tempFile;
         private readonly string tempFilePath;
 
-        Stopwatch stopwatch = new Stopwatch();
+        readonly Stopwatch stopwatch = new Stopwatch();
 
         public RecorderUtil() : this(Assembly.GetEntryAssembly()?.GetName().Name ?? "Vinyl Recorder")
         {                                                                                                    
         }
 
         /// <summary>
-        /// Takes a project name to use for the app data folder
+        /// Takes a project name to use for the apps data folder
         /// </summary>
         /// <param name="projectName"></param>
         public RecorderUtil(string projectName)

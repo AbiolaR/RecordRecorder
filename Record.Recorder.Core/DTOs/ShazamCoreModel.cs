@@ -1,6 +1,6 @@
 ﻿namespace Record.Recorder.Core
 {
-
+#pragma warning disable IDE1006
     public class ShazamCoreModel
     {
         public ShazamCoreLocation location { get; set; }
