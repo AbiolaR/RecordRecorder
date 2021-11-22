@@ -10,6 +10,7 @@ using Record.Recorder.Type;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -22,22 +23,44 @@ using static Record.Recorder.Core.IoC;
 
 namespace Record.Recorder.Core
 {
-    public delegate void Notify();
+
     public class RecorderUtil
     {
         private static readonly HttpClient client = new HttpClient();
         WaveFileWriter writer = null;
         WaveInEvent recordingDevice = null;
 
-        private static readonly string dataFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Assembly.GetCallingAssembly().GetName().Name); //Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "NAudio");
-        private static readonly string recordingFilePath = Path.Combine(dataFolder, "recording.wav");
-        private static readonly string tempDataFolder = Path.Combine(dataFolder, "temp");
-        private static readonly string tempFile = Path.Combine(tempDataFolder, "temp");
-        private static readonly string tempFilePath = Path.Combine(tempDataFolder, "temp.wav"); //Path.Combine(dataFolder, "part.wav");
+        private readonly string dataFolder;
+        private readonly string recordingFilePath;
+        private readonly string tempDataFolder;
+        private readonly string tempFile;
+        private readonly string tempFilePath;
 
-        public RecorderUtil()
+        Stopwatch stopwatch = new Stopwatch();
+
+        public RecorderUtil() : this(Assembly.GetEntryAssembly()?.GetName().Name ?? "Vinyl Recorder")
+        {                                                                                                    
+        }
+
+        /// <summary>
+        /// Takes a project name to use for the app data folder
+        /// </summary>
+        /// <param name="projectName"></param>
+        public RecorderUtil(string projectName)
         {
+            dataFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), projectName);
+            recordingFilePath = Path.Combine(dataFolder, "recording.wav");
+            tempDataFolder = Path.Combine(dataFolder, "temp");
+            tempFile = Path.Combine(tempDataFolder, "temp");
+            tempFilePath = Path.Combine(tempDataFolder, "temp.wav"); //Path.Combine(dataFolder, "part.wav");
+
             Directory.CreateDirectory(tempDataFolder);
+
+            DirectoryInfo di = new DirectoryInfo(tempDataFolder);
+            foreach (FileInfo file in di.GetFiles())
+            {
+                file.Delete();
+            }
         }
 
         async public Task<SortedDictionary<int, string>> GetRecordingDevices()
@@ -170,8 +193,12 @@ namespace Record.Recorder.Core
             }
         }
 
-        public async Task DetectAndSaveTracksAsync(string recordingPath)
+        public async Task DetectAndSaveTracksAsync(string recordingPath = null)
         {
+            if (recordingPath == null)
+            {
+                recordingPath = recordingFilePath;
+            }
             var trackPositions = new TrackPositionCollection();
             Task<AlbumData> albumTask = null;
             if (IsInternetConnected() && SongDetectionType.TADB.Equals(Settings.SongDetectionType))
@@ -276,10 +303,13 @@ namespace Record.Recorder.Core
                 albumThumbLocationTasks.Add(DownloadTempImageAsync(albumThumb.ThumbUrl ?? "", trackDataCollection.AlbumThumbs));
             }
 
+            stopwatch.Start();
+            Console.WriteLine(TimeSpan.FromMilliseconds(stopwatch.ElapsedMilliseconds));
             Parallel.ForEach(trackDataCollection, trackData =>
             {
                 trackData.Path = TrySave(trackData.Title, outputFolder, trackData.Data, AudioFileType.MP3);//Settings.SaveFileType);
             });
+            Console.WriteLine(TimeSpan.FromMilliseconds(stopwatch.ElapsedMilliseconds));
             GC.Collect();
             IoC.SavingProgressVM.BGWorker.ReportProgress(1, .2);
 
@@ -287,7 +317,6 @@ namespace Record.Recorder.Core
 
             Parallel.ForEach(trackDataCollection, trackData =>
             {
-                //var albumThumb = 
                 var albumThumbLocation = trackDataCollection.AlbumThumbs.Where(albumThumb => albumThumb.Title == trackData.Album.Title).FirstOrDefault()?.ThumbPath;
                 var file = TagLib.File.Create(trackData.Path);
 
@@ -381,7 +410,7 @@ namespace Record.Recorder.Core
             }
         }
 
-        private static string SaveAsTempMono(ISampleProvider sample)
+        private string SaveAsTempMono(ISampleProvider sample)
         {
             WaveFileWriter.CreateWaveFile16(tempFilePath, sample);
             string monoFilePath = Path.Combine(tempDataFolder, "mono.wav");
@@ -397,7 +426,7 @@ namespace Record.Recorder.Core
             }
         }
 
-        private static byte[] GetMonoSampleAsBytes(ISampleProvider sample)
+        private byte[] GetMonoSampleAsBytes(ISampleProvider sample)
         {
             return File.ReadAllBytes(SaveAsTempMono(sample));
         }
@@ -439,14 +468,14 @@ namespace Record.Recorder.Core
             }
         }
 
-        private static ShazamCoreModel GetTrackData(ISampleProvider sample)
+        private ShazamCoreModel GetTrackData(ISampleProvider sample)
         {
             var task = GetTrackDataAsync(sample);
             task.Wait();
             return task.Result;
         }
 
-        private static async Task<ShazamCoreModel> GetTrackDataAsync(ISampleProvider sample)
+        private async Task<ShazamCoreModel> GetTrackDataAsync(ISampleProvider sample)
         {
             var request = new HttpRequestMessage
             {

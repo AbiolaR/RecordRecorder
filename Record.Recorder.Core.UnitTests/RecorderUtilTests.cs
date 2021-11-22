@@ -33,19 +33,12 @@ namespace Record.Recorder.Core.UnitTests
             mockSettings.Setup(settings => settings.SongDetectionType).Returns(SongDetectionType.SHAZAM);
             IoC.Kernel.Bind<ISettingsManager>().ToConstant(mockSettings.Object);
 
-            var mockMainVM = new Mock<MainViewModel>();
-            var bgw = new BackgroundWorker
-            {
-                WorkerReportsProgress = true
-            };
-            mockMainVM.Setup(mainVM => mainVM.BGWorker).Returns(bgw);
-            IoC.Kernel.Bind<MainViewModel>().ToConstant(mockMainVM.Object);
+            var path = Path.Combine(outputPath, @"Resources\full12min.wav");
 
-            var path = Path.Combine(outputPath, @"Resources\2songs.wav");
+            var mockRecorder = new Mock<RecorderUtil>("Vinyl Recorder");
 
-            var mockRecorder = new Mock<RecorderUtil>();
-
-            mockRecorder.Setup(recorder => recorder.IsInternetConnected()).Returns(true);
+            
+            mockRecorder.Setup(recorder => recorder.IsInternetConnected()).Returns(false);
 
 
 

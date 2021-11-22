@@ -24,9 +24,6 @@
                         <Button x:Name="Settings" Height="20" Width="20" VerticalAlignment="Top" HorizontalAlignment="Right" Style="{StaticResource NavButton}" Command="{Binding GoToSettingsCommand}">
                             <Image Source="{DynamicResource GearIconSource}" />
                         </Button>
-                        <Button x:Name="Search" Height="20" Width="20" VerticalAlignment="Top" HorizontalAlignment="Left" Style="{StaticResource NavButton}" Command="{Binding SearchForAlbumCommand}">
-                            <Image Source="{DynamicResource SearchIconLight}" />
-                        </Button>
 
                         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" TextBlock.TextAlignment="Center">
                             <TextBox x:Name="AlbumInput" Text="{Binding AlbumName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource WatermarkTextBox}" />

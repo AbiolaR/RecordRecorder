@@ -79,25 +79,5 @@ namespace RecordRecorder
         {
             return new DialogSavingProgressBox().ShowDialog(viewModel);
         }
-
-        public Task OpenBrowserWindow()
-        {
-            var tcs = new TaskCompletionSource<bool>();
-
-            System.Windows.Application.Current.Dispatcher.Invoke(() =>
-            {
-                try
-                {
-                    new BrowserWindow().ShowDialog();
-                }
-                finally
-                {
-                    tcs.TrySetResult(true);
-                }
-
-            });
-
-            return tcs.Task;
-        }
     }
 }
