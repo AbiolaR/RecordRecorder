@@ -200,11 +200,6 @@ namespace Record.Recorder.Core
                 recordingPath = recordingFilePath;
             }
             var trackPositions = new TrackPositionCollection();
-            Task<AlbumData> albumTask = null;
-            if (IsInternetConnected() && SongDetectionType.TADB.Equals(Settings.SongDetectionType))
-            {
-                albumTask = GetAlbumInfoById(Settings.AlbumName);
-            }
 
             using (AudioFileReader reader = new AudioFileReader(recordingPath))
             {
@@ -212,20 +207,15 @@ namespace Record.Recorder.Core
             }
             GC.Collect();
 
-            var trackDataCollection = await ExtractTrackDataAsync(trackPositions, recordingPath, albumTask);
+            var trackDataCollection = ExtractTrackData(trackPositions, recordingPath);
             await SaveTracksAsync(trackDataCollection);
         }
 
-        private async Task<TrackDataCollection> ExtractTrackDataAsync(TrackPositionCollection trackPositions, string recordingPath, Task<AlbumData> albumTask)
+        private TrackDataCollection ExtractTrackData(TrackPositionCollection trackPositions, string recordingPath)
         {
             double weight = .05;
             IoC.SavingProgressVM.Message = "Song data is being found...";
             var trackDataCollection = new TrackDataCollection { Album = new AlbumData { }, AlbumThumbs = new Collection<AlbumThumb>()  };
-
-            if (albumTask != null)
-            {
-                trackDataCollection.Album = await albumTask;
-            }
 
             foreach (var trackPosition in trackPositions)
             {
@@ -259,9 +249,9 @@ namespace Record.Recorder.Core
                         case SongDetectionType.SHAZAM:
                             ISampleProvider sample = new AudioFileReader(recordingPath)
                                                                         .Skip(trackPosition.Start)
-                                                                        .Take(end.Subtract(trackPosition.Start));      
-                            
-                            PopulateTrackDataAsync(trackData, GetTrackData(sample)).Wait();                                                        
+                                                                        .Take(end.Subtract(trackPosition.Start));
+
+                            PopulateTrackData(trackData, GetTrackData(sample));
                             break;
                     }
 
@@ -431,43 +421,6 @@ namespace Record.Recorder.Core
             return File.ReadAllBytes(SaveAsTempMono(sample));
         }
 
-        [Obsolete("GetTrackName is deprecated,use the faster GetTrackData instead")]
-        private static ShazamModel GetTrackName(byte[] bytes)
-        {
-            var task = GetTrackNameAsync(bytes);
-            task.Wait();
-            return task.Result;
-        }
-
-        [Obsolete("GetTrackNameAsync is deprecated,use the faster GetTrackDataAsync instead")]
-        private static async Task<ShazamModel> GetTrackNameAsync(byte[] bytes)
-        {
-            var request = new HttpRequestMessage
-            {
-                Method = HttpMethod.Post,
-                RequestUri = new Uri("https://shazam.p.rapidapi.com/songs/detect"),
-                Headers =
-            {
-                { "x-rapidapi-key", "80605243fcmsh7987f9cd1918fa5p141b05jsn0085912743db" },
-                { "x-rapidapi-host", "shazam.p.rapidapi.com" },
-            },
-                Content = new StringContent(Convert.ToBase64String(bytes))
-                {
-                    Headers =
-                {
-                    ContentType = new MediaTypeHeaderValue("text/plain")
-                }
-                }
-            };
-            using (var response = await client.SendAsync(request))
-            {
-                response.EnsureSuccessStatusCode();
-                var body = await response.Content.ReadAsStringAsync();
-                var shazamModel = JsonConvert.DeserializeObject<ShazamModel>(body);
-                return shazamModel;
-            }
-        }
-
         private ShazamCoreModel GetTrackData(ISampleProvider sample)
         {
             var task = GetTrackDataAsync(sample);
@@ -578,101 +531,7 @@ namespace Record.Recorder.Core
             {
                 Console.WriteLine(ex);
             }
-        }
-
-        
-
-        private static async Task<AlbumData> GetAlbumInfoById(string id)
-        {
-            var pattern = new Regex("[<>:\"/\\|?*]");
-            var tadbAlbumTracksTask = GetAlbumTracksObjectById(id);
-            var tadbAlbumInfoModel = await GetAlbumInfoObjectById(id);
-            AlbumData album;
-
-            if (tadbAlbumInfoModel != null)
-            {
-                album = new AlbumData()
-                {
-                    Title = tadbAlbumInfoModel.album[0].strAlbum,
-                    Year = tadbAlbumInfoModel.album[0].intYearReleased,
-                    Genre = tadbAlbumInfoModel.album[0].strGenre,
-                    ThumbUrl = tadbAlbumInfoModel.album[0].strAlbumThumb
-                };
-            }
-            else { album = new AlbumData(); }
-
-            var tadbAlbumTracksModel = await tadbAlbumTracksTask;
-
-            if (tadbAlbumTracksModel == null) { return album; }
-
-            foreach (var track in tadbAlbumTracksModel.track)
-            {
-                var trackNum = Convert.ToInt32(track.intTrackNumber);
-
-                album.Tracks.Add(trackNum, new TrackData
-                {
-                    Title = pattern.Replace(track.strTrack, ""),
-                    Track = trackNum,
-                    Performers = new[] { track.strArtist }
-                });
-            }
-
-            return album;
-        }
-
-        private static async Task<TADBAlbumTracksModel> GetAlbumTracksObjectById(string id)
-        {
-            var request = new HttpRequestMessage
-            {
-                Method = HttpMethod.Get,
-                RequestUri = new Uri($"https://theaudiodb.p.rapidapi.com/track.php?m={id}"),
-                Headers =
-                {
-                    { "x-rapidapi-host", "theaudiodb.p.rapidapi.com" },
-                    { "x-rapidapi-key", "80605243fcmsh7987f9cd1918fa5p141b05jsn0085912743db" },
-                },
-            };
-            try
-            {
-                using (var response = await client.SendAsync(request))
-                {
-                    response.EnsureSuccessStatusCode();
-                    var body = await response.Content.ReadAsStringAsync();
-                    return JsonConvert.DeserializeObject<TADBAlbumTracksModel>(body);
-                }
-            }
-            catch
-            {
-                return null;
-            }
-        }
-
-        private static async Task<TADBAlbumInfoModel> GetAlbumInfoObjectById(string id)
-        {
-            var request = new HttpRequestMessage
-            {
-                Method = HttpMethod.Get,
-                RequestUri = new Uri($"https://theaudiodb.p.rapidapi.com/album.php?m={id}"),
-                Headers =
-                {
-                    { "x-rapidapi-host", "theaudiodb.p.rapidapi.com" },
-                    { "x-rapidapi-key", "80605243fcmsh7987f9cd1918fa5p141b05jsn0085912743db" },
-                },
-            };
-            try
-            {
-                using (var response = await client.SendAsync(request))
-                {
-                    response.EnsureSuccessStatusCode();
-                    var body = await response.Content.ReadAsStringAsync();
-                    return JsonConvert.DeserializeObject<TADBAlbumInfoModel>(body);
-                }
-            }
-            catch
-            {
-                return null;
-            }
-        }
+        }       
 
         private async Task<string> DownloadTempImageAsync(string url, Collection<AlbumThumb> albumThumbs)
         {

@@ -148,11 +148,7 @@
     <Compile Include="DataModels\ApplicationPage.cs" />
     <Compile Include="DTOs\AlbumData.cs" />
     <Compile Include="DTOs\ShazamCoreModel.cs" />
-    <Compile Include="DTOs\ShazamModel.cs" />
-    <Compile Include="DTOs\SongRecognitionModel.cs" />
     <Compile Include="DTOs\TrackData.cs" />
-    <Compile Include="DTOs\TADBAlbumInfoModel.cs" />
-    <Compile Include="DTOs\TADBAlbumTracksModel.cs" />
     <Compile Include="DTOs\TrackPosition.cs" />
     <Compile Include="Helpers\ExpressionHelpers.cs" />
     <Compile Include="IoC\Interfaces\ISettingsManager.cs" />
