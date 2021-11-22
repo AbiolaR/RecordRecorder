@@ -1,4 +1,6 @@
 ﻿using CUETools.Codecs.FLAKE;
+using Hqub.MusicBrainz.API;
+using Hqub.MusicBrainz.API.Entities;
 using NAudio.CoreAudioApi;
 using NAudio.Lame;
 using NAudio.Wave;
@@ -7,6 +9,7 @@ using Newtonsoft.Json;
 using Record.Recorder.Type;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -190,7 +193,7 @@ namespace Record.Recorder.Core
         {
             double weight = .05;
             IoC.SavingProgressVM.Message = "Song data is being found...";
-            var trackDataCollection = new TrackDataCollection { Album = new AlbumData { Title = Settings.AlbumName } };
+            var trackDataCollection = new TrackDataCollection { Album = new AlbumData { }, AlbumThumbs = new Collection<AlbumThumb>()  };
 
             if (albumTask != null)
             {
@@ -209,7 +212,8 @@ namespace Record.Recorder.Core
                 {
                     Title = $"Track {trackPosition.Number}",
                     Track = trackPosition.Number,
-                    Data = song
+                    Data = song,
+                    Album = new AlbumData { }
                 };
 
                 if (IsInternetConnected())
@@ -225,13 +229,12 @@ namespace Record.Recorder.Core
                             }
                             break;
 
-                        case SongDetectionType.SPOTIFY:
-                            var shazamModel = await GetTrackNameAsync(GetMonoSampleAsBytes(trackPosition.Start, recordingPath));
-                            if (shazamModel.matches.Length > 0)
-                            {
-                                trackData.Title = shazamModel.track.title;
-                                trackData.Performers = new[] { shazamModel.track.subtitle };
-                            }
+                        case SongDetectionType.SHAZAM:
+                            ISampleProvider sample = new AudioFileReader(recordingPath)
+                                                                        .Skip(trackPosition.Start)
+                                                                        .Take(end.Subtract(trackPosition.Start));      
+                            
+                            PopulateTrackDataAsync(trackData, GetTrackData(sample)).Wait();                                                        
                             break;
                     }
 
@@ -242,31 +245,54 @@ namespace Record.Recorder.Core
                 IoC.SavingProgressVM.BGWorker.ReportProgress(trackPositions.Count, weight);
             }
 
+            if (IsInternetConnected())
+                trackDataCollection.AlbumThumbs = GetAlbumThumbs(trackDataCollection);
+
+
             return trackDataCollection;
         }
 
         private async Task SaveTracksAsync(TrackDataCollection trackDataCollection)
         {
-            Directory.CreateDirectory(Path.Combine(Settings.OutputFolderLocation, trackDataCollection.Album.Title ?? Settings.AlbumName));
-
-            Task<string> albumThumbLocationTask = DownloadTempImageAsync(trackDataCollection.Album.ThumbUrl ?? "");
+            var pattern = new Regex("[<>:\"/\\|?*]");
+            string outputFolder = DateTime.Now.ToString();
 
             IoC.SavingProgressVM.Message = "Songs are being saved...";
+
+            if (trackDataCollection.AlbumThumbs.Count == 1)
+            {
+                outputFolder = trackDataCollection.First().Album.Title;
+            } else if (!string.IsNullOrEmpty(Settings.AlbumName))
+            {
+                outputFolder = Settings.AlbumName;
+            }
+            outputFolder = pattern.Replace(outputFolder, "");
+
+            Directory.CreateDirectory(Path.Combine(Settings.OutputFolderLocation, outputFolder));
+
+            var albumThumbLocationTasks = new List<Task<string>>();
+            foreach (var albumThumb in trackDataCollection.AlbumThumbs)
+            {
+                albumThumbLocationTasks.Add(DownloadTempImageAsync(albumThumb.ThumbUrl ?? "", trackDataCollection.AlbumThumbs));
+            }
+
             Parallel.ForEach(trackDataCollection, trackData =>
             {
-                trackData.Path = TrySave(trackData.Title, trackDataCollection.Album.Title, trackData.Data, AudioFileType.MP3);//Settings.SaveFileType);
+                trackData.Path = TrySave(trackData.Title, outputFolder, trackData.Data, AudioFileType.MP3);//Settings.SaveFileType);
             });
             GC.Collect();
             IoC.SavingProgressVM.BGWorker.ReportProgress(1, .2);
 
-            string albumThumbLocation = await albumThumbLocationTask;
+            await Task.WhenAll(albumThumbLocationTasks);
 
             Parallel.ForEach(trackDataCollection, trackData =>
             {
+                //var albumThumb = 
+                var albumThumbLocation = trackDataCollection.AlbumThumbs.Where(albumThumb => albumThumb.Title == trackData.Album.Title).FirstOrDefault()?.ThumbPath;
                 var file = TagLib.File.Create(trackData.Path);
 
                 file.Tag.Title = trackData.Title;
-                file.Tag.Album = trackDataCollection.Album.Title;
+                file.Tag.Album = trackData.Album.Title;
                 file.Tag.Track = (uint)trackData.Track;
                 file.Tag.Performers = trackData.Performers;
 
@@ -355,23 +381,36 @@ namespace Record.Recorder.Core
             }
         }
 
-        private static byte[] GetMonoSampleAsBytes(TimeSpan start, string recordingPath)
+        private static string SaveAsTempMono(ISampleProvider sample)
         {
-            Directory.CreateDirectory(dataFolder);
-            Directory.CreateDirectory(Path.Combine(dataFolder, "parts"));
+            WaveFileWriter.CreateWaveFile16(tempFilePath, sample);
+            string monoFilePath = Path.Combine(tempDataFolder, "mono.wav");
+            using (var reader = new AudioFileReader(tempFilePath))
+            {   
+                var sampleLength = reader.TotalTime;
+                var start = new TimeSpan(sampleLength.Ticks / 2);
+                var trimmed = reader.Skip(start).Take(TimeSpan.FromSeconds(5));
+                var mono = new StereoToMonoSampleProvider(trimmed);
 
-            start = TimeSpan.FromMilliseconds(start.TotalMilliseconds + 10000);
-            TimeSpan end = TimeSpan.FromMilliseconds(start.TotalMilliseconds + 5000);
-
-            var trimmed = new AudioFileReader(recordingPath)
-                                            .Skip(start)
-                                            .Take(end.Subtract(start));
-
-            var mono = new StereoToMonoSampleProvider(trimmed);
-            WaveFileWriter.CreateWaveFile16(tempFilePath, mono); //$@"C:\Users\rasheed_abiola\Desktop\NAudio\parts\part.wav", mono);
-            return File.ReadAllBytes(tempFilePath);
+                WaveFileWriter.CreateWaveFile16(monoFilePath, mono);
+                return monoFilePath;
+            }
         }
 
+        private static byte[] GetMonoSampleAsBytes(ISampleProvider sample)
+        {
+            return File.ReadAllBytes(SaveAsTempMono(sample));
+        }
+
+        [Obsolete("GetTrackName is deprecated,use the faster GetTrackData instead")]
+        private static ShazamModel GetTrackName(byte[] bytes)
+        {
+            var task = GetTrackNameAsync(bytes);
+            task.Wait();
+            return task.Result;
+        }
+
+        [Obsolete("GetTrackNameAsync is deprecated,use the faster GetTrackDataAsync instead")]
         private static async Task<ShazamModel> GetTrackNameAsync(byte[] bytes)
         {
             var request = new HttpRequestMessage
@@ -399,6 +438,120 @@ namespace Record.Recorder.Core
                 return shazamModel;
             }
         }
+
+        private static ShazamCoreModel GetTrackData(ISampleProvider sample)
+        {
+            var task = GetTrackDataAsync(sample);
+            task.Wait();
+            return task.Result;
+        }
+
+        private static async Task<ShazamCoreModel> GetTrackDataAsync(ISampleProvider sample)
+        {
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Post,
+                RequestUri = new Uri("https://shazam-core.p.rapidapi.com/v1/tracks/recognize"),
+                Headers =
+                {
+                    { "x-rapidapi-host", "shazam-core.p.rapidapi.com" },
+                    { "x-rapidapi-key", "80605243fcmsh7987f9cd1918fa5p141b05jsn0085912743db" },
+                },
+            Content = new MultipartFormDataContent
+            {
+                new ByteArrayContent(GetMonoSampleAsBytes(sample))
+                {
+                    Headers = {
+                        ContentType = new MediaTypeHeaderValue("audio/wav"),
+                        ContentDisposition = new ContentDispositionHeaderValue("form-data")
+                        {
+                            Name = "file",
+                            FileName = "mono.wav",
+                        }
+                    }
+                },
+            },
+            };
+            using (var response = await client.SendAsync(request))
+            {
+                response.EnsureSuccessStatusCode();
+                var body = await response.Content.ReadAsStringAsync();
+
+                return JsonConvert.DeserializeObject<ShazamCoreModel>(body);
+            }
+            
+        }
+
+        private static Collection<AlbumThumb> GetAlbumThumbs(TrackDataCollection trackDataCollection)
+        {
+            var albums = new List<string>();
+            var albumThumbs = new Collection<AlbumThumb>();
+
+            foreach (var track in trackDataCollection)
+            {
+                albums.Add(track.Album.Title);
+            }
+
+            foreach (var album in albums.Distinct())
+            {
+                albumThumbs.Add(new AlbumThumb
+                {
+                    Title = album,
+                    ThumbUrl = trackDataCollection.Where(t => t.Album.Title == album).First().Album.ThumbUrl
+                });                
+            }
+
+            return albumThumbs;
+        }
+
+        private static void PopulateTrackData(TrackData trackData, ShazamCoreModel data)
+        {
+            var task = PopulateTrackDataAsync(trackData, data);
+            task.Wait();
+        }
+
+        private static async Task PopulateTrackDataAsync(TrackData trackData, ShazamCoreModel data)
+        {
+            try
+            {
+                string isrc = data.track.isrc;
+                MusicBrainzClient client = new MusicBrainzClient();
+                var query = new QueryParameters<Recording>()
+                {
+                    { "isrc", isrc}
+                };
+
+                var recordings = await client.Recordings.SearchAsync(query);
+
+                trackData.Title = recordings.Items[0].Title;
+                var albumName = data.track.sections[0].metadata.Where(m => m.title == "Album").FirstOrDefault();
+                
+                var album = recordings.Items[0].Releases.Where(r => r.Title.ToLower() == albumName?.text.ToLower()).DefaultIfEmpty(recordings.Items[0].Releases.First()).FirstOrDefault();
+
+                trackData.Album = new AlbumData {
+                                                    Title = album.Title,
+                                                    Year = album.Date.Substring(0, 4),
+                                                    Genre = data.track.genres.primary,
+                                                    ThumbUrl = data.track.images.coverart
+                                                };
+                var performers = new string[recordings.Items[0].Credits.Count()];
+                int i = 0;
+                foreach (var artist in recordings.Items[0].Credits)
+                {
+                    performers[i] = artist.Name;
+                    i++;
+                }
+
+                trackData.Performers = new[] { recordings.Items[0].Credits.First().Name };
+                trackData.Track = Convert.ToInt32(album.Media.First().Tracks.First().Number);
+            } 
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+        }
+
+        
 
         private static async Task<AlbumData> GetAlbumInfoById(string id)
         {
@@ -492,10 +645,11 @@ namespace Record.Recorder.Core
             }
         }
 
-        private async Task<string> DownloadTempImageAsync(string url)
+        private async Task<string> DownloadTempImageAsync(string url, Collection<AlbumThumb> albumThumbs)
         {
-            string fileExtension = Path.GetExtension(@url);
-            string fileLocation = Path.Combine(tempDataFolder, $"albumcover{fileExtension}");
+            var pattern = new Regex("[<>:\"/\\|?*]");
+            //string fileExtension = Path.GetExtension(@url);
+            string fileLocation = Path.Combine(tempDataFolder, pattern.Replace(url, ""));
 
             try
             {
@@ -509,6 +663,7 @@ namespace Record.Recorder.Core
                 return "";
             }
 
+            albumThumbs.Where(a => a.ThumbUrl == url).First().ThumbPath = fileLocation;
             return fileLocation;
         }
 

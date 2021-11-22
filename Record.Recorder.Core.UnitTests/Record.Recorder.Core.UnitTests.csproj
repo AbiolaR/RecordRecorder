@@ -7,21 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Resources\Audio\full12min.wav" />
-    <None Remove="Resources\Audio\MusicToBeMurderedBy.wav" />
-    <None Remove="Resources\Audio\recorded3.wav" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Resources\Audio\full12min.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Audio\MusicToBeMurderedBy.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Audio\recorded3.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Compile Remove="Output\**" />
+    <Compile Remove="Resources\**" />
+    <EmbeddedResource Remove="Output\**" />
+    <EmbeddedResource Remove="Resources\**" />
+    <None Remove="Output\**" />
+    <None Remove="Resources\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -36,10 +27,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Record.Recorder.Core\Record.Recorder.Core.csproj" />
     <ProjectReference Include="..\Record.Recorder.Type\Record.Recorder.Type.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Output\Audio\" />
   </ItemGroup>
 
 </Project>

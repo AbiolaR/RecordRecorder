@@ -9,6 +9,6 @@
         /// <summary>
         /// Uses Spotify to get song and album data per song
         /// </summary>
-        SPOTIFY
+        SHAZAM
     }
 }
