@@ -19,7 +19,7 @@ namespace Record.Recorder.Core {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Text {
@@ -115,6 +115,15 @@ namespace Record.Recorder.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Close.
+        /// </summary>
+        public static string Close {
+            get {
+                return ResourceManager.GetString("Close", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Continue.
         /// </summary>
         public static string Continue {
@@ -133,11 +142,29 @@ namespace Record.Recorder.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Songs are being detected....
+        /// </summary>
+        public static string DetectingSongsMessage {
+            get {
+                return ResourceManager.GetString("DetectingSongsMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please choose a recording device.
         /// </summary>
         public static string DeviceNameWatermark {
             get {
                 return ResourceManager.GetString("DeviceNameWatermark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Song data is being found....
+        /// </summary>
+        public static string FindingSongDataMessage {
+            get {
+                return ResourceManager.GetString("FindingSongDataMessage", resourceCulture);
             }
         }
         
@@ -162,9 +189,9 @@ namespace Record.Recorder.Core {
         /// <summary>
         ///   Looks up a localized string similar to Open Folder.
         /// </summary>
-        public static string OpenFolderToolTip {
+        public static string OpenFolder {
             get {
-                return ResourceManager.GetString("OpenFolderToolTip", resourceCulture);
+                return ResourceManager.GetString("OpenFolder", resourceCulture);
             }
         }
         
@@ -258,6 +285,24 @@ namespace Record.Recorder.Core {
         public static string Save {
             get {
                 return ResourceManager.GetString("Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Saving songs.
+        /// </summary>
+        public static string SavingSongs {
+            get {
+                return ResourceManager.GetString("SavingSongs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Songs are being saved....
+        /// </summary>
+        public static string SavingSongsMessage {
+            get {
+                return ResourceManager.GetString("SavingSongsMessage", resourceCulture);
             }
         }
         

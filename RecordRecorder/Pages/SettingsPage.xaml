@@ -81,7 +81,7 @@
                                     </TextBlock.InputBindings>
                                     <TextBlock.ToolTip>
                                         <ToolTip>
-                                            <TextBlock Text="{x:Static core:Text.OpenFolderToolTip}" />
+                                            <TextBlock Text="{x:Static core:Text.OpenFolder}" />
                                         </ToolTip>
                                     </TextBlock.ToolTip>
                                 </TextBlock>

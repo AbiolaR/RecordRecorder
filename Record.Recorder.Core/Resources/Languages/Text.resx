@@ -135,14 +135,23 @@
   <data name="ChooseRecordingDeviceMessage" xml:space="preserve">
     <value>Please choose a recording device to test.</value>
   </data>
+  <data name="Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
   <data name="Continue" xml:space="preserve">
     <value>Continue</value>
   </data>
   <data name="DarkTheme" xml:space="preserve">
     <value>Dark</value>
   </data>
+  <data name="DetectingSongsMessage" xml:space="preserve">
+    <value>Songs are being detected...</value>
+  </data>
   <data name="DeviceNameWatermark" xml:space="preserve">
     <value>Please choose a recording device</value>
+  </data>
+  <data name="FindingSongDataMessage" xml:space="preserve">
+    <value>Song data is being found...</value>
   </data>
   <data name="LightTheme" xml:space="preserve">
     <value>Light</value>
@@ -150,7 +159,7 @@
   <data name="OK" xml:space="preserve">
     <value>OK</value>
   </data>
-  <data name="OpenFolderToolTip" xml:space="preserve">
+  <data name="OpenFolder" xml:space="preserve">
     <value>Open Folder</value>
   </data>
   <data name="Pause" xml:space="preserve">
@@ -185,6 +194,12 @@ To abort the recording click on Stop.</value>
   </data>
   <data name="Save" xml:space="preserve">
     <value>Save</value>
+  </data>
+  <data name="SavingSongs" xml:space="preserve">
+    <value>Saving songs</value>
+  </data>
+  <data name="SavingSongsMessage" xml:space="preserve">
+    <value>Songs are being saved...</value>
   </data>
   <data name="Settings" xml:space="preserve">
     <value>Settings</value>

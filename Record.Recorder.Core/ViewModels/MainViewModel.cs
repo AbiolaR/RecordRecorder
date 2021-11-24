@@ -127,10 +127,10 @@ namespace Record.Recorder.Core
         {
 
             var viewModel = IoC.SavingProgressVM;
-            viewModel.Title = "Saving songs";
-            viewModel.Message = "Songs are being detected...";
-            viewModel.OkText = "Close";
-            viewModel.ButtonText = "Open Folder";
+            viewModel.Title = Text.SavingSongs;
+            viewModel.Message = Text.DetectingSongsMessage;
+            viewModel.OkText = Text.Close;
+            viewModel.ButtonText = Text.OpenFolder;
             
             await IoC.UI.ShowProgressDialogWithOption(viewModel);
             if (viewModel.Answer == DialogAnswer.Option1)
