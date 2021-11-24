@@ -22,16 +22,17 @@ namespace Record.Recorder.Core
         public ICommand TestRecordingDeviceCommand { get; set; }
         public ICommand SetThemeToLightCommand { get; set; }
         public ICommand SetThemeToDarkCommand { get; set; }
+        public ICommand SetFileTypeToMp3Command { get; set; }
+        public ICommand SetFileTypeToFlacCommand { get; set; }
 
         protected readonly RecorderUtil recorder = new RecorderUtil();
 
         private KeyValuePair<int, string> noRecordingDevice = new KeyValuePair<int, string>(-2, Text.DeviceNameWatermark);
         private KeyValuePair<int, string> recordingDevice;
         private SortedDictionary<int, string> recordingDevices = new SortedDictionary<int, string>();
-        private string outputFolderLocation, unsavedInputVolume; //inputVolume
+        private string outputFolderLocation, unsavedInputVolume;
         private bool isTestingRecordingDevice = false;
-        private bool isThemeDark;
-        private bool isThemeLight;
+        private bool isThemeDark, isThemeLight, isFileTypeMp3, isFileTypeFlac;
 
         public KeyValuePair<int, string> RecordingDevice
         {
@@ -46,16 +47,13 @@ namespace Record.Recorder.Core
         }
 
         public string OutputFolderLocation { get => outputFolderLocation; set { outputFolderLocation = value; OnPropertyChanged(nameof(OutputFolderLocation)); } }
-
-        //public string InputVolume { get => inputVolume; set { inputVolume = value; OnPropertyChanged(nameof(InputVolume)); } }
         public string UnsavedInputVolume { get => unsavedInputVolume; set { unsavedInputVolume = value; OnPropertyChanged(nameof(UnsavedInputVolume)); } }
         public bool IsTestingRecordingDevice { get => isTestingRecordingDevice; set { isTestingRecordingDevice = value; OnPropertyChanged(nameof(IsTestingRecordingDevice)); } }
         public bool IsThemeDark
         {
             get => isThemeDark;
             set
-            {
-                IoC.Settings.ApplicationTheme = ApplicationTheme.DARK;
+            {                
                 isThemeDark = value;
                 isThemeLight = !value;
                 OnPropertyChanged(nameof(IsThemeDark));
@@ -66,14 +64,36 @@ namespace Record.Recorder.Core
         {
             get => isThemeLight;
             set
-            {
-                IoC.Settings.ApplicationTheme = ApplicationTheme.LIGHT;
+            {                
                 isThemeLight = value;
                 isThemeDark = !value;
                 OnPropertyChanged(nameof(IsThemeLight));
                 OnPropertyChanged(nameof(IsThemeDark));
             }
         }
+        public bool IsFileTypeMp3
+        {
+            get => isFileTypeMp3;
+            set
+            {
+                isFileTypeMp3 = value;
+                isFileTypeFlac = !value;
+                OnPropertyChanged(nameof(IsFileTypeMp3));
+                OnPropertyChanged(nameof(IsFileTypeFlac));
+            }
+        }
+        public bool IsFileTypeFlac
+        {
+            get => isFileTypeFlac;
+            set
+            {
+                isFileTypeFlac = value;
+                isFileTypeMp3 = !value;
+                OnPropertyChanged(nameof(IsFileTypeFlac));
+                OnPropertyChanged(nameof(IsFileTypeMp3));
+            }
+        }
+
 
 
         public SettingsViewModel()
@@ -85,10 +105,11 @@ namespace Record.Recorder.Core
             SaveFolderLocationCommand = new RelayCommand((o) => SaveOutputFolderLocation());
             SaveRecordingDeviceCommand = new RelayCommand((o) => SaveRecordingDevice(o));
             OpenFolderLocationCommand = new RelayCommand((o) => OpenFolderLocation());
-            //UpdateInputVolumeCommand = new RelayCommand((o) => UpdateInputVolume(o));
             TestRecordingDeviceCommand = new RelayCommand((o) => TestRecordingDevice());
             SetThemeToLightCommand = new RelayCommand((o) => IsThemeLight = SetThemeToLight());
             SetThemeToDarkCommand = new RelayCommand((o) => IsThemeDark = SetThemeToDark());
+            SetFileTypeToMp3Command = new RelayCommand((o) => IsFileTypeMp3 = SetFileTypeToMp3());
+            SetFileTypeToFlacCommand = new RelayCommand((o) => IsFileTypeFlac = SetFileTypeToFlac());
 
             LoadSettingsData();
         }
@@ -97,6 +118,18 @@ namespace Record.Recorder.Core
         {
             recorder.StopRecording();
             SetCurrentPageTo(ApplicationPage.MainPage);
+        }
+
+        private bool SetFileTypeToMp3()
+        {
+            IoC.Settings.SaveFileType = AudioFileType.MP3;
+            return true;
+        }
+
+        private bool SetFileTypeToFlac()
+        {
+            IoC.Settings.SaveFileType = AudioFileType.FLAC;
+            return true;
         }
 
 
@@ -128,18 +161,6 @@ namespace Record.Recorder.Core
             }
             return true;
         }
-
-        /*private void UpdateInputVolume(object value)
-        {
-            if (value != null)
-            {
-                string formatedInputVolume = ((double)value).ToString("+0;-#");
-                Properties.Settings.Default["inputVolume"] = formatedInputVolume;
-                Properties.Settings.Default.Save();
-                InputVolume = formatedInputVolume;
-            }
-        }*/
-
         async private void LoadSettingsData()
         {
             switch(IoC.Settings.ApplicationTheme)
@@ -152,8 +173,17 @@ namespace Record.Recorder.Core
                     IsThemeLight = true;
                     break;
             }
+            switch (IoC.Settings.SaveFileType)
+            {
+                case AudioFileType.FLAC:
+                    IsFileTypeFlac = true;
+                    break;
+
+                default:
+                    IsFileTypeMp3 = true;
+                    break;
+            }
             OutputFolderLocation = IoC.Settings.OutputFolderLocation;
-            //UnsavedInputVolume = InputVolume = Properties.Settings.Default["inputVolume"].ToString();
             RecordingDevices = await recorder.GetRecordingDevices();
             var recDevice = await recorder.GetRecordingDeviceByName(IoC.Settings.RecordingDeviceName);
 

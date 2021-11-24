@@ -1,20 +1,17 @@
 ﻿using System;
 using System.Globalization;
-using System.Windows;
+using System.Windows.Input;
 
 namespace RecordRecorder
 {
     /// <summary>
-    /// Converts the <see cref="bool"/> to a visibility
+    /// Converts the <see cref="bool"/> to a cursor
     /// </summary>
-    class BooleanToVisibilityConverter : BaseValueConverter<BooleanToVisibilityConverter>
+    class BooleanIsSelectedToCursorConverter : BaseValueConverter<BooleanIsSelectedToCursorConverter>
     {
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (parameter == null)
-                return (bool)value ? Visibility.Visible : Visibility.Hidden;
-
-            return (bool)value ? Visibility.Hidden : Visibility.Visible;
+            return (bool)value ? Cursors.Arrow : Cursors.Hand;
         }
 
         public override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

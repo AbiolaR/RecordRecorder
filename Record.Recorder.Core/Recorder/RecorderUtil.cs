@@ -300,7 +300,7 @@ namespace Record.Recorder.Core
             Console.WriteLine(TimeSpan.FromMilliseconds(stopwatch.ElapsedMilliseconds));
             Parallel.ForEach(trackDataCollection, trackData =>
             {
-                trackData.Path = TrySave(trackData.Title, outputFolderName, trackData.Data, AudioFileType.MP3);//Settings.SaveFileType);
+                trackData.Path = TrySave(trackData.Title, outputFolderName, trackData.Data, Settings.SaveFileType);
             });
             Console.WriteLine(TimeSpan.FromMilliseconds(stopwatch.ElapsedMilliseconds));
             GC.Collect();

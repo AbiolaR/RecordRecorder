@@ -41,6 +41,7 @@
                                     <RowDefinition Height="50" />
                                     <RowDefinition Height="60" />
                                     <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
 
                                 <ComboBox x:Name="deviceSelector"
@@ -87,6 +88,13 @@
                                 </TextBlock>
                                 <Button Grid.Row="1" Grid.Column="1" Content="{x:Static core:Text.Change}" Command="{Binding SaveFolderLocationCommand}" Style="{StaticResource AppStandardButton}" FontSize="12" Height="30" Width="45" />
 
+                                <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Top" Margin="0, 0, 0, 35" FontSize="14" FontFamily="{StaticResource Foco}" FontWeight="Bold" Content="{x:Static core:Text.Theme}" Foreground="{StaticResource ApplicationTextBrush}" />
+                                <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <Button Command="{Binding SetThemeToLightCommand}" local:IsSelectedProperty.Value="{Binding IsThemeLight}" Content="{x:Static core:Text.LightTheme}" Style="{StaticResource PairToggleButton}" />
+                                    <Button Command="{Binding SetThemeToDarkCommand}" local:IsSelectedProperty.Value="{Binding IsThemeDark}" Content="{x:Static core:Text.DarkTheme}" Style="{StaticResource PairToggleButton}" />
+                                </StackPanel>
+                                
+                                <!--
                                 <Expander Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
                                     <Expander.Header>
                                         <TextBlock Foreground="{StaticResource ApplicationTextBrush}" Text="{x:Static core:Text.Appearance}" FontFamily="{StaticResource Foco}"/>
@@ -99,6 +107,19 @@
                                         <RadioButton IsChecked="{Binding IsThemeDark}" Command="{Binding SetThemeToDarkCommand}">
                                             <TextBlock Foreground="{StaticResource ApplicationTextBrush}" Text="{x:Static core:Text.DarkTheme}" FontSize="14" FontFamily="{StaticResource FocoLight}" />
                                         </RadioButton>
+                                    </StackPanel>
+                                </Expander>-->
+
+                                <Expander Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2">
+                                    <Expander.Header>
+                                        <TextBlock Foreground="{StaticResource ApplicationTextBrush}" Text="{x:Static core:Text.Advanced}" FontFamily="{StaticResource Foco}"/>
+                                    </Expander.Header>
+                                    <StackPanel>
+                                        <Label Grid.Row="3" Grid.Column="0" VerticalAlignment="Top" Margin="0, 0, 0, 0" FontSize="14" FontFamily="{StaticResource Foco}" FontWeight="Bold" Content="{x:Static core:Text.Filetype}" Foreground="{StaticResource ApplicationTextBrush}" />
+                                        <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center">
+                                            <Button Command="{Binding SetFileTypeToMp3Command}" local:IsSelectedProperty.Value="{Binding IsFileTypeMp3}" Content="MP3" Margin="20 0" Style="{StaticResource PairToggleButton}" />
+                                            <Button Command="{Binding SetFileTypeToFlacCommand}" local:IsSelectedProperty.Value="{Binding IsFileTypeFlac}" Content="FLAC" Margin="20 0" Style="{StaticResource PairToggleButton}" />
+                                        </StackPanel>
                                     </StackPanel>
                                 </Expander>
 

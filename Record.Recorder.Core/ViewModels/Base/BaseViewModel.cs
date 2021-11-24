@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Record.Recorder.Type;
+using System;
 using System.ComponentModel;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -33,6 +34,7 @@ namespace Record.Recorder.Core
             IoC.Get<ApplicationViewModel>().ApplicationShadowColor = ApplicationColor.ShadowLight;
             IoC.Get<ApplicationViewModel>().HomeIcon = ApplicationImage.HomeDark;
             IoC.Get<ApplicationViewModel>().GearIcon = ApplicationImage.GearDark;
+            IoC.Settings.ApplicationTheme = ApplicationTheme.LIGHT;
             return true;
         }
 
@@ -44,6 +46,7 @@ namespace Record.Recorder.Core
             IoC.Get<ApplicationViewModel>().ApplicationShadowColor = ApplicationColor.ShadowDark;
             IoC.Get<ApplicationViewModel>().HomeIcon = ApplicationImage.HomeLight;
             IoC.Get<ApplicationViewModel>().GearIcon = ApplicationImage.GearLight;
+            IoC.Settings.ApplicationTheme = ApplicationTheme.DARK;
             return true;
         }
 

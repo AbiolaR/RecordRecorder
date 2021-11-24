@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Advanced" xml:space="preserve">
+    <value>Erweitert</value>
+  </data>
   <data name="AlbumSave" xml:space="preserve">
     <value>Alben werden hier gespeichert</value>
   </data>
@@ -149,6 +152,9 @@
   </data>
   <data name="DeviceNameWatermark" xml:space="preserve">
     <value>Bitte Aufnahmegerät auswählen</value>
+  </data>
+  <data name="Filetype" xml:space="preserve">
+    <value>Dateityp</value>
   </data>
   <data name="FindingSongDataMessage" xml:space="preserve">
     <value>Lieddaten werden gefunden... </value>

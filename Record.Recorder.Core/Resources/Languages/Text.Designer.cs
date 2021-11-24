@@ -61,6 +61,15 @@ namespace Record.Recorder.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Advanced.
+        /// </summary>
+        public static string Advanced {
+            get {
+                return ResourceManager.GetString("Advanced", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Albums are saved here.
         /// </summary>
         public static string AlbumSave {
@@ -156,6 +165,15 @@ namespace Record.Recorder.Core {
         public static string DeviceNameWatermark {
             get {
                 return ResourceManager.GetString("DeviceNameWatermark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Filetype.
+        /// </summary>
+        public static string Filetype {
+            get {
+                return ResourceManager.GetString("Filetype", resourceCulture);
             }
         }
         
