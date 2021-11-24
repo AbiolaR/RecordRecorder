@@ -1,6 +1,8 @@
 ﻿using Record.Recorder.Core;
 using Record.Recorder.Type;
 using System;
+using System.IO;
+using System.Reflection;
 using System.Threading;
 using System.Windows;
 
@@ -43,7 +45,7 @@ namespace RecordRecorder
             // Set necessary default settings data
             if (string.IsNullOrEmpty(IoC.Settings.OutputFolderLocation))
             {
-                IoC.Settings.OutputFolderLocation = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic);
+                IoC.Settings.OutputFolderLocation = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyMusic), Assembly.GetEntryAssembly().GetName().Name);
             }
 
             // Reset album name at startup

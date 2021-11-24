@@ -7,7 +7,7 @@ namespace Record.Recorder.Core
     {
         public string Title { get; set; }
         public string ThumbUrl { get; set; }        
-        public string Year { get; set; }
+        public int Year { get; set; }
         public string Genre { get; set; }
         public Dictionary<int, TrackData> Tracks { get; set; }
 

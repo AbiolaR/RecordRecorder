@@ -15,6 +15,8 @@ namespace Record.Recorder.Core
         bool isRecordingSaved = false;
         public bool IsRecordingSaved { get => isRecordingSaved; set { isRecordingSaved = value; OnPropertyChanged(nameof(IsRecordingSaved)); } }
 
+        public string OutputFolder { get; set; }
+
         public ProgressBoxDialogViewModel()
         {
             BGWorker = new BackgroundWorker();
@@ -35,7 +37,7 @@ namespace Record.Recorder.Core
         private async void StartSaving(object sender, DoWorkEventArgs e)
         {
             IoC.Settings.SongDetectionType = Type.SongDetectionType.SHAZAM;
-            await recorder.DetectAndSaveTracksAsync();// Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyMusic), @"Test\Resources\2songs.wav"));// @"C:\Users\rasheed_abiola\source\repos\RecordRecorder\Record.Recorder.Core.UnitTests\Resources\Audio\full12min.wav");
+            OutputFolder = await recorder.DetectAndSaveTracksAsync();// Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyMusic), @"Test\Resources\2songs.wav"));// @"C:\Users\rasheed_abiola\source\repos\RecordRecorder\Record.Recorder.Core.UnitTests\Resources\Audio\full12min.wav");
             BGWorker.CancelAsync();
             BGWorker.Dispose();
             ProgressValue = 100;

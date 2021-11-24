@@ -33,7 +33,7 @@ namespace Record.Recorder.Core.UnitTests
             mockSettings.Setup(settings => settings.SongDetectionType).Returns(SongDetectionType.SHAZAM);
             IoC.Kernel.Bind<ISettingsManager>().ToConstant(mockSettings.Object);
 
-            var path = Path.Combine(outputPath, @"Resources\full12min.wav");
+            var path = Path.Combine(outputPath, @"Resources\2songs.wav");
 
             var mockRecorder = new Mock<RecorderUtil>("Vinyl Recorder");
 
@@ -42,18 +42,12 @@ namespace Record.Recorder.Core.UnitTests
 
 
 
-            /*DirectoryInfo di = new DirectoryInfo(@"C:\Users\rasheed_abiola\Music\Test");
 
-            foreach (FileInfo file in di.GetFiles())
-            {
-                file.Delete();
-            }*/
 
-            /*var model = mockRecorder.Object.GetTrackData3();
-            Console.WriteLine(model);*/
+            //mockRecorder.Object.TestMBrainz("USUM72000816");
+
             Task.Run(async () =>
             {
-                //await mockRecorder.Object.PopulateTrackDataAsync(new TrackData(), "USUM72000782");
                 await mockRecorder.Object.DetectAndSaveTracksAsync(path);
             }).GetAwaiter().GetResult();
 

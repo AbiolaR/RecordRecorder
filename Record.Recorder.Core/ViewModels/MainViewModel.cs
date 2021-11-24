@@ -135,7 +135,7 @@ namespace Record.Recorder.Core
             await IoC.UI.ShowProgressDialogWithOption(viewModel);
             if (viewModel.Answer == DialogAnswer.Option1)
             {
-                await IoC.UI.OpenFolderLocation(IoC.Settings.OutputFolderLocation);
+                await IoC.UI.OpenFolderLocation(viewModel.OutputFolder);
             }
 
         }
