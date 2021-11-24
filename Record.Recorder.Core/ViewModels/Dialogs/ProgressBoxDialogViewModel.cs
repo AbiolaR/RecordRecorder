@@ -42,7 +42,7 @@ namespace Record.Recorder.Core
             BGWorker.Dispose();
             ProgressValue = 100;
             IsRecordingSaved = true;
-            Message = "Done!";
+            Message = Text.SavingDoneMessage;
         }
 
         private void ProgressChanged(object sender, ProgressChangedEventArgs e)

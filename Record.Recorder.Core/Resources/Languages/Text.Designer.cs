@@ -289,6 +289,15 @@ namespace Record.Recorder.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Done!.
+        /// </summary>
+        public static string SavingDoneMessage {
+            get {
+                return ResourceManager.GetString("SavingDoneMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Saving songs.
         /// </summary>
         public static string SavingSongs {

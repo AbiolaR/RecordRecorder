@@ -195,6 +195,9 @@ Zum abbrechen der Aufnahme auf Stopp klicken.</value>
   <data name="Save" xml:space="preserve">
     <value>Speichern</value>
   </data>
+  <data name="SavingDoneMessage" xml:space="preserve">
+    <value>Fertig!</value>
+  </data>
   <data name="SavingSongs" xml:space="preserve">
     <value>Lieder speichern</value>
   </data>

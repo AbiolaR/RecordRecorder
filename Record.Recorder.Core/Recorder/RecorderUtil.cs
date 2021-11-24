@@ -217,7 +217,7 @@ namespace Record.Recorder.Core
         private TrackDataCollection ExtractTrackData(TrackPositionCollection trackPositions, string recordingPath)
         {
             double weight = .05;
-            IoC.SavingProgressVM.Message = "Song data is being found...";
+            IoC.SavingProgressVM.Message = Text.FindingSongDataMessage;
             var trackDataCollection = new TrackDataCollection { Album = new AlbumData { }, AlbumThumbs = new Collection<AlbumThumb>()  };
 
             foreach (var trackPosition in trackPositions)
@@ -277,7 +277,7 @@ namespace Record.Recorder.Core
             var pattern = new Regex("[<>:\"/\\|?*]");
             string outputFolderName = DateTime.Now.ToString("dd.MM.yy-HH:mm");
 
-            IoC.SavingProgressVM.Message = "Songs are being saved...";
+            IoC.SavingProgressVM.Message = Text.SavingSongsMessage;
 
             if (trackDataCollection.AlbumThumbs.Count == 1)
             {

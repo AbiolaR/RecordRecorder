@@ -195,6 +195,9 @@ To abort the recording click on Stop.</value>
   <data name="Save" xml:space="preserve">
     <value>Save</value>
   </data>
+  <data name="SavingDoneMessage" xml:space="preserve">
+    <value>Done!</value>
+  </data>
   <data name="SavingSongs" xml:space="preserve">
     <value>Saving songs</value>
   </data>
