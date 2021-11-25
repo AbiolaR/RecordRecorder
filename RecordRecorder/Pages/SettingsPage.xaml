@@ -115,7 +115,7 @@
                                         <TextBlock Foreground="{StaticResource ApplicationTextBrush}" Text="{x:Static core:Text.Advanced}" FontFamily="{StaticResource Foco}"/>
                                     </Expander.Header>
                                     <StackPanel>
-                                        <Label Grid.Row="3" Grid.Column="0" VerticalAlignment="Top" Margin="0, 0, 0, 0" FontSize="14" FontFamily="{StaticResource Foco}" FontWeight="Bold" Content="{x:Static core:Text.Filetype}" Foreground="{StaticResource ApplicationTextBrush}" />
+                                        <Label Grid.Row="3" Grid.Column="0" VerticalAlignment="Top" Margin="0, 10, 0, 10" FontSize="14" FontFamily="{StaticResource Foco}" FontWeight="Bold" Content="{x:Static core:Text.Filetype}" Foreground="{StaticResource ApplicationTextBrush}" />
                                         <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center">
                                             <Button Command="{Binding SetFileTypeToMp3Command}" local:IsSelectedProperty.Value="{Binding IsFileTypeMp3}" Content="MP3" Margin="20 0" Style="{StaticResource PairToggleButton}" />
                                             <Button Command="{Binding SetFileTypeToFlacCommand}" local:IsSelectedProperty.Value="{Binding IsFileTypeFlac}" Content="FLAC" Margin="20 0" Style="{StaticResource PairToggleButton}" />

@@ -54,8 +54,8 @@
     <Style TargetType="Button" x:Key="PairToggleButton" BasedOn="{StaticResource AppStandardButton}">
         <Setter Property="FontSize" Value="12" />
         <Setter Property="Height" Value="35" />
-        <Setter Property="Width" Value="65" />
-        <Setter Property="Margin" Value="20 20 20 0" />
+        <Setter Property="Width" Value="85" />
+        <Setter Property="Margin" Value="10 30 10 10" />
         <Setter Property="local:IsSelectedProperty.Value" Value="True" />
         <Setter Property="Opacity" Value="{Binding RelativeSource={RelativeSource Self}, Path=(local:IsSelectedProperty.Value) , Converter={local:BooleanIsSelectedToFloatConverter}}" />
         <Setter Property="Cursor" Value="{Binding RelativeSource={RelativeSource Self}, Path=(local:IsSelectedProperty.Value) , Converter={local:BooleanIsSelectedToCursorConverter}}" />

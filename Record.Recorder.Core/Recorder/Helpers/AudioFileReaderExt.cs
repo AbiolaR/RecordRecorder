@@ -131,7 +131,7 @@ namespace Record.Recorder.Core
 
                 TimeSpan difference = end.Subtract(start);
 
-                if (difference.TotalSeconds > 2 || start.TotalMilliseconds == 0)
+                if (difference.TotalMilliseconds > 2000 || start.TotalMilliseconds == 0)
                 {
                     silencePositions.Add("Start: " + j, start);
                     silencePositions.Add("End: " + j, end);

@@ -80,9 +80,9 @@
         <Setter Property="FontSize" Value="16" />
         <Setter Property="FontFamily" Value="{StaticResource Foco}" />
         <Setter Property="Foreground" Value="{StaticResource ApplicationTextBrush}" />
-        <Setter Property="BorderBrush" Value="#FF8FB8" />
-        <Setter Property="Background" Value="{StaticResource ApplicationForegroundBrush}" />
-        <Setter Property="BorderThickness" Value="0 1 0 1" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="Background" Value="#212121" />
+        <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Width" Value="200" />
         <Setter Property="Padding" Value="5" />
         <Setter Property="Margin" Value="0, 0, 0, 15" />
@@ -95,6 +95,7 @@
                     <Grid>
 
                         <Border x:Name="border" 
+                                CornerRadius="10"
                                 BorderBrush="{TemplateBinding BorderBrush}" 
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 Background="{TemplateBinding Background}"
@@ -131,7 +132,7 @@
                             <Setter Property="Opacity" TargetName="border" Value="0.56"/>
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource ApplicationTextBrush}"/>
+                            <Setter Property="BorderBrush" TargetName="border" Value="#FF5F96"/>
                         </Trigger>
                         <Trigger Property="IsKeyboardFocused" Value="True">
                             <Setter Property="BorderBrush" TargetName="border" Value="#FF5F96"/>

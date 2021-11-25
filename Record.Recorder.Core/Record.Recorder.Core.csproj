@@ -158,7 +158,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Recorder\Helpers\AudioFileReaderExt.cs" />
-    <Compile Include="Recorder\Helpers\AudioFileType.cs" />
     <Compile Include="Recorder\RecorderUtil.cs" />
     <Compile Include="Resources\Languages\Text.de.Designer.cs">
       <DependentUpon>Text.de.resx</DependentUpon>
