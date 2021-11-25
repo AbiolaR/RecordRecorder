@@ -79,7 +79,7 @@ namespace Record.Recorder.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to enter album name.
+        ///   Looks up a localized string similar to enter folder name.
         /// </summary>
         public static string AlbumWatermark {
             get {

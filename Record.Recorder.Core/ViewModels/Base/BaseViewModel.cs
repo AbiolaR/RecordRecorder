@@ -32,6 +32,7 @@ namespace Record.Recorder.Core
             IoC.Get<ApplicationViewModel>().ApplicationForegroundColor = ApplicationColor.ForegroundLight;
             IoC.Get<ApplicationViewModel>().ApplicationTextColor = ApplicationColor.TextDark;
             IoC.Get<ApplicationViewModel>().ApplicationShadowColor = ApplicationColor.ShadowLight;
+            IoC.Get<ApplicationViewModel>().ApplicationTextBoxBackgroundColor = ApplicationColor.TextBoxBackgroundLight;
             IoC.Get<ApplicationViewModel>().HomeIcon = ApplicationImage.HomeDark;
             IoC.Get<ApplicationViewModel>().GearIcon = ApplicationImage.GearDark;
             IoC.Settings.ApplicationTheme = ApplicationTheme.LIGHT;
@@ -44,6 +45,7 @@ namespace Record.Recorder.Core
             IoC.Get<ApplicationViewModel>().ApplicationForegroundColor = ApplicationColor.ForegroundDark;
             IoC.Get<ApplicationViewModel>().ApplicationTextColor = ApplicationColor.TextLight;
             IoC.Get<ApplicationViewModel>().ApplicationShadowColor = ApplicationColor.ShadowDark;
+            IoC.Get<ApplicationViewModel>().ApplicationTextBoxBackgroundColor = ApplicationColor.TextBoxBackgroundDark;
             IoC.Get<ApplicationViewModel>().HomeIcon = ApplicationImage.HomeLight;
             IoC.Get<ApplicationViewModel>().GearIcon = ApplicationImage.GearLight;
             IoC.Settings.ApplicationTheme = ApplicationTheme.DARK;

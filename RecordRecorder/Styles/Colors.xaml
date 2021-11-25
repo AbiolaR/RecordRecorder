@@ -12,9 +12,8 @@
     <Color x:Key="TextLight">White</Color>
     <Color x:Key="ShadowDark">#424242</Color>
     <Color x:Key="ShadowLight">White</Color>
-    <!-- LightGray -->
-
-
+    <Color x:Key="TextBoxBackgroundDark">#212121</Color>
+    <Color x:Key="TextBoxBackgroundLight">#adadad</Color>
 
     <SolidColorBrush x:Key="ApplicationForegroundBrush" Color="{Binding ApplicationViewModel.ApplicationForegroundColor, 
                                                                         Source={x:Static local:ViewModelLocator.Instance}, 
@@ -29,6 +28,10 @@
                                                                         Converter={local:ApplicationColorValueConverter}}" />
 
     <SolidColorBrush x:Key="ApplicationShadowBrush" Color="{Binding ApplicationViewModel.ApplicationShadowColor, 
+                                                                        Source={x:Static local:ViewModelLocator.Instance}, 
+                                                                        Converter={local:ApplicationColorValueConverter}}" />
+
+    <SolidColorBrush x:Key="ApplicationTextBoxBackgroundBrush" Color="{Binding ApplicationViewModel.ApplicationTextBoxBackgroundColor, 
                                                                         Source={x:Static local:ViewModelLocator.Instance}, 
                                                                         Converter={local:ApplicationColorValueConverter}}" />
 

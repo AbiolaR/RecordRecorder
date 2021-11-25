@@ -39,6 +39,12 @@ namespace RecordRecorder
                 case ApplicationColor.ShadowLight:
                     return Application.Current.Resources["ShadowLight"];
 
+                case ApplicationColor.TextBoxBackgroundDark:
+                    return Application.Current.Resources["TextBoxBackgroundDark"];
+
+                case ApplicationColor.TextBoxBackgroundLight:
+                    return Application.Current.Resources["TextBoxBackgroundLight"];
+
 
                 default:
                     Debugger.Break();

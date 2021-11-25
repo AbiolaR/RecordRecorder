@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<iasettings>
+  <projectproperties>
+    <manufacturer>Rasheed</manufacturer>
+    <productname>Vinyl Recorder</productname>
+    <productversion>1.0.0.</productversion>
+    <productcode>{81783015-c023-4bc1-b9bc-3282944a99d5}</productcode>
+    <upgradecode>{7a0c2dad-904b-40d4-8ec4-b9913b6a252b}</upgradecode>
+    <language>0</language>
+    <languagename>English</languagename>
+  </projectproperties>
+  <summary>
+    <title>Vinyl Recorder</title>
+    <subject>A simple way to digitalize your vinyl records</subject>
+    <author>Abiola Rasheed</author>
+    <summarycomments />
+    <revisioncode>{01dccf2c-d9ac-41b9-8558-b69d016105c4}</revisioncode>
+    <uacelevation>highestAvailable</uacelevation>
+  </summary>
+  <addremove>
+    <publishername>Rasheed</publishername>
+    <contactname>Abiola Rasheed</contactname>
+    <helplink />
+    <productupdatelink />
+    <addremovecomments>All Rights Reserved</addremovecomments>
+    <iconfile />
+  </addremove>
+  <codegen>
+    <generateincludefiles>0</generateincludefiles>
+    <generatefeatures>1</generatefeatures>
+    <refreshscript>0</refreshscript>
+  </codegen>
+  <compilervariables>
+    <variables />
+  </compilervariables>
+  <build>
+    <buildtype>0</buildtype>
+    <buildasmsi>False</buildasmsi>
+    <cachesources>1</cachesources>
+  </build>
+  <targetfolders />
+  <files>
+    <filedetails filename="C:\Users\rashe\source\repos\AbiolaR\RecordRecorder\RecordRecorder\bin\Debug\netcoreapp3.1\Vinyl Recorder.dll" targetlocation="$TARGETDIR$" type="1" generatenativeimage="0" registerassembly="0" runinstallerclass="0" createshortcut="1" runprogram="1" installfilecommand="1" VsProjectOutputfile="1" />
+    <filedetails filename="C:\Users\rashe\source\repos\AbiolaR\RecordRecorder\Record.Recorder.Core\bin\Debug\Record.Recorder.Core.dll" targetlocation="$TARGETDIR$" type="3" generatenativeimage="0" registerassembly="0" runinstallerclass="0" createshortcut="0" runprogram="0" installfilecommand="1" VsProjectOutputfile="1" />
+    <filedetails filename="C:\Users\rashe\source\repos\AbiolaR\RecordRecorder\Record.Recorder.Core.UnitTests\bin\Debug\net472\Record.Recorder.Core.UnitTests.dll" targetlocation="$TARGETDIR$" type="3" generatenativeimage="0" registerassembly="0" runinstallerclass="0" createshortcut="0" runprogram="0" installfilecommand="1" VsProjectOutputfile="1" />
+    <filedetails filename="C:\Users\rashe\source\repos\AbiolaR\RecordRecorder\Record.Recorder.Type\bin\Debug\netstandard2.0\Record.Recorder.Type.dll" targetlocation="$TARGETDIR$" type="3" generatenativeimage="0" registerassembly="0" runinstallerclass="0" createshortcut="0" runprogram="0" installfilecommand="1" VsProjectOutputfile="1" />
+    <filedetails filename="C:\Users\rashe\source\repos\AbiolaR\RecordRecorder\RecordRecorder\bin\x64\Release\netcoreapp3.1\Vinyl Recorder.runtimeconfig.json" targetlocation="$TARGETDIR$" type="0" generatenativeimage="0" registerassembly="0" runinstallerclass="0" createshortcut="0" runprogram="0" installfilecommand="1" VsProjectOutputfile="0" />
+  </files>
+  <dependencies />
+  <registry />
+  <dialogtheme>
+    <themename>Official</themename>
+  </dialogtheme>
+  <authenticode>
+    <sign>0</sign>
+    <mode>0</mode>
+    <certificatefile />
+    <keyfile />
+    <pfxfile />
+    <productinfourl />
+    <authpassword />
+    <timestampurl>http://time.certum.pl</timestampurl>
+    <signall>0</signall>
+  </authenticode>
+  <compression>
+    <compressiontype>6</compressiontype>
+    <encrypt>0</encrypt>
+    <compressionpassword />
+  </compression>
+  <output>
+    <outputtype>1</outputtype>
+    <location>C:\Users\rashe\Documents\Installer\publish</location>
+    <filename />
+    <calculatefilehash>1</calculatefilehash>
+    <refreshrevisioncode>0</refreshrevisioncode>
+  </output>
+</iasettings>

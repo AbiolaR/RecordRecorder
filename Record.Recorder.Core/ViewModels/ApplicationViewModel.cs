@@ -16,6 +16,7 @@
         public ApplicationColor ApplicationBackgroundColor { get; set; } = ApplicationColor.BackgroundLight;
         public ApplicationColor ApplicationTextColor { get; set; } = ApplicationColor.TextDark;
         public ApplicationColor ApplicationShadowColor { get; set; } = ApplicationColor.ShadowLight;
+        public ApplicationColor ApplicationTextBoxBackgroundColor { get; set; } = ApplicationColor.TextBoxBackgroundLight;
 
         public ApplicationImage HomeIcon { get; set; } = ApplicationImage.HomeDark;
         public ApplicationImage GearIcon { get; set; } = ApplicationImage.GearDark;

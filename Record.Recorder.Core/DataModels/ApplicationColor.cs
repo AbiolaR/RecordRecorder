@@ -9,6 +9,8 @@
         TextDark,
         TextLight,
         ShadowDark,
-        ShadowLight
+        ShadowLight,
+        TextBoxBackgroundDark,
+        TextBoxBackgroundLight
     }
 }

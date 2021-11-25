@@ -7,73 +7,6 @@
         <ResourceDictionary Source="Fonts.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
-    <!--<Style x:Key="WaterMarkTextBox" TargetType="{x:Type TextBox}" BasedOn="{StaticResource BaseStyle}">
-
-        
-        <Setter Property="FontSize" Value="16" />
-        <Setter Property="FontFamily" Value="{StaticResource Foco}" />
-        <Setter Property="Foreground" Value="{StaticResource ApplicationTextBrush}" />
-        <Setter Property="BorderBrush" Value="#FF8FB8" />
-        <Setter Property="Background" Value="{StaticResource ApplicationForegroundBrush}" />
-        <Setter Property="BorderThickness" Value="0 1 0 1" />
-        <Setter Property="Width" Value="150" />
-
-
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type TextBoxBase}">
-
-                    <Grid>
-
-                        <Border x:Name="border" 
-                                BorderBrush="{TemplateBinding BorderBrush}" 
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                Background="{TemplateBinding Background}"
-                                SnapsToDevicePixels="True">
-                            <ScrollViewer x:Name="PART_ContentHost" Focusable="False" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
-                        </Border>
-
-                        <TextBlock IsHitTestVisible="False"
-                                   Text="{x:Static core:Text.AlbumWatermark}"
-                                   x:Name="placeholder"
-                                   FontFamily="{StaticResource FocoLight}"
-                                   Padding="{TemplateBinding Padding}"
-                                   VerticalAlignment="Center"
-                                   HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
-                                   Foreground="Gray"
-                                   >
-                            <TextBlock.Style>
-                                <Style TargetType="{x:Type TextBlock}">
-                                    <Setter Property="Visibility" Value="Collapsed" />
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding Text, RelativeSource={RelativeSource TemplatedParent}}" Value="">
-                                            <Setter Property="Visibility" Value="Visible" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-
-                        </TextBlock>
-
-                    </Grid>
-
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsEnabled" Value="False">
-                            <Setter Property="Opacity" TargetName="border" Value="0.56"/>
-                        </Trigger>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="BorderBrush" TargetName="border" Value="#FF7EB4EA"/>
-                        </Trigger>
-                        <Trigger Property="IsKeyboardFocused" Value="True">
-                            <Setter Property="BorderBrush" TargetName="border" Value="#FF569DE5"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-
-    </Style> -->
-
     <Style x:Key="WatermarkTextBox" TargetType="{x:Type TextBox}" BasedOn="{StaticResource BaseStyle}">
 
 
@@ -81,7 +14,7 @@
         <Setter Property="FontFamily" Value="{StaticResource Foco}" />
         <Setter Property="Foreground" Value="{StaticResource ApplicationTextBrush}" />
         <Setter Property="BorderBrush" Value="Transparent" />
-        <Setter Property="Background" Value="#212121" />
+        <Setter Property="Background" Value="{StaticResource ApplicationTextBoxBackgroundBrush}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Width" Value="200" />
         <Setter Property="Padding" Value="5" />

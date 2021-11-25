@@ -124,7 +124,7 @@
     <value>Alben werden hier gespeichert</value>
   </data>
   <data name="AlbumWatermark" xml:space="preserve">
-    <value>Album Name eingeben</value>
+    <value>Ordner Name eingeben</value>
   </data>
   <data name="Appearance" xml:space="preserve">
     <value>Aussehen</value>
@@ -157,7 +157,7 @@
     <value>Dateityp</value>
   </data>
   <data name="FindingSongDataMessage" xml:space="preserve">
-    <value>Lieddaten werden gefunden... </value>
+    <value>Lieddaten werden gefunden...</value>
   </data>
   <data name="LightTheme" xml:space="preserve">
     <value>Hell</value>

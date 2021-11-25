@@ -124,7 +124,7 @@
     <value>Albums are saved here</value>
   </data>
   <data name="AlbumWatermark" xml:space="preserve">
-    <value>enter album name</value>
+    <value>enter folder name</value>
   </data>
   <data name="Appearance" xml:space="preserve">
     <value>Appearance</value>
