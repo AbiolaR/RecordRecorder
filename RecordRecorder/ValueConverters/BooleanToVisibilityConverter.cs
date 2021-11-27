@@ -7,7 +7,7 @@ namespace RecordRecorder
     /// <summary>
     /// Converts the <see cref="bool"/> to a visibility
     /// </summary>
-    class BooleanToVisibilityConverter : BaseValueConverter<BooleanToVisibilityConverter>
+    public class BooleanToVisibilityConverter : BaseValueConverter<BooleanToVisibilityConverter>
     {
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

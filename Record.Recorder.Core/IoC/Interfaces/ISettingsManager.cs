@@ -10,5 +10,6 @@ namespace Record.Recorder.Core
         string AlbumName { get; set; }
         string SaveFileType { get; set; }
         SongDetectionType SongDetectionType { get; set; }
+        string ApplicationLanguage { get; set; }
     }
 }

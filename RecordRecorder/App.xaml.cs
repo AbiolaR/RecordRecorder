@@ -32,7 +32,7 @@ namespace RecordRecorder
 
         // Configures the application reafy for use
         private void ApplicationSetup()
-        {
+        {            
             // Setup IoC
             IoC.Setup();
 
@@ -40,12 +40,21 @@ namespace RecordRecorder
             IoC.Kernel.Bind<IUIManager>().ToConstant(new UIManager());
 
             // Bind a settings manager
-            IoC.Kernel.Bind<ISettingsManager>().ToConstant(new SettingsManager());            
+            IoC.Kernel.Bind<ISettingsManager>().ToConstant(new SettingsManager());
 
             // Set necessary default settings data
             if (string.IsNullOrEmpty(IoC.Settings.OutputFolderLocation))
             {
                 IoC.Settings.OutputFolderLocation = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyMusic), Assembly.GetEntryAssembly().GetName().Name);
+            }
+            if (string.IsNullOrEmpty(IoC.Settings.ApplicationLanguage))
+            {
+                IoC.Settings.ApplicationLanguage = Thread.CurrentThread.CurrentCulture.ToString() switch
+                {
+                    "de" => "Deutsch",
+                    "de-DE" => "Deutsch",
+                    _ => "English",
+                };
             }
 
             // Reset album name at startup
@@ -68,10 +77,10 @@ namespace RecordRecorder
 
         private void SetupLanguage()
         {
-            
-            switch (Thread.CurrentThread.CurrentCulture.ToString())
+            string language = IoC.Settings.ApplicationLanguage;
+            switch (language)
             {
-                case "de":
+                case "Deutsch":
                     Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("de");
                     break;
             }

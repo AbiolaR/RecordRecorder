@@ -26,7 +26,7 @@
                         </Button>
 
                         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" TextBlock.TextAlignment="Center">
-                            <TextBox x:Name="AlbumInput" Text="{Binding AlbumName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource WatermarkTextBox}" />
+                            <TextBox x:Name="AlbumInput" Text="{Binding AlbumName}" Style="{StaticResource WatermarkTextBox}" />
                             <ContentControl Content="{Binding}" ContentTemplate="{StaticResource RecordingProgressCollection}" />
                             <ContentControl Content="{Binding}" ContentTemplate="{StaticResource RecordingControlCollection}" />
                         </StackPanel>

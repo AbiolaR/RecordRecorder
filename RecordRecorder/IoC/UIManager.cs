@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Forms;
 
 namespace RecordRecorder
 {
@@ -20,7 +19,6 @@ namespace RecordRecorder
         public Task ShowMessage(MessageBoxDialogViewModel viewModel)
         {
             return new DialogMessageBox().ShowDialog(viewModel);
-            //return Task.FromResult(0);
         }
 
         public Task ShowMessageWithOption(MessageBoxButtonDialogViewModel viewModel)
@@ -34,15 +32,14 @@ namespace RecordRecorder
             var tcs = new TaskCompletionSource<string>();
             var path = "";
 
-            System.Windows.Application.Current.Dispatcher.Invoke(() =>
+            Application.Current.Dispatcher.Invoke(() =>
             {
                 try
                 {
-                    using var dialog = new FolderBrowserDialog();
-                    if (DialogResult.OK.Equals(dialog.ShowDialog()))
+                    using var dialog = new System.Windows.Forms.FolderBrowserDialog();
+                    if (System.Windows.Forms.DialogResult.OK.Equals(dialog.ShowDialog()))
                     {
                         path = dialog.SelectedPath;
-                        //SaveOutputFolderLocation(dialog.SelectedPath);
                     }
                 }
                 finally
@@ -59,7 +56,7 @@ namespace RecordRecorder
         {
             var tcs = new TaskCompletionSource<bool>();
 
-            System.Windows.Application.Current.Dispatcher.Invoke(() =>
+            Application.Current.Dispatcher.Invoke(() =>
             {
                 try
                 {
@@ -78,6 +75,38 @@ namespace RecordRecorder
         public Task ShowProgressDialogWithOption(ProgressBoxDialogViewModel viewModel)
         {
             return new DialogSavingProgressBox().ShowDialog(viewModel);
+        }
+
+        public Task Refresh()
+        {
+            var tcs = new TaskCompletionSource<bool>();
+
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                try
+                {
+                    var colorsDict = new ResourceDictionary { Source = new System.Uri(@"Styles/Colors.xaml", System.UriKind.Relative) };
+                    var fontsDict = new ResourceDictionary { Source = new System.Uri(@"Styles/Fonts.xaml", System.UriKind.Relative) };
+                    var textsDict = new ResourceDictionary { Source = new System.Uri(@"Styles/Texts.xaml", System.UriKind.Relative) };
+                    var buttonsDict = new ResourceDictionary { Source = new System.Uri(@"Styles/Buttons.xaml", System.UriKind.Relative) };
+                    var imagesDict = new ResourceDictionary { Source = new System.Uri(@"Styles/Images.xaml", System.UriKind.Relative) };
+                    var collectionsDict = new ResourceDictionary { Source = new System.Uri(@"Styles/Collections.xaml", System.UriKind.Relative) };
+
+                    Application.Current.Resources.MergedDictionaries.Clear();
+                    Application.Current.Resources.MergedDictionaries.Add(colorsDict);
+                    Application.Current.Resources.MergedDictionaries.Add(fontsDict);
+                    Application.Current.Resources.MergedDictionaries.Add(textsDict);
+                    Application.Current.Resources.MergedDictionaries.Add(buttonsDict);
+                    Application.Current.Resources.MergedDictionaries.Add(imagesDict);
+                    Application.Current.Resources.MergedDictionaries.Add(collectionsDict);
+                }
+                finally
+                {
+                    tcs.TrySetResult(true);
+                }
+            });
+
+            return tcs.Task;
         }
     }
 }

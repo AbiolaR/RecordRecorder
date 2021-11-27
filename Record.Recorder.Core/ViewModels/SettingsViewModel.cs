@@ -1,5 +1,6 @@
 ﻿using Record.Recorder.Type;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -24,6 +25,7 @@ namespace Record.Recorder.Core
         public ICommand SetThemeToDarkCommand { get; set; }
         public ICommand SetFileTypeToMp3Command { get; set; }
         public ICommand SetFileTypeToFlacCommand { get; set; }
+        public ICommand SaveLanguageCommand { get; set; }
 
         protected readonly RecorderUtil recorder = new RecorderUtil();
 
@@ -33,6 +35,11 @@ namespace Record.Recorder.Core
         private string outputFolderLocation, unsavedInputVolume;
         private bool isTestingRecordingDevice = false;
         private bool isThemeDark, isThemeLight, isFileTypeMp3, isFileTypeFlac;
+
+        private List<string> languages = new List<string> {"English", "Deutsch"};
+        public List<string> Languages { get => languages; set { languages = value; OnPropertyChanged(nameof(Languages)); } }
+        private string currentLanguage;
+        public string CurrentLanguage { get => currentLanguage; set { currentLanguage = value; OnPropertyChanged(nameof(CurrentLanguage)); } }
 
         public KeyValuePair<int, string> RecordingDevice
         {
@@ -110,6 +117,7 @@ namespace Record.Recorder.Core
             SetThemeToDarkCommand = new RelayCommand((o) => IsThemeDark = SetThemeToDark());
             SetFileTypeToMp3Command = new RelayCommand((o) => IsFileTypeMp3 = SetFileTypeToMp3());
             SetFileTypeToFlacCommand = new RelayCommand((o) => IsFileTypeFlac = SetFileTypeToFlac());
+            SaveLanguageCommand = new RelayCommand((o) => SaveLanguage(o));
 
             LoadSettingsData();
         }
@@ -183,6 +191,7 @@ namespace Record.Recorder.Core
                     IsFileTypeMp3 = true;
                     break;
             }
+            CurrentLanguage = IoC.Settings.ApplicationLanguage;
             OutputFolderLocation = IoC.Settings.OutputFolderLocation;
             RecordingDevices = await recorder.GetRecordingDevices();
             var recDevice = await recorder.GetRecordingDeviceByName(IoC.Settings.RecordingDeviceName);
@@ -198,7 +207,27 @@ namespace Record.Recorder.Core
             }
         }
 
+        private void SaveLanguage(object o)
+        {
+            if (o != null)
+            {               
+                CurrentLanguage = (string)o;
+                IoC.Settings.ApplicationLanguage = CurrentLanguage;
+                switch (CurrentLanguage)
+                {
+                    case "Deutsch":
+                        Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("de");
+                        break;
 
+                    default:
+                        Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en-US");
+                        break;
+                }
+                IoC.UI.Refresh();
+                SetCurrentPageTo(ApplicationPage.MainPage);
+                SetCurrentPageTo(ApplicationPage.SettingsPage);
+            }
+        }
 
         async private void UpdateRecordingDevices()
         {

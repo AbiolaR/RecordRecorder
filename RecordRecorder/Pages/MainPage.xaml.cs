@@ -11,7 +11,7 @@ namespace RecordRecorder
         {
             InitializeComponent();
 
-            ViewModel = IoC.MainVM;
+            //ViewModel = IoC.MainVM;
         }
     }
 }

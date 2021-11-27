@@ -12,6 +12,7 @@ namespace Record.Recorder.Core
         private static readonly string ALBUMNAME = "AlbumName";
         private static readonly string SAVEFILETYPE = "SaveFileType";
         private static readonly string SONGDETECTIONTYPE = "SongDetectionType";
+        private static readonly string LANGUAGE = "Language";
 
 
         public string RecordingDeviceName { get => Settings[RECORDINGDEVICE].ToString(); set => SetAndSave(RECORDINGDEVICE, value); }
@@ -20,6 +21,7 @@ namespace Record.Recorder.Core
         public string AlbumName { get => Settings[ALBUMNAME].ToString(); set => SetAndSave(ALBUMNAME, value); }
         public string SaveFileType { get => Settings[SAVEFILETYPE].ToString(); set => SetAndSave(SAVEFILETYPE, value); }
         public SongDetectionType SongDetectionType { get => (SongDetectionType)Settings[SONGDETECTIONTYPE]; set => SetAndSave(SONGDETECTIONTYPE, value); }
+        public string ApplicationLanguage { get => Settings[LANGUAGE].ToString(); set => SetAndSave(LANGUAGE, value); }
 
         private void SetAndSave(string setting, object value)
         {

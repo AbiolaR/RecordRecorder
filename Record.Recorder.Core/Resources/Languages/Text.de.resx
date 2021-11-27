@@ -220,6 +220,9 @@ Zum abbrechen der Aufnahme auf Stopp klicken.</value>
     <value>Test</value>
   </data>
   <data name="Theme" xml:space="preserve">
-    <value>Theme</value>
+    <value>Design</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Sprache</value>
   </data>
 </root>

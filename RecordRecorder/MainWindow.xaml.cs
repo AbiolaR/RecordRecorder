@@ -11,8 +11,7 @@ namespace RecordRecorder
     {
         public MainWindow()
         {
-            InitializeComponent();
-
+            InitializeComponent();                       
             DataContext = new WindowViewModel(this);
         }
 
@@ -24,9 +23,9 @@ namespace RecordRecorder
 
                 await IoC.UI.ShowMessage(new MessageBoxDialogViewModel
                 {
-                    Title = "Recording in Progress",
-                    Message = "You are currently recording.\nTo abort the recording click on Stop.",
-                    OkText = "OK"
+                    Title = Text.RecordingInProgress,
+                    Message = Text.RecordingInProgressMessage,
+                    OkText = Text.OK
                 });
 
             }            

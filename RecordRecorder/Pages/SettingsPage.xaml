@@ -8,12 +8,12 @@
       xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
       mc:Ignorable="d" 
       x:Name="Page"                
-      d:DesignHeight="400" d:DesignWidth="600"
+      d:DesignHeight="480.667" d:DesignWidth="600"
       Title="SettingsPage">
 
 
     <Grid>
-        <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <ScrollViewer VerticalScrollBarVisibility="Hidden">
             <StackPanel >
                 <Border Background="{StaticResource ApplicationForegroundBrush}" CornerRadius="10" Padding="15" Width="300" Margin="50" Height="380">
                     <Border.Effect>
@@ -27,7 +27,7 @@
                         <Button x:Name="Home" Style="{StaticResource NavButton}" Command="{Binding GoToHomeCommand}">
                             <Image Source="{DynamicResource HomeIconSource}" />
                         </Button>
-
+                    <ScrollViewer VerticalScrollBarVisibility="Hidden">
                         <StackPanel VerticalAlignment="Top" HorizontalAlignment="Center" TextBlock.TextAlignment="Center">
 
                             <Grid Width="250" Margin="0, 50, 0, 0">
@@ -40,6 +40,7 @@
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="50" />
                                     <RowDefinition Height="60" />
+                                    <RowDefinition Height="*" />
                                     <RowDefinition Height="*" />
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
@@ -93,24 +94,22 @@
                                     <Button Command="{Binding SetThemeToLightCommand}" local:IsSelectedProperty.Value="{Binding IsThemeLight}" Content="{x:Static core:Text.LightTheme}" Style="{StaticResource PairToggleButton}" />
                                     <Button Command="{Binding SetThemeToDarkCommand}" local:IsSelectedProperty.Value="{Binding IsThemeDark}" Content="{x:Static core:Text.DarkTheme}" Style="{StaticResource PairToggleButton}" />
                                 </StackPanel>
-                                
-                                <!--
-                                <Expander Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
-                                    <Expander.Header>
-                                        <TextBlock Foreground="{StaticResource ApplicationTextBrush}" Text="{x:Static core:Text.Appearance}" FontFamily="{StaticResource Foco}"/>
-                                    </Expander.Header>
-                                    <StackPanel>
-                                        <Label Foreground="{StaticResource ApplicationTextBrush}" FontFamily="{StaticResource FocoBold}" FontSize="14" Content="{x:Static core:Text.Theme}" />
-                                        <RadioButton IsChecked="{Binding IsThemeLight}" Command="{Binding SetThemeToLightCommand}" VerticalAlignment="Center" >
-                                            <TextBlock Foreground="{StaticResource ApplicationTextBrush}" Text="{x:Static core:Text.LightTheme}" FontSize="14" FontFamily="{StaticResource FocoLight}" />
-                                        </RadioButton>
-                                        <RadioButton IsChecked="{Binding IsThemeDark}" Command="{Binding SetThemeToDarkCommand}">
-                                            <TextBlock Foreground="{StaticResource ApplicationTextBrush}" Text="{x:Static core:Text.DarkTheme}" FontSize="14" FontFamily="{StaticResource FocoLight}" />
-                                        </RadioButton>
-                                    </StackPanel>
-                                </Expander>-->
 
-                                <Expander Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2">
+                                <Label Grid.Row="3" Grid.Column="0" VerticalAlignment="Top" Margin="0, 0, 0, 45" FontSize="14" FontFamily="{StaticResource Foco}" FontWeight="Bold" Content="{x:Static core:Text.Language}" Foreground="{StaticResource ApplicationTextBrush}" />
+                                <ComboBox x:Name="languageSelector"
+                                      Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
+                                      ItemsSource="{Binding Languages}"
+                                      Height="20"
+                                      IsReadOnly="True"
+                                      SelectedItem="{Binding CurrentLanguage}">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="SelectionChanged">
+                                            <i:InvokeCommandAction Command="{Binding SaveLanguageCommand}" CommandParameter="{Binding ElementName=languageSelector, Path=SelectedItem}"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </ComboBox>
+
+                                <Expander Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2">
                                     <Expander.Header>
                                         <TextBlock Foreground="{StaticResource ApplicationTextBrush}" Text="{x:Static core:Text.Advanced}" FontFamily="{StaticResource Foco}"/>
                                     </Expander.Header>
@@ -126,10 +125,11 @@
                             </Grid>
 
                         </StackPanel>
+                    </ScrollViewer>
                     </Grid>
                 </Border>
             </StackPanel>
-        </ScrollViewer>
+            </ScrollViewer>
     </Grid>
 
 </local:BasePage>

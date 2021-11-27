@@ -32,7 +32,7 @@ namespace Record.Recorder.Core
         /// <summary>
         /// A shortcut access to the <see cref="MainViewModel"/>
         /// </summary>
-        public static MainViewModel MainVM => Get<MainViewModel>();
+        //public static MainViewModel MainVM => Get<MainViewModel>();
 
         /// <summary>
         /// A shortcut access to the <see cref="ProgressBoxDialogViewModel"/>
@@ -66,7 +66,7 @@ namespace Record.Recorder.Core
         private static void BindViewModels()
         {
             Kernel.Bind<ApplicationViewModel>().ToConstant(new ApplicationViewModel());
-            Kernel.Bind<MainViewModel>().ToConstant(new MainViewModel());
+            //Kernel.Bind<MainViewModel>().ToConstant(new MainViewModel());
             Kernel.Bind<ProgressBoxDialogViewModel>().ToConstant(new ProgressBoxDialogViewModel());
         }
     }

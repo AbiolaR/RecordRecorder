@@ -1,13 +1,14 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"                    
                     xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2"
-                    xmlns:local="clr-namespace:RecordRecorder"
+                    xmlns:local="clr-namespace:RecordRecorder"      
                     xmlns:core="clr-namespace:Record.Recorder.Core;assembly=Record.Recorder.Core">
     
     <ResourceDictionary.MergedDictionaries>
         <!-- The order is important -->
         <ResourceDictionary Source="Colors.xaml" />
         <ResourceDictionary Source="Fonts.xaml" />
+        <ResourceDictionary Source="Texts.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <!-- Hoverless Button -->

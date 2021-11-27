@@ -13,7 +13,7 @@ namespace RecordRecorder
     {
         #region Private Properties
 
-        private DialogWindow dialogWindow;
+        private readonly DialogWindow dialogWindow;
 
         #endregion
 

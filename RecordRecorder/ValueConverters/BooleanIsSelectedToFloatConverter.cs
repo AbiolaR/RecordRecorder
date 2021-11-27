@@ -7,7 +7,7 @@ namespace RecordRecorder
     /// <summary>
     /// Converts the <see cref="bool"/> to a float that is used for opacity
     /// </summary>
-    class BooleanIsSelectedToFloatConverter : BaseValueConverter<BooleanIsSelectedToFloatConverter>
+    public class BooleanIsSelectedToFloatConverter : BaseValueConverter<BooleanIsSelectedToFloatConverter>
     {
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

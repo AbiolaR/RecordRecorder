@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -55,11 +56,11 @@ namespace Record.Recorder.Core
             PressPauseCommand = new RelayCommand((o) => ToggleIsRecording());
             SaveRecordingCommand = new RelayCommand((o) => SaveRecording());
 
-            BGWorker = new BackgroundWorker();
+            /*BGWorker = new BackgroundWorker();
             BGWorker.ProgressChanged += new ProgressChangedEventHandler(ProgressChanged);
             BGWorker.DoWork += new DoWorkEventHandler(StartSaving);
             BGWorker.WorkerReportsProgress = true;
-            BGWorker.WorkerSupportsCancellation = true;
+            BGWorker.WorkerSupportsCancellation = true;*/
 
             timer = new DispatcherTimer(DispatcherPriority.Render)
             {
@@ -99,6 +100,11 @@ namespace Record.Recorder.Core
                 stopwatch.Start();
                 timer.Start();
             }
+            else
+            {
+                IsRecordingSaved = true;
+            }
+
         }
 
         private void ToggleIsRecording()
@@ -140,14 +146,14 @@ namespace Record.Recorder.Core
 
         }
 
-        private async void StartSaving(object sender, DoWorkEventArgs e)
+        /*private async void StartSaving(object sender, DoWorkEventArgs e)
         {
             await recorder.DetectAndSaveTracksAsync(@"C:\Users\rasheed_abiola\source\repos\RecordRecorder\Record.Recorder.Core.UnitTests\Resources\Audio\full12min.wav");
             BGWorker.CancelAsync();
             BGWorker.Dispose();
             LoadingVal = 100;
             CurrentRecordingTime = ZEROTIMERVALUE;
-        }
+        }*/
 
         private void ProgressChanged(object sender, ProgressChangedEventArgs e)
         {

@@ -20,5 +20,8 @@
     <Setting Name="SongDetectionType" Type="Record.Recorder.Type.SongDetectionType" Scope="User">
       <Value Profile="(Default)">TADB</Value>
     </Setting>
+    <Setting Name="Language" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>
