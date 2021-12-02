@@ -42,7 +42,7 @@
             "Enabled" = "11:TRUE"
             "PromptEnabled" = "11:TRUE"
             "PrerequisitesLocation" = "2:1"
-            "Url" = "8:"
+            "Url" = "8:https://media-server.casacam.net:9277/vinylrecorder/download/de"
             "ComponentsUrl" = "8:"
                 "Items"
                 {
@@ -64,7 +64,7 @@
         "DisplayName" = "8:Release"
         "IsDebugOnly" = "11:FALSE"
         "IsReleaseOnly" = "11:TRUE"
-        "OutputFilename" = "8:Release\\Record.Recorder.Installer.msi"
+        "OutputFilename" = "8:Release\\VinylRecorderInstaller-En.msi"
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
@@ -79,7 +79,7 @@
             "Enabled" = "11:TRUE"
             "PromptEnabled" = "11:TRUE"
             "PrerequisitesLocation" = "2:1"
-            "Url" = "8:"
+            "Url" = "8:https://media-server.casacam.net:9277/vinylrecorder/download/de"
             "ComponentsUrl" = "8:"
                 "Items"
                 {
@@ -87,6 +87,11 @@
                     {
                     "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
                     "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.NetCore.DesktopRuntime.3.1.x64"
+                    {
+                    "Name" = "8:.NET Desktop Runtime 3.1.21 (x64)"
+                    "ProductCode" = "8:Microsoft.NetCore.DesktopRuntime.3.1.x64"
                     }
                 }
             }
@@ -185,15 +190,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Vinyl Recorder"
-        "ProductCode" = "8:{9AF43B4B-DBE8-4557-BD4E-DA53687380C5}"
-        "PackageCode" = "8:{65DFBE50-9460-44CF-9750-36A0DDDDCDED}"
+        "ProductCode" = "8:{A5F07538-C85C-4EF2-9D22-904BDA4D4A32}"
+        "PackageCode" = "8:{443128FE-8602-42B4-AE83-5C48D46220F1}"
         "UpgradeCode" = "8:{BAD25BB8-630D-4584-970C-71467A56A92F}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.4.1"
+        "ProductVersion" = "8:1.0.5"
         "Manufacturer" = "8:Rasheed"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -209,7 +214,7 @@
         "UseSystemSearchPath" = "11:TRUE"
         "TargetPlatform" = "3:1"
         "PreBuildEvent" = "8:"
-        "PostBuildEvent" = "8:if \"$(Configuration)\" == \"Debug\" (\r\n  scp \"$(TargetDir)VinylRecorderInstaller-En-DEBUG.msi\" mserver@cadoc:/home/mserver/webserver/files/msi//dev/en/ \r\n) ELSE (\r\n  echo \"$(Configuration)\".\r\n)"
+        "PostBuildEvent" = "8:if \"$(Configuration)\" == \"Debug\" (\r\n  scp \"$(TargetDir)VinylRecorderInstaller-En-DEBUG.msi\" mserver@cadoc:/home/mserver/webserver/files/msi/live/en/ \r\n) ELSE (\r\n    scp \"$(TargetDir)VinylRecorderInstaller-En.msi\" mserver@cadoc:/home/mserver/webserver/files/msi/live/en/ \r\n)"
         "RunPostBuildEvent" = "3:0"
         }
         "Registry"

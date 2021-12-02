@@ -14,7 +14,7 @@ namespace RecordRecorder
     /// </summary>
     public partial class App : Application
     {
-        public static Version Version { get; } = new Version("1.0.4.1"); 
+        public static Version Version { get; } = new Version("1.0.5"); 
         /// <summary>
         /// Custom startup so the IoC is loaded immediately before anything else
         /// </summary>
