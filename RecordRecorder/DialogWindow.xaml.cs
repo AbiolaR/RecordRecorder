@@ -18,7 +18,7 @@ namespace RecordRecorder
 
         public DialogWindow()
         {
-            InitializeComponent();
+            InitializeComponent();            
         }
 
         protected override void OnClosing(CancelEventArgs e)

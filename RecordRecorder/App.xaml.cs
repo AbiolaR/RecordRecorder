@@ -4,6 +4,7 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace RecordRecorder
@@ -13,6 +14,7 @@ namespace RecordRecorder
     /// </summary>
     public partial class App : Application
     {
+        public static Version Version { get; } = new Version("1.0.4.0"); 
         /// <summary>
         /// Custom startup so the IoC is loaded immediately before anything else
         /// </summary>
@@ -35,6 +37,9 @@ namespace RecordRecorder
         {            
             // Setup IoC
             IoC.Setup();
+
+            // Bind an update manager
+            IoC.Kernel.Bind<IUpdateManager>().ToConstant(new UpdateManager());
 
             // Bind a UI manager
             IoC.Kernel.Bind<IUIManager>().ToConstant(new UIManager());
@@ -73,6 +78,8 @@ namespace RecordRecorder
             }
 
             SetupLanguage();
+
+            CheckForUpdate();
         }
 
         private void SetupLanguage()
@@ -86,5 +93,32 @@ namespace RecordRecorder
             }
         }
 
+        private async void CheckForUpdate()
+        {
+            bool updateAvailable = await IoC.UpdateManager.CheckForUpdateAvailableAsync();
+            if (updateAvailable)
+            {
+                var viewModel = new MessageBoxButtonDialogViewModel()
+                {
+                    Title = "Update Available",
+                    Message = "An update is available. \nDownload and install now?",
+                    OkText = "No",
+                    ButtonText = "Yes"
+                };
+                await IoC.UI.ShowMessageWithOption(viewModel);
+                if (viewModel.Answer == DialogAnswer.Option1)
+                {
+                    var progressViewModel = IoC.SavingProgressVM;
+                    progressViewModel.Title = "Downloading Update";
+                    progressViewModel.Message = "Update is being downloaded...";
+                    progressViewModel.SetTask(() => IoC.UpdateManager.DownloadUpdate());
+                    progressViewModel.CloseWhenDone = true;
+
+                    await IoC.UI.ShowProgressDialog(progressViewModel);
+                    IoC.UpdateManager.UpdateApplication();
+                    Application.Current.Shutdown();
+                }
+            }
+        }
     }
 }

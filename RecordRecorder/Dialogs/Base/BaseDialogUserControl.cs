@@ -76,6 +76,13 @@ namespace RecordRecorder
                     DataContext = viewModel;
                     CloseCommand = new RelayCommand((o) => CloseDialog(viewModel, o));
 
+                    if (typeof(ProgressBoxDialogViewModel).IsInstanceOfType(viewModel))
+                    {
+                        (viewModel as ProgressBoxDialogViewModel).OnTaskDone += (s, e) => {
+                            CloseDialog(viewModel, null);
+                        };
+                    }
+
                     IoC.Get<ApplicationViewModel>().IsFocused = false;
                     dialogWindow.ShowDialog();
                 }
@@ -97,11 +104,23 @@ namespace RecordRecorder
         private void CloseDialog<T>(T viewModel, object o)
             where T : BaseDialogViewModel
         {
-            dialogWindow.Close(); 
-            IoC.Get<ApplicationViewModel>().IsFocused = true;
-            
-            if (o != null)            
-                viewModel.Answer = (DialogAnswer)o;            
+            var tcs = new TaskCompletionSource<bool>();
+
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                try
+                {
+                    dialogWindow.Close();
+                    IoC.Get<ApplicationViewModel>().IsFocused = true;
+
+                    if (o != null)
+                        viewModel.Answer = (DialogAnswer)o;
+                }
+                finally
+                {
+                    tcs.TrySetResult(true);
+                }
+            });
         } 
 
         #endregion

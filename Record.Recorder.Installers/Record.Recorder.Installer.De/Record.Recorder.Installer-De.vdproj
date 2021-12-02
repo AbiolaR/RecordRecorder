@@ -15,7 +15,7 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_CE8F4944EDB146A0AD3B5FBA6484C435"
+        "MsmKey" = "8:_5CFDFED87EF34222B306AAEB348A9822"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -42,7 +42,7 @@
             "Enabled" = "11:TRUE"
             "PromptEnabled" = "11:TRUE"
             "PrerequisitesLocation" = "2:1"
-            "Url" = "8:"
+            "Url" = "8:https://media-server.casacam.net:9277/vinylrecorder/download/de"
             "ComponentsUrl" = "8:"
                 "Items"
                 {
@@ -50,6 +50,11 @@
                     {
                     "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
                     "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.NetCore.DesktopRuntime.3.1.x64"
+                    {
+                    "Name" = "8:.NET Desktop Runtime 3.1.21 (x64)"
+                    "ProductCode" = "8:Microsoft.NetCore.DesktopRuntime.3.1.x64"
                     }
                 }
             }
@@ -91,6 +96,20 @@
     {
         "CustomAction"
         {
+            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_7A07A3A575694B47B7FDD5B817470E7D"
+            {
+            "Name" = "8:Publish Items from RecordRecorder (Active)"
+            "Condition" = "8:"
+            "Object" = "8:_5CFDFED87EF34222B306AAEB348A9822"
+            "FileType" = "3:2"
+            "InstallAction" = "3:1"
+            "Arguments" = "8:/Install"
+            "EntryPoint" = "8:"
+            "Sequence" = "3:1"
+            "Identifier" = "8:_805C68AD_9DC6_48D4_9693_4D68562950D8"
+            "InstallerClass" = "11:FALSE"
+            "CustomActionData" = "8:"
+            }
         }
         "DefaultFeature"
         {
@@ -111,6 +130,14 @@
                 "IsNETCore" = "11:TRUE"
                 "Architecture" = "2:0"
                 "Runtime" = "2:0"
+                }
+                "{A06ECF26-33A3-4562-8140-9B0E340D4F24}:_4489B339485B4E90B50276CE1D9F3F70"
+                {
+                "Name" = "8:.NET Framework"
+                "Message" = "8:[VSDNETMSG]"
+                "FrameworkVersion" = "8:.NETFramework,Version=v4.7.2"
+                "AllowLaterVersions" = "11:FALSE"
+                "InstallUrl" = "8:http://go.microsoft.com/fwlink/?LinkId=863262"
                 }
             }
         }
@@ -172,15 +199,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Vinyl Recorder"
-        "ProductCode" = "8:{F9717832-ADE4-42A1-8962-D626E5479A96}"
-        "PackageCode" = "8:{26DA42EB-8F8E-4362-A291-3AFDBB7D230D}"
+        "ProductCode" = "8:{902DCD98-AF79-49B8-A710-5C3D9130502A}"
+        "PackageCode" = "8:{2139653B-926C-4C11-90C2-9D5395E0122E}"
         "UpgradeCode" = "8:{BAD25BB8-630D-4584-970C-71467A56A92F}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
-        "RemovePreviousVersions" = "11:FALSE"
+        "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.1"
+        "ProductVersion" = "8:1.0.4"
         "Manufacturer" = "8:Rasheed"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -190,13 +217,13 @@
         "Keywords" = "8:"
         "ARPCOMMENTS" = "8:Der einfache Weg seine Schallplatten zu digitalisieren."
         "ARPURLINFOABOUT" = "8:"
-        "ARPPRODUCTICON" = "8:_CE8F4944EDB146A0AD3B5FBA6484C435"
+        "ARPPRODUCTICON" = "8:_5CFDFED87EF34222B306AAEB348A9822"
         "ARPIconIndex" = "3:32512"
         "SearchPath" = "8:"
         "UseSystemSearchPath" = "11:TRUE"
         "TargetPlatform" = "3:1"
         "PreBuildEvent" = "8:"
-        "PostBuildEvent" = "8:"
+        "PostBuildEvent" = "8:if \"$(Configuration)\" == \"Debug\" (\r\n  scp \"$(TargetDir)VinylRecorderInstaller-De-DEBUG.msi\" mserver@cadoc:/home/mserver/webserver/files/msi/de/debug/ \r\n) ELSE (\r\n  echo \"$(Configuration)\".\r\n)"
         "RunPostBuildEvent" = "3:0"
         }
         "Registry"
@@ -293,7 +320,7 @@
         }
         "Shortcut"
         {
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_468616915AC345E0889097B8B7B34C10"
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_7ACBAEDE76BE4A3FA62155C4E12CA4FA"
             {
             "Name" = "8:Vinyl Recorder"
             "Arguments" = "8:"
@@ -301,24 +328,24 @@
             "ShowCmd" = "3:1"
             "IconIndex" = "3:32512"
             "Transitive" = "11:FALSE"
-            "Target" = "8:_CE8F4944EDB146A0AD3B5FBA6484C435"
-            "Folder" = "8:_F9980C4238204839A34C44174AB65FC2"
-            "WorkingFolder" = "8:_986FE9FB7C6E4B39BA14A2AEC0600886"
-            "Icon" = "8:_CE8F4944EDB146A0AD3B5FBA6484C435"
-            "Feature" = "8:"
-            }
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_7A80D513C29D49688BA40AF688DA2C89"
-            {
-            "Name" = "8:Vinyl Recorder"
-            "Arguments" = "8:"
-            "Description" = "8:"
-            "ShowCmd" = "3:1"
-            "IconIndex" = "3:32512"
-            "Transitive" = "11:FALSE"
-            "Target" = "8:_CE8F4944EDB146A0AD3B5FBA6484C435"
+            "Target" = "8:_5CFDFED87EF34222B306AAEB348A9822"
             "Folder" = "8:_4DD61484EC4C430E95E5D8EC3EB6643B"
             "WorkingFolder" = "8:_986FE9FB7C6E4B39BA14A2AEC0600886"
-            "Icon" = "8:_CE8F4944EDB146A0AD3B5FBA6484C435"
+            "Icon" = "8:_5CFDFED87EF34222B306AAEB348A9822"
+            "Feature" = "8:"
+            }
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_FC12B09A05934686ABB7CB8AACA5FCD9"
+            {
+            "Name" = "8:Vinyl Recorder"
+            "Arguments" = "8:"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:32512"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_5CFDFED87EF34222B306AAEB348A9822"
+            "Folder" = "8:_F9980C4238204839A34C44174AB65FC2"
+            "WorkingFolder" = "8:_986FE9FB7C6E4B39BA14A2AEC0600886"
+            "Icon" = "8:_5CFDFED87EF34222B306AAEB348A9822"
             "Feature" = "8:"
             }
         }
@@ -720,7 +747,35 @@
         }
         "ProjectOutput"
         {
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_CE8F4944EDB146A0AD3B5FBA6484C435"
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_0E0DA849EBE940CB8A8648EC63EC5DA1"
+            {
+            "SourcePath" = "8:"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_986FE9FB7C6E4B39BA14A2AEC0600886"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            "ProjectOutputGroupRegister" = "3:1"
+            "OutputConfiguration" = "8:"
+            "OutputGroupCanonicalName" = "8:LocalizedResourceDlls"
+            "OutputProjectGuid" = "8:{534FC041-2B2B-4480-A66B-327652FE6ADB}"
+            "ShowKeyOutput" = "11:TRUE"
+                "ExcludeFilters"
+                {
+                }
+            }
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_5CFDFED87EF34222B306AAEB348A9822"
             {
             "SourcePath" = "8:..\\..\\RecordRecorder\\obj\\Debug\\netcoreapp3.1\\apphost.exe"
             "TargetName" = "8:"

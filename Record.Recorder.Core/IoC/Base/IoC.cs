@@ -15,12 +15,17 @@ namespace Record.Recorder.Core
         public static IKernel Kernel { get; private set; } = new StandardKernel();
 
         /// <summary>
+        /// A shortcut to access the <see cref="IUpdateManager"/>
+        /// </summary>
+        public static IUpdateManager UpdateManager => IoC.Get<IUpdateManager>();
+
+        /// <summary>
         /// A shortcut to access the <see cref="IUIManager"/>
         /// </summary>
         public static IUIManager UI => IoC.Get<IUIManager>();
 
         /// <summary>
-        /// A shortcut to access the <see cref="IUIManager"/>
+        /// A shortcut to access the <see cref="ISettingsManager"/>
         /// </summary>
         public static ISettingsManager Settings => IoC.Get<ISettingsManager>();
 

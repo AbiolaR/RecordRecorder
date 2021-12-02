@@ -25,7 +25,7 @@ namespace Record.Recorder.Core
 
         Task OpenFolderLocation(string path);
 
-        Task ShowProgressDialogWithOption(ProgressBoxDialogViewModel viewModel);
+        Task ShowProgressDialog(ProgressBoxDialogViewModel viewModel);
 
         Task Refresh();
     }

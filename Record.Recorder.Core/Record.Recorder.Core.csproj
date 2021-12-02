@@ -164,10 +164,12 @@
     <Compile Include="DTOs\ShazamCoreModel.cs" />
     <Compile Include="DTOs\TrackData.cs" />
     <Compile Include="DTOs\TrackPosition.cs" />
+    <Compile Include="DTOs\VersionDTO.cs" />
     <Compile Include="Helpers\ExpressionHelpers.cs" />
     <Compile Include="IoC\Interfaces\ISettingsManager.cs" />
     <Compile Include="IoC\Interfaces\IUIManager.cs" />
     <Compile Include="IoC\Base\IoC.cs" />
+    <Compile Include="IoC\Interfaces\IUpdateManager.cs" />
     <Compile Include="IoC\SettingsManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">

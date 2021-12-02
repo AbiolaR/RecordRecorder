@@ -18,10 +18,10 @@
         
         <TextBlock Grid.Row="0" Text="{Binding Message}"  Foreground="{StaticResource ApplicationTextBrush}" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" />
 
-        <ProgressBar  Grid.Row="2" Height="10" Margin="5" Value="{Binding ProgressValue}" Visibility="{Binding IsRecordingSaved, Converter={local:BooleanToVisibilityConverter}, ConverterParameter=True}"/>
+        <ProgressBar  Grid.Row="2" Height="10" Margin="5" Value="{Binding ProgressValue}" Visibility="{Binding IsTaskCompleted, Converter={local:BooleanToVisibilityConverter}, ConverterParameter=True}"/>
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button Margin="0, 0, 10, 0" Content="{Binding OkText}" Visibility="{Binding IsRecordingSaved, Converter={local:BooleanToVisibilityConverter}}" CommandParameter="{x:Static core:DialogAnswer.OK}" Style="{StaticResource DialogControlButton}" />
-            <Button Visibility="{Binding IsRecordingSaved, Converter={local:BooleanToVisibilityConverter}}" Content="{Binding ButtonText}" CommandParameter="{x:Static core:DialogAnswer.Option1}" Style="{StaticResource DialogControlButton}" />
+            <Button Margin="0, 0, 10, 0" Content="{Binding OkText}" Visibility="{Binding IsTaskCompleted, Converter={local:BooleanToVisibilityConverter}}" CommandParameter="{x:Static core:DialogAnswer.OK}" Style="{StaticResource DialogControlButton}" />
+            <Button Visibility="{Binding IsTaskCompleted, Converter={local:BooleanToVisibilityConverter}}" Content="{Binding ButtonText}" CommandParameter="{x:Static core:DialogAnswer.Option1}" Style="{StaticResource DialogControlButton}" />
         </StackPanel>
         
         

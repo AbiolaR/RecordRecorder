@@ -9,6 +9,11 @@
     <AssemblyName>Vinyl Recorder</AssemblyName>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <Platforms>AnyCPU;x64</Platforms>
+    <AssemblyVersion></AssemblyVersion>
+    <FileVersion></FileVersion>
+    <Version>$(VersionPrefix)</Version>
+    <SignAssembly>True</SignAssembly>
+    <DelaySign>True</DelaySign>
   </PropertyGroup>
 
   <ItemGroup>

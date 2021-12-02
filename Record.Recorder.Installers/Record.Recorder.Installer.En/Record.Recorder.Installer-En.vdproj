@@ -51,6 +51,11 @@
                     "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
                     "ProductCode" = "8:.NETFramework,Version=v4.7.2"
                     }
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.NetCore.DesktopRuntime.3.1.x64"
+                    {
+                    "Name" = "8:.NET Desktop Runtime 3.1.21 (x64)"
+                    "ProductCode" = "8:Microsoft.NetCore.DesktopRuntime.3.1.x64"
+                    }
                 }
             }
         }
@@ -173,11 +178,11 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Vinyl Recorder"
         "ProductCode" = "8:{A740B84C-4DE6-4C7C-B043-28D75A272F7B}"
-        "PackageCode" = "8:{D8336D3C-70C9-4464-A057-5BAE1F3E02BA}"
+        "PackageCode" = "8:{47304DC8-9C3E-424F-BE07-F7B2B79A5686}"
         "UpgradeCode" = "8:{BAD25BB8-630D-4584-970C-71467A56A92F}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
-        "RemovePreviousVersions" = "11:FALSE"
+        "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
         "ProductVersion" = "8:1.0.1"
@@ -196,7 +201,7 @@
         "UseSystemSearchPath" = "11:TRUE"
         "TargetPlatform" = "3:1"
         "PreBuildEvent" = "8:"
-        "PostBuildEvent" = "8:"
+        "PostBuildEvent" = "8:if \"$(Configuration)\" == \"Debug\" (\r\n  scp \"$(TargetDir)VinylRecorderInstaller-En-DEBUG.msi\" mserver@cadoc:/home/mserver/webserver/files/msi/en/debug/ \r\n) ELSE (\r\n  echo \"$(Configuration)\".\r\n)"
         "RunPostBuildEvent" = "3:0"
         }
         "Registry"

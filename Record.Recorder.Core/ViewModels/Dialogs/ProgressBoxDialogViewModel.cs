@@ -1,50 +1,68 @@
 ﻿using System;
 using System.ComponentModel;
-using System.IO;
 
 namespace Record.Recorder.Core
 {
     public class ProgressBoxDialogViewModel : MessageBoxButtonDialogViewModel
     {
         public virtual BackgroundWorker BGWorker { get; }
-        private readonly RecorderUtil recorder = new RecorderUtil();
+        private Action _action;
+         
 
         private double progressValue = 0;
         public double ProgressValue { get => (int)progressValue; set { progressValue = value; OnPropertyChanged(nameof(ProgressValue)); } }
 
-        bool isRecordingSaved = false;
-        public bool IsRecordingSaved { get => isRecordingSaved; set { isRecordingSaved = value; OnPropertyChanged(nameof(IsRecordingSaved)); } }
+        bool isTaskCompleted = false;
+        public bool IsTaskCompleted { get => isTaskCompleted; set { isTaskCompleted = value; OnPropertyChanged(nameof(IsTaskCompleted)); } }
 
-        public string OutputFolder { get; set; }
+        public event EventHandler OnTaskDone;
+        public bool CloseWhenDone { get; set; } = false;
+
+        public object ReturnValue { get; set; }
 
         public ProgressBoxDialogViewModel()
         {
             BGWorker = new BackgroundWorker();
             ProgressValue = 0;
             BGWorker.ProgressChanged += new ProgressChangedEventHandler(ProgressChanged);
-            BGWorker.DoWork += new DoWorkEventHandler(StartSaving);
+            BGWorker.DoWork += new DoWorkEventHandler(DoTask);
             BGWorker.WorkerReportsProgress = true;
             BGWorker.WorkerSupportsCancellation = true;
         }
 
         public override void OnDialogOpen()
         {
-            IsRecordingSaved = false;
+            IsTaskCompleted = false;
             ProgressValue = 0;
             BGWorker.RunWorkerAsync();
         }
 
-        private async void StartSaving(object sender, DoWorkEventArgs e)
+        public void SetTask(Action action)
         {
-            IoC.Settings.SongDetectionType = Type.SongDetectionType.SHAZAM;
-            OutputFolder = await recorder.DetectAndSaveTracksAsync();
+            _action = action;
+        }
+
+        private void DoTask(object sender, DoWorkEventArgs e)
+        {
+            _action();
+            
             BGWorker.CancelAsync();
             BGWorker.Dispose();
             ProgressValue = 100;
-            IsRecordingSaved = true;
-            Message = Text.SavingDoneMessage;
+            if (CloseWhenDone)
+            {
+                OnTaskDone?.Invoke(this, new EventArgs());
+            } else
+            {
+                IsTaskCompleted = true;
+            }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e">First arg is the dneominator; Second the numerator</param>
         private void ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             double newVal = progressValue + 1d / (double)e.ProgressPercentage * (double)e.UserState * 100;

@@ -74,6 +74,7 @@ namespace Record.Recorder.Core
                     CurrentRecordingTime = string.Format("{0:00}:{1:00}:{2:00}", timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds);
                 }
             };
+            
         }
 
         private void NavigateToSettingsPage()
@@ -132,7 +133,7 @@ namespace Record.Recorder.Core
         private async void SaveRecording()
         {
 
-            var viewModel = IoC.SavingProgressVM;
+            /*var viewModel = IoC.SavingProgressVM;
             viewModel.Title = Text.SavingSongs;
             viewModel.Message = Text.DetectingSongsMessage;
             viewModel.OkText = Text.Close;
@@ -142,18 +143,27 @@ namespace Record.Recorder.Core
             if (viewModel.Answer == DialogAnswer.Option1)
             {
                 await IoC.UI.OpenFolderLocation(viewModel.OutputFolder);
+            }*/
+
+            var viewModel = IoC.SavingProgressVM;
+            viewModel.Title = Text.SavingSongs;
+            viewModel.Message = Text.DetectingSongsMessage;
+            viewModel.OkText = Text.Close;
+            viewModel.ButtonText = Text.OpenFolder;
+            viewModel.SetTask(async () => 
+            {
+                IoC.Settings.SongDetectionType = Type.SongDetectionType.SHAZAM;
+                viewModel.ReturnValue = await recorder.DetectAndSaveTracksAsync();
+                viewModel.Message = Text.SavingDoneMessage;
+            });
+
+            await IoC.UI.ShowProgressDialog(viewModel);
+            if (viewModel.Answer == DialogAnswer.Option1)
+            {
+                await IoC.UI.OpenFolderLocation((string) viewModel.ReturnValue);
             }
 
         }
-
-        /*private async void StartSaving(object sender, DoWorkEventArgs e)
-        {
-            await recorder.DetectAndSaveTracksAsync(@"C:\Users\rasheed_abiola\source\repos\RecordRecorder\Record.Recorder.Core.UnitTests\Resources\Audio\full12min.wav");
-            BGWorker.CancelAsync();
-            BGWorker.Dispose();
-            LoadingVal = 100;
-            CurrentRecordingTime = ZEROTIMERVALUE;
-        }*/
 
         private void ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
