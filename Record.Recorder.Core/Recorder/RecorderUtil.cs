@@ -136,10 +136,12 @@ namespace Record.Recorder.Core
 
             writer = new WaveFileWriter(recordingFilePath, recordingDevice.WaveFormat);
 
-            recordingDevice.DataAvailable += (s, a) =>
+            /*recordingDevice.DataAvailable += (s, a) =>
             {
                 writer.Write(a.Buffer, 0, a.BytesRecorded);
-            };
+            };*/
+
+            recordingDevice.DataAvailable += OnDataAvailable;
 
             recordingDevice.RecordingStopped += (s, a) =>
             {
@@ -151,22 +153,35 @@ namespace Record.Recorder.Core
             recordingDevice.StartRecording();
         }
 
+        public void PauseRecording()
+        {
+            if (recordingDevice != null) recordingDevice.DataAvailable -= OnDataAvailable;
+        }
+
+        public void ResumeRecording()
+        {
+            var silenceBuffer = new SilenceProvider(recordingDevice.WaveFormat)
+                                .ToSampleProvider()
+                                .Take(TimeSpan.FromMilliseconds(RecorderConfig.SilenceMinDuration * 2));
+            using (var wavStream = new MemoryStream())
+            {
+                WaveFileWriter.WriteWavFileToStream(wavStream, new SampleToWaveProvider(silenceBuffer));
+                var buffer = new byte[wavStream.Length];
+                wavStream.Position = 0;
+                wavStream.Read(buffer, 0, (int)wavStream.Length);
+                writer.Write(buffer, 0, buffer.Length);
+            }          
+
+            if (recordingDevice != null) recordingDevice.DataAvailable += OnDataAvailable;
+        }
+
         public void StopRecording()
         {
             if (recordingDevice != null) recordingDevice.StopRecording();
         }
-
-        public void PlayRecording()
+        private void OnDataAvailable(object sender, WaveInEventArgs a)
         {
-            using (var output = new WaveOutEvent())
-            using (var player = new AudioFileReader(recordingFilePath))
-            {
-                output.Init(player);
-                output.Play();
-                while (output.PlaybackState == PlaybackState.Playing)
-                {
-                }
-            }
+            writer.Write(a.Buffer, 0, a.BytesRecorded);
         }
 
         public async void PlayRecordingDevice()
@@ -188,6 +203,8 @@ namespace Record.Recorder.Core
             }
         }
 
+        
+
         public async Task<string> DetectAndSaveTracksAsync(string recordingPath = null)
         {
             if (recordingPath == null)
@@ -197,7 +214,7 @@ namespace Record.Recorder.Core
             var trackPositions = new TrackPositionCollection();
 
             using (AudioFileReader reader = new AudioFileReader(recordingPath))
-            {
+            {                
                 trackPositions = reader.GetTrackPositions(.83);
             }
             GC.Collect();

@@ -88,6 +88,16 @@ namespace Record.Recorder.Core
             SetCurrentPageTo(ApplicationPage.SettingsPage);
         }
 
+        private void ToggleIsRecording()
+        {
+            ToggleCommmand(() => IsRecording, () => { PauseRecording(); }, () => { ResumeRecording(); });
+        }
+
+        private void ToggleIsRecordingSaved()
+        {
+            ToggleCommmand(() => IsRecordingSaved, () => StartRecording(), () => SaveRecording());
+        }
+
         private async void StartRecording()
         {
             LoadingVal = 0;
@@ -100,6 +110,7 @@ namespace Record.Recorder.Core
                 IoC.Get<ApplicationViewModel>().IsRecordingInProgress = true;
                 stopwatch.Start();
                 timer.Start();
+                recorder.StartRecording();
             }
             else
             {
@@ -108,14 +119,18 @@ namespace Record.Recorder.Core
 
         }
 
-        private void ToggleIsRecording()
+        private void PauseRecording()
         {
-            ToggleCommmand(() => IsRecording, () => { stopwatch.Stop(); timer.Stop(); }, () => { stopwatch.Start(); timer.Start(); });
+            recorder.PauseRecording();
+            stopwatch.Stop();
+            timer.Stop();
         }
 
-        private void ToggleIsRecordingSaved()
+        private void ResumeRecording()
         {
-            ToggleCommmand(() => IsRecordingSaved, () => StartRecording(), () => SaveRecording());
+            recorder.ResumeRecording();
+            stopwatch.Start();
+            timer.Start();
         }
 
         private void StopRecording()
@@ -128,23 +143,11 @@ namespace Record.Recorder.Core
             stopwatch.Stop();
             timer.Stop();
             stopwatch.Reset();
+            recorder.StopRecording();
         }
 
         private async void SaveRecording()
         {
-
-            /*var viewModel = IoC.SavingProgressVM;
-            viewModel.Title = Text.SavingSongs;
-            viewModel.Message = Text.DetectingSongsMessage;
-            viewModel.OkText = Text.Close;
-            viewModel.ButtonText = Text.OpenFolder;
-            
-            await IoC.UI.ShowProgressDialogWithOption(viewModel);
-            if (viewModel.Answer == DialogAnswer.Option1)
-            {
-                await IoC.UI.OpenFolderLocation(viewModel.OutputFolder);
-            }*/
-
             var viewModel = IoC.SavingProgressVM;
             viewModel.Title = Text.SavingSongs;
             viewModel.Message = Text.DetectingSongsMessage;
@@ -158,6 +161,7 @@ namespace Record.Recorder.Core
             });
 
             await IoC.UI.ShowProgressDialog(viewModel);
+            CurrentRecordingTime = ZEROTIMERVALUE;
             if (viewModel.Answer == DialogAnswer.Option1)
             {
                 await IoC.UI.OpenFolderLocation((string) viewModel.ReturnValue);
