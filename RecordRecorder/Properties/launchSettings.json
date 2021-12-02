@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "RecordRecorder": {
+      "commandName": "Project"
+    },
+    "Installers": {
+      "commandName": "Project"
+    }
+  }
+}
