@@ -136,11 +136,6 @@ namespace Record.Recorder.Core
 
             writer = new WaveFileWriter(recordingFilePath, recordingDevice.WaveFormat);
 
-            /*recordingDevice.DataAvailable += (s, a) =>
-            {
-                writer.Write(a.Buffer, 0, a.BytesRecorded);
-            };*/
-
             recordingDevice.DataAvailable += OnDataAvailable;
 
             recordingDevice.RecordingStopped += (s, a) =>
