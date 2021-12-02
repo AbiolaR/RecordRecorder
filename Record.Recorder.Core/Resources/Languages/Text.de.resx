@@ -157,7 +157,7 @@
     <value>Dateityp</value>
   </data>
   <data name="FindingSongDataMessage" xml:space="preserve">
-    <value>Lieddaten werden gefunden...</value>
+    <value>Daten der Lieder werden gefunden...</value>
   </data>
   <data name="LightTheme" xml:space="preserve">
     <value>Hell</value>
@@ -166,13 +166,13 @@
     <value>OK</value>
   </data>
   <data name="OpenFolder" xml:space="preserve">
-    <value>Ordner Öffnen</value>
+    <value>Ordner öffnen</value>
   </data>
   <data name="Pause" xml:space="preserve">
     <value>Pause</value>
   </data>
   <data name="PlayAudioDeviceToolTip" xml:space="preserve">
-    <value>Abspielen des vom ausgewählten Aufnahmegerät empfangenen Tons</value>
+    <value>Spielt den Ton ab, der vom Aufnahmegerät empfangen wird</value>
   </data>
   <data name="Record" xml:space="preserve">
     <value>Aufnehmen</value>
@@ -182,21 +182,21 @@
   </data>
   <data name="RecordingDeviceNotFoundMessage" xml:space="preserve">
     <value>Das gespeicherte Aufnahmegerät konnte nicht gefunden werden.
-Stell sicher, dass es angeschlossen ist oder wähle ein anderes in den Einstellungen.</value>
+Stelle sicher, dass es angeschlossen ist oder wähle ein anderes in den Einstellungen.</value>
   </data>
   <data name="RecordingDeviceNotSet" xml:space="preserve">
     <value>Aufnahmegerät nicht gesetzt</value>
   </data>
   <data name="RecordingDeviceNotSetMessage" xml:space="preserve">
     <value>Es wurde noch kein Aufnahmegerät gesetzt.
-Wähle bitte eins in den Einstellungen aus und stell sicher, dass es funktioniert.</value>
+Wähle bitte eins in den Einstellungen aus und stelle sicher, dass es funktioniert.</value>
   </data>
   <data name="RecordingInProgress" xml:space="preserve">
     <value>Aufnahme läuft</value>
   </data>
   <data name="RecordingInProgressMessage" xml:space="preserve">
     <value>Eine Aufnahme ist gerade noch am laufen.
-Zum abbrechen der Aufnahme auf Stopp klicken.</value>
+Zum Abbrechen der Aufnahme auf Stopp klicken.</value>
   </data>
   <data name="Save" xml:space="preserve">
     <value>Speichern</value>
@@ -224,5 +224,24 @@ Zum abbrechen der Aufnahme auf Stopp klicken.</value>
   </data>
   <data name="Language" xml:space="preserve">
     <value>Sprache</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>Nein</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Ja</value>
+  </data>
+  <data name="UpdateAvailable" xml:space="preserve">
+    <value>Update Verfügbar</value>
+  </data>
+  <data name="UpdateAvailableMessage" xml:space="preserve">
+    <value>Es ist ein update verfügbar.
+Jetzt herunterladen und installieren?</value>
+  </data>
+  <data name="DownloadingUpdate" xml:space="preserve">
+    <value>Update Herunterladen</value>
+  </data>
+  <data name="DownloadingUpdateMessage" xml:space="preserve">
+    <value>Update wird heruntergeladen...</value>
   </data>
 </root>

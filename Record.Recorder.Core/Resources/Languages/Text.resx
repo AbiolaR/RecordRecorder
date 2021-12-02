@@ -225,4 +225,23 @@ To abort the recording click on Stop.</value>
   <data name="Language" xml:space="preserve">
     <value>Language</value>
   </data>
+  <data name="UpdateAvailable" xml:space="preserve">
+    <value>Update Available</value>
+  </data>
+  <data name="UpdateAvailableMessage" xml:space="preserve">
+    <value>An update is available. 
+Download and install now?</value>
+  </data>
+  <data name="DownloadingUpdate" xml:space="preserve">
+    <value>Downloading Update</value>
+  </data>
+  <data name="DownloadingUpdateMessage" xml:space="preserve">
+    <value>Update is being downloaded...</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>No</value>
+  </data>
 </root>

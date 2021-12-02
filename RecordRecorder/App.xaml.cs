@@ -100,17 +100,17 @@ namespace RecordRecorder
             {
                 var viewModel = new MessageBoxButtonDialogViewModel()
                 {
-                    Title = "Update Available",
-                    Message = "An update is available. \nDownload and install now?",
-                    OkText = "No",
-                    ButtonText = "Yes"
+                    Title = Text.UpdateAvailable,
+                    Message = Text.UpdateAvailableMessage,
+                    OkText = Text.No,
+                    ButtonText = Text.Yes
                 };
                 await IoC.UI.ShowMessageWithOption(viewModel);
                 if (viewModel.Answer == DialogAnswer.Option1)
                 {
                     var progressViewModel = IoC.SavingProgressVM;
-                    progressViewModel.Title = "Downloading Update";
-                    progressViewModel.Message = "Update is being downloaded...";
+                    progressViewModel.Title = Text.DownloadingUpdate;
+                    progressViewModel.Message = Text.DownloadingUpdateMessage;
                     progressViewModel.SetTask(() => IoC.UpdateManager.DownloadUpdate());
                     progressViewModel.CloseWhenDone = true;
 
