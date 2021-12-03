@@ -101,20 +101,6 @@
     {
         "CustomAction"
         {
-            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_7A07A3A575694B47B7FDD5B817470E7D"
-            {
-            "Name" = "8:Publish Items from RecordRecorder (Active)"
-            "Condition" = "8:"
-            "Object" = "8:_5CFDFED87EF34222B306AAEB348A9822"
-            "FileType" = "3:2"
-            "InstallAction" = "3:1"
-            "Arguments" = "8:/Install"
-            "EntryPoint" = "8:"
-            "Sequence" = "3:1"
-            "Identifier" = "8:_805C68AD_9DC6_48D4_9693_4D68562950D8"
-            "InstallerClass" = "11:FALSE"
-            "CustomActionData" = "8:"
-            }
         }
         "DefaultFeature"
         {
@@ -205,7 +191,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Vinyl Recorder"
         "ProductCode" = "8:{3730AA28-ABE3-4DC1-944C-78BACEE25E9C}"
-        "PackageCode" = "8:{B29366F9-8604-4084-95FD-17713081A358}"
+        "PackageCode" = "8:{7CF5DD8E-F810-477A-B1E6-DB071F9D7ED2}"
         "UpgradeCode" = "8:{BAD25BB8-630D-4584-970C-71467A56A92F}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
@@ -228,7 +214,7 @@
         "UseSystemSearchPath" = "11:TRUE"
         "TargetPlatform" = "3:1"
         "PreBuildEvent" = "8:"
-        "PostBuildEvent" = "8:if \"$(Configuration)\" == \"Debug\" (\r\n  scp \"$(TargetDir)VinylRecorderInstaller-De-DEBUG.msi\" mserver@cadoc:/home/mserver/webserver/files/msi/dev/de/ \r\n) ELSE (\r\n  scp \"$(TargetDir)VinylRecorderInstaller-De.msi\" mserver@cadoc:/home/mserver/webserver/files/msi/live/de/ \r\n)"
+        "PostBuildEvent" = "8:"
         "RunPostBuildEvent" = "3:0"
         }
         "Registry"

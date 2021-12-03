@@ -32,7 +32,7 @@ namespace Record.Recorder.Core
         private static readonly MusicBrainzClient brainzClient = new MusicBrainzClient();
         WaveFileWriter writer = null;
         WaveInEvent recordingDevice = null;
-        Logger log = LogManager.GetLogger("fileLogger");
+        readonly Logger log = LogManager.GetLogger("fileLogger");
 
         private readonly string dataFolder;
         private readonly string recordingFilePath;

@@ -141,7 +141,7 @@ namespace Record.Recorder.Core
         }
 
 
-        private async void TestRecordingDevice()
+        private void TestRecordingDevice()
         {
             ToggleCommmand(() => IsTestingRecordingDevice, () => { recorder.StopRecording(); }, async () => 
                                                                                                 {
