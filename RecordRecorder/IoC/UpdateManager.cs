@@ -58,12 +58,12 @@ namespace RecordRecorder
         }
         public async Task<string> DownloadUpdateAsync()
         {
-            string language = IoC.Settings.ApplicationLanguage switch
+            string url = IoC.Settings.ApplicationLanguage switch
             {
-                "Deutsch" => "de",
-                _ => "en"
+                "Deutsch" => "https://media-server.casacam.net:9277/vinylrecorder/download/de/VinylRecorderInstaller-De.msi",
+                _ => "https://media-server.casacam.net:9277/vinylrecorder/download/en/VinylRecorderInstaller-En.msi"
             };
-            string url = $"https://media-server.casacam.net:9277/vinylrecorder/download/{language}";
+            
 
             string fileLocation = msiFileLocation;//Path.Combine(tempFolder, "update.msi");
             if (File.Exists(fileLocation))

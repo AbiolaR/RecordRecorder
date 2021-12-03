@@ -79,7 +79,7 @@
             "Enabled" = "11:TRUE"
             "PromptEnabled" = "11:TRUE"
             "PrerequisitesLocation" = "2:1"
-            "Url" = "8:https://media-server.casacam.net:9277/vinylrecorder/download/de"
+            "Url" = "8:https://media-server.casacam.net:9277/vinylrecorder/download/en"
             "ComponentsUrl" = "8:"
                 "Items"
                 {
@@ -190,15 +190,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Vinyl Recorder"
-        "ProductCode" = "8:{A5F07538-C85C-4EF2-9D22-904BDA4D4A32}"
-        "PackageCode" = "8:{33456035-DB6D-4128-BC1C-2F64B31DE237}"
+        "ProductCode" = "8:{AE91BB48-65E7-4684-95A9-E9E4FCC61EA9}"
+        "PackageCode" = "8:{F29EC87A-8C36-4888-B899-D2057E12247A}"
         "UpgradeCode" = "8:{BAD25BB8-630D-4584-970C-71467A56A92F}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.5"
+        "ProductVersion" = "8:1.0.6"
         "Manufacturer" = "8:Rasheed"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -768,7 +768,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_CE8F4944EDB146A0AD3B5FBA6484C435"
             {
-            "SourcePath" = "8:..\\..\\RecordRecorder\\obj\\Debug\\netcoreapp3.1\\apphost.exe"
+            "SourcePath" = "8:..\\..\\RecordRecorder\\obj\\x64\\Release\\netcoreapp3.1\\apphost.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_986FE9FB7C6E4B39BA14A2AEC0600886"
