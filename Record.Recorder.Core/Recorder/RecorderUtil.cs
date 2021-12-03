@@ -6,6 +6,8 @@ using NAudio.Lame;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using Newtonsoft.Json;
+using NLog;
+using NLog.Targets;
 using Record.Recorder.Type;
 using System;
 using System.Collections.Generic;
@@ -30,6 +32,7 @@ namespace Record.Recorder.Core
         private static readonly MusicBrainzClient brainzClient = new MusicBrainzClient();
         WaveFileWriter writer = null;
         WaveInEvent recordingDevice = null;
+        Logger log = LogManager.GetLogger("fileLogger");
 
         private readonly string dataFolder;
         private readonly string recordingFilePath;
@@ -183,22 +186,47 @@ namespace Record.Recorder.Core
         {
             int recordingDeviceNumber = await GetRecordingDeviceNumberByName(Settings.RecordingDeviceName);
 
-            using (recordingDevice = new WaveInEvent() { DeviceNumber = recordingDeviceNumber })
-                recordingDevice.WaveFormat = new WaveFormat(44100, 2);
-            var waveInProvider = new WaveInProvider(recordingDevice);
-            using (var output = new WaveOutEvent())
+            try
             {
-                output.Init(waveInProvider);
-                recordingDevice.StartRecording();
-                output.Play();
-                while (output.PlaybackState == PlaybackState.Playing)
+                using (recordingDevice = new WaveInEvent() { DeviceNumber = recordingDeviceNumber })
+                    recordingDevice.WaveFormat = new WaveFormat(44100, 2);
+                var waveInProvider = new WaveInProvider(recordingDevice);
+                using (var output = new WaveOutEvent())
                 {
-                    await Task.Delay(50);
+                    output.Init(waveInProvider);
+                    recordingDevice.StartRecording();
+                    output.Play();
+                    while (output.PlaybackState == PlaybackState.Playing)
+                    {
+                        await Task.Delay(50);
+                    }
                 }
+            } catch (Exception ex)
+            {
+                
+                log.Error(ex);                         
             }
         }
 
-        
+        public bool DeviceCanBePlayed(int deviceNumber)
+        {
+            using (recordingDevice = new WaveInEvent() { DeviceNumber = deviceNumber })
+            {
+                recordingDevice.WaveFormat = new WaveFormat(44100, 2);
+                try
+                {
+                    recordingDevice.StartRecording();
+                } catch (Exception ex)
+                {
+                    
+                    log.Error(ex);
+                    return false;
+                }
+                recordingDevice.StopRecording();
+                
+                return true;
+            }
+        }
 
         public async Task<string> DetectAndSaveTracksAsync(string recordingPath = null)
         {
@@ -520,7 +548,7 @@ namespace Record.Recorder.Core
             task.Wait();
         }
 
-        public void TestMBrainz(string isrc)
+        /*public void TestMBrainz(string isrc)
         {
 
             var q = new MetaBrainz.MusicBrainz.Query("Vinyl Recorder", "1.0.0.0", "mailto:rasheedabi97@hotmail.com");            
@@ -528,7 +556,7 @@ namespace Record.Recorder.Core
             var recordings = q.FindRecordings($"isrc{isrc}");
             Console.WriteLine(recordings);
 
-        }
+        }*/
 
         private static async Task PopulateTrackDataAsync(TrackData trackData, ShazamCoreModel data)
         {

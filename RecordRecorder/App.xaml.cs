@@ -1,4 +1,5 @@
-﻿using Record.Recorder.Core;
+﻿using NLog;
+using Record.Recorder.Core;
 using Record.Recorder.Type;
 using System;
 using System.IO;
@@ -14,7 +15,11 @@ namespace RecordRecorder
     /// </summary>
     public partial class App : Application
     {
-        public static Version Version { get; } = new Version("1.0.5"); 
+        public static Version Version { get; } = new Version("1.0.5");
+        
+        Logger log = LogManager.GetLogger("fileLogger");
+        
+        
         /// <summary>
         /// Custom startup so the IoC is loaded immediately before anything else
         /// </summary>
@@ -34,7 +39,8 @@ namespace RecordRecorder
 
         // Configures the application reafy for use
         private void ApplicationSetup()
-        {            
+        {
+            AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(AppUnhandledException);
             // Setup IoC
             IoC.Setup();
 
@@ -80,6 +86,11 @@ namespace RecordRecorder
             SetupLanguage();
 
             CheckForUpdate();
+        }
+
+        private void AppUnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            log.Fatal(e.ExceptionObject.ToString());
         }
 
         private void SetupLanguage()

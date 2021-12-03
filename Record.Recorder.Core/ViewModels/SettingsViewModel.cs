@@ -143,14 +143,18 @@ namespace Record.Recorder.Core
 
         private async void TestRecordingDevice()
         {
-            if (await CheckForRecordingDevice())
-            {
-                ToggleCommmand(() => IsTestingRecordingDevice, () => { recorder.StopRecording(); }, () => { recorder.PlayRecordingDevice(); });
-            }
-            else
-            {
-                ShowPleaseChooseDeviceDialog();
-            }
+            ToggleCommmand(() => IsTestingRecordingDevice, () => { recorder.StopRecording(); }, async () => 
+                                                                                                {
+                                                                                                    if (await CheckForRecordingDevice())
+                                                                                                    {
+                                                                                                        recorder.PlayRecordingDevice();
+                                                                                                    }
+                                                                                                    else
+                                                                                                    {
+                                                                                                        ShowPleaseChooseDeviceDialog();
+                                                                                                    }
+                                                                                                });
+            
         }
 
         private async Task<bool> CheckForRecordingDevice()
@@ -167,6 +171,12 @@ namespace Record.Recorder.Core
             {
                 return false;
             }
+
+            if(!recorder.DeviceCanBePlayed(recordingDevice.Key))
+            {
+                return false;
+            }
+
             return true;
         }
         async private void LoadSettingsData()
