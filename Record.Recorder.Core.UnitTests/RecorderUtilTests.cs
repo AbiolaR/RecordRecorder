@@ -24,21 +24,22 @@ namespace Record.Recorder.Core.UnitTests
         [Test]
         public void Recognize_Two_Songs_Without_Internet_Test()
         {
-            string outputPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyMusic), "Test");
+            string outputPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyMusic), "Vinyl Recorder");
+            string resourcePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyMusic), @"Test\Resources");
             var mockSettings = new Mock<ISettingsManager>();
 
             mockSettings.Setup(settings => settings.OutputFolderLocation).Returns(outputPath);
             mockSettings.Setup(settings => settings.AlbumName).Returns("m2tb");
-            mockSettings.Setup(settings => settings.SaveFileType).Returns(AudioFileType.FLAC);
+            mockSettings.Setup(settings => settings.SaveFileType).Returns(AudioFileType.MP3);
             mockSettings.Setup(settings => settings.SongDetectionType).Returns(SongDetectionType.SHAZAM);
             IoC.Kernel.Bind<ISettingsManager>().ToConstant(mockSettings.Object);
 
-            var path = Path.Combine(outputPath, @"Resources\2songs.wav");
+            var path = Path.Combine(resourcePath, "mgk.wav");
 
             var mockRecorder = new Mock<RecorderUtil>("Vinyl Recorder");
 
             
-            mockRecorder.Setup(recorder => recorder.IsInternetConnected()).Returns(false);
+            mockRecorder.Setup(recorder => recorder.IsInternetConnected()).Returns(true);
 
 
 

@@ -107,16 +107,21 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="CUETools.Codecs" Version="1.0.2" />
+    <PackageReference Include="CUETools.Codecs.FLAKE" Version="1.0.5" />
     <PackageReference Include="Expression.Blend.Sdk.WPF" Version="1.0.1">
       <NoWarn>NU1701</NoWarn>
     </PackageReference>
+    <PackageReference Include="MusicBrainzAPI" Version="2.5.0" />
     <PackageReference Include="NAudio" Version="2.0.1" />
+    <PackageReference Include="NAudio.Lame" Version="2.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Ninject" Version="3.3.4" />
     <PackageReference Include="NLog" Version="4.7.12" />
     <PackageReference Include="NuGet.Build" Version="2.12.1" />
     <PackageReference Include="NuGetPowerTools" Version="0.29.0" />
     <PackageReference Include="PropertyChanged.Fody" Version="3.4.0" PrivateAssets="All" />
+    <PackageReference Include="taglib-sharp-netstandard2.0" Version="2.1.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -146,6 +151,18 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="C:\Users\rashe\.nuget\packages\naudio.lame\2.0.0\build\libmp3lame.32.dll">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="C:\Users\rashe\.nuget\packages\naudio.lame\2.0.0\build\libmp3lame.64.dll">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

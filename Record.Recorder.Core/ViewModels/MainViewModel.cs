@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -14,6 +15,8 @@ namespace Record.Recorder.Core
     /// </summary>
     public class MainViewModel : BaseViewModel
     {
+        readonly Logger log = LogManager.GetLogger("fileLogger");
+
         /// <summary>
         /// The command to switch to the settings page
         /// </summary>
@@ -155,9 +158,16 @@ namespace Record.Recorder.Core
             viewModel.ButtonText = Text.OpenFolder;
             viewModel.SetTask(async () => 
             {
-                IoC.Settings.SongDetectionType = Type.SongDetectionType.SHAZAM;
-                viewModel.ReturnValue = await recorder.DetectAndSaveTracksAsync();
-                viewModel.Message = Text.SavingDoneMessage;
+                try
+                {
+                    IoC.Settings.SongDetectionType = Type.SongDetectionType.SHAZAM;
+                    viewModel.ReturnValue = await recorder.DetectAndSaveTracksAsync();
+                    viewModel.Message = Text.SavingDoneMessage;
+                }
+                catch (Exception ex)
+                {
+                    log.Error(ex);
+                }
             });
 
             await IoC.UI.ShowProgressDialog(viewModel);

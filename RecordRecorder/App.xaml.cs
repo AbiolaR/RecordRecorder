@@ -15,7 +15,7 @@ namespace RecordRecorder
     /// </summary>
     public partial class App : Application
     {
-        public static Version Version { get; } = new Version("1.0.7");
+        public static Version Version { get; } = new Version("1.1.0");
 
         readonly Logger log = LogManager.GetLogger("fileLogger");
         

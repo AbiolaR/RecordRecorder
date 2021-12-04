@@ -6,7 +6,7 @@
         public ShazamCoreLocation location { get; set; }
         public ShazamCoreMatch[] matches { get; set; }
         public string tagid { get; set; }
-        public int timestamp { get; set; }
+        public long timestamp { get; set; }
         public string timezone { get; set; }
         public ShazamCoreTrack track { get; set; }
     }

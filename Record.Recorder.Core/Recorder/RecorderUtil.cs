@@ -202,8 +202,7 @@ namespace Record.Recorder.Core
                     }
                 }
             } catch (Exception ex)
-            {
-                
+            {                
                 log.Error(ex);                         
             }
         }
@@ -217,8 +216,7 @@ namespace Record.Recorder.Core
                 {
                     recordingDevice.StartRecording();
                 } catch (Exception ex)
-                {
-                    
+                {                    
                     log.Error(ex);
                     return false;
                 }
@@ -271,7 +269,6 @@ namespace Record.Recorder.Core
                 var trackData = new TrackData()
                 {
                     Title = $"Track {trackPosition.Number}",
-                    Track = trackPosition.Number,
                     Data = song,
                     Album = new AlbumData { }
                 };
@@ -338,10 +335,12 @@ namespace Record.Recorder.Core
 
             stopwatch.Start();
             Console.WriteLine(TimeSpan.FromMilliseconds(stopwatch.ElapsedMilliseconds));
+
             Parallel.ForEach(trackDataCollection, trackData =>
             {
                 trackData.Path = TrySave(trackData.Title, outputFolderName, trackData.Data, Settings.SaveFileType);
             });
+
             Console.WriteLine(TimeSpan.FromMilliseconds(stopwatch.ElapsedMilliseconds));
             GC.Collect();
             IoC.SavingProgressVM.BGWorker.ReportProgress(1, .2);
@@ -542,7 +541,7 @@ namespace Record.Recorder.Core
             trackDataCollection.AlbumThumbs = albumThumbs;
         }
 
-        private static void PopulateTrackData(TrackData trackData, ShazamCoreModel data)
+        private void PopulateTrackData(TrackData trackData, ShazamCoreModel data)
         {
             var task = PopulateTrackDataAsync(trackData, data);
             task.Wait();
@@ -558,7 +557,7 @@ namespace Record.Recorder.Core
 
         }*/
 
-        private static async Task PopulateTrackDataAsync(TrackData trackData, ShazamCoreModel data)
+        private async Task PopulateTrackDataAsync(TrackData trackData, ShazamCoreModel data)
         {
             if (data?.matches.Length > 0)
             {
@@ -597,6 +596,7 @@ namespace Record.Recorder.Core
                 }
                 catch (Exception ex)
                 {
+                    log.Error(ex);
                     Console.WriteLine(ex);
                 }
             }
