@@ -137,7 +137,7 @@ namespace Record.Recorder.Core
             recordingDevice = new WaveInEvent() { DeviceNumber = recordingDeviceNumber };
             recordingDevice.WaveFormat = new WaveFormat(RecorderConfig.SampleRate, RecorderConfig.Channels);
 
-            writer = new WaveFileWriter(recordingFilePath, recordingDevice.WaveFormat);            
+            writer = new WaveFileWriter(recordingFilePath, recordingDevice.WaveFormat);
             writer.WriteSilence();
 
             recordingDevice.DataAvailable += OnDataAvailable;
@@ -226,12 +226,15 @@ namespace Record.Recorder.Core
             var trackPositions = new TrackPositionCollection();
 
             using (AudioFileReader reader = new AudioFileReader(recordingPath))
-            {                
+            {
                 trackPositions = reader.GetTrackPositions(.83);
-            }
+            }            
             GC.Collect();
 
-            var trackDataCollection = ExtractTrackData(trackPositions, recordingPath);
+            var songFileReader = new AudioFileReader(recordingPath);
+            var sampleFileReader = new AudioFileReader(recordingPath);
+
+            var trackDataCollection = ExtractTrackData(trackPositions, songFileReader, sampleFileReader);
             string outputFolder = await SaveTracksAsync(trackDataCollection);
 
             // cleanup temp folder
@@ -240,10 +243,12 @@ namespace Record.Recorder.Core
             {
                 file.Delete();
             }
+            songFileReader.Close();
+            sampleFileReader.Close();
             return outputFolder;
         }
 
-        private TrackDataCollection ExtractTrackData(TrackPositionCollection trackPositions, string recordingPath)
+        private TrackDataCollection ExtractTrackData(TrackPositionCollection trackPositions, AudioFileReader songFileReader, AudioFileReader sampleFileReader)
         {
             double weight = .05;
             IoC.SavingProgressVM.Message = Text.FindingSongDataMessage;
@@ -253,9 +258,8 @@ namespace Record.Recorder.Core
             {
                 var end = TimeSpan.FromMilliseconds(trackPosition.End.TotalMilliseconds + 700);
 
-                var song = new AudioFileReader(recordingPath)
-                                                .Skip(trackPosition.Start)
-                                                .Take(end.Subtract(trackPosition.Start));
+                
+                var song = songFileReader.Skip(trackPosition.Start).Take(end.Subtract(trackPosition.Start));
 
                 var trackData = new TrackData()
                 {
@@ -278,11 +282,10 @@ namespace Record.Recorder.Core
                             break;
 
                         case SongDetectionType.SHAZAM:
-                            ISampleProvider sample = new AudioFileReader(recordingPath)
-                                                                        .Skip(trackPosition.Start)
-                                                                        .Take(end.Subtract(trackPosition.Start));
                             
-                            PopulateTrackData(trackData, GetTrackData(sample));
+                            ISampleProvider sample = sampleFileReader.Skip(trackPosition.Start).Take(end.Subtract(trackPosition.Start));
+                            
+                            PopulateTrackData(trackData, GetTrackData(sample));                            
                             break;
                     }
 
