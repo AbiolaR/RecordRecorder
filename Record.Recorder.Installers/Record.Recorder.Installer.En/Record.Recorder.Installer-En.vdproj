@@ -1050,15 +1050,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Vinyl Recorder"
-        "ProductCode" = "8:{54C08D12-003B-471F-B9D2-C06E8285BAD8}"
-        "PackageCode" = "8:{6991F13B-0E16-4DE9-98C4-5D35B4FCB2CF}"
+        "ProductCode" = "8:{2C651B94-25EA-4C37-97B6-79B0B712011A}"
+        "PackageCode" = "8:{7A1AA40A-1D62-44A5-B759-7B8CEC315BC8}"
         "UpgradeCode" = "8:{BAD25BB8-630D-4584-970C-71467A56A92F}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.1.4"
+        "ProductVersion" = "8:1.1.5"
         "Manufacturer" = "8:Rasheed"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -1628,7 +1628,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_CE8F4944EDB146A0AD3B5FBA6484C435"
             {
-            "SourcePath" = "8:..\\..\\RecordRecorder\\obj\\Debug\\netcoreapp3.1\\apphost.exe"
+            "SourcePath" = "8:..\\..\\RecordRecorder\\obj\\x64\\Release\\netcoreapp3.1\\win-x64\\apphost.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_986FE9FB7C6E4B39BA14A2AEC0600886"
@@ -1650,6 +1650,7 @@
             "OutputGroupCanonicalName" = "8:PublishItems"
             "OutputProjectGuid" = "8:{DFB7FCE6-A50E-4EE2-86C6-DCB0DFB393EE}"
             "ShowKeyOutput" = "11:TRUE"
+            "PublishProfilePath" = "8:Properties\\PublishProfiles\\ClickOnceProfile.pubxml"
                 "ExcludeFilters"
                 {
                 }
