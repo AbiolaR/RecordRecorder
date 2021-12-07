@@ -135,9 +135,10 @@ namespace Record.Recorder.Core
         {
             int recordingDeviceNumber = await GetRecordingDeviceNumberByName(Settings.RecordingDeviceName);
             recordingDevice = new WaveInEvent() { DeviceNumber = recordingDeviceNumber };
-            recordingDevice.WaveFormat = new WaveFormat(44100, 2);
+            recordingDevice.WaveFormat = new WaveFormat(RecorderConfig.SampleRate, RecorderConfig.Channels);
 
             writer = new WaveFileWriter(recordingFilePath, recordingDevice.WaveFormat);
+            writer.WriteSilence();
 
             recordingDevice.DataAvailable += OnDataAvailable;
 
@@ -158,17 +159,7 @@ namespace Record.Recorder.Core
 
         public void ResumeRecording()
         {
-            var silenceBuffer = new SilenceProvider(recordingDevice.WaveFormat)
-                                .ToSampleProvider()
-                                .Take(TimeSpan.FromMilliseconds(RecorderConfig.SilenceMinDuration * 2));
-            using (var wavStream = new MemoryStream())
-            {
-                WaveFileWriter.WriteWavFileToStream(wavStream, new SampleToWaveProvider(silenceBuffer));
-                var buffer = new byte[wavStream.Length];
-                wavStream.Position = 0;
-                wavStream.Read(buffer, 0, (int)wavStream.Length);
-                writer.Write(buffer, 0, buffer.Length);
-            }          
+            writer.WriteSilence();
 
             if (recordingDevice != null) recordingDevice.DataAvailable += OnDataAvailable;
         }
@@ -189,7 +180,7 @@ namespace Record.Recorder.Core
             try
             {
                 using (recordingDevice = new WaveInEvent() { DeviceNumber = recordingDeviceNumber })
-                    recordingDevice.WaveFormat = new WaveFormat(44100, 2);
+                    recordingDevice.WaveFormat = new WaveFormat(RecorderConfig.SampleRate, RecorderConfig.Channels);
                 var waveInProvider = new WaveInProvider(recordingDevice);
                 using (var output = new WaveOutEvent())
                 {

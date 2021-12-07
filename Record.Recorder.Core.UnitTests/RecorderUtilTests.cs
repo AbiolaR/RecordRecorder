@@ -39,7 +39,7 @@ namespace Record.Recorder.Core.UnitTests
             var mockRecorder = new Mock<RecorderUtil>("Vinyl Recorder");
 
             
-            mockRecorder.Setup(recorder => recorder.IsInternetConnected()).Returns(true);
+            mockRecorder.Setup(recorder => recorder.IsInternetConnected()).Returns(false);
 
 
 
