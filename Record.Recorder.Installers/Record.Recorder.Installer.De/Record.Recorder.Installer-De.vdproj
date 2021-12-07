@@ -40,13 +40,13 @@
         "Entry"
         {
         "MsmKey" = "8:_2983C0366B5C6FE0F296BAC24BA815CB"
-        "OwnerKey" = "8:_E166F6381D2E4B6B9B438EE6B622C67A"
+        "OwnerKey" = "8:_5F7C6BD8C7C5F5331BC1F396844B6189"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_2983C0366B5C6FE0F296BAC24BA815CB"
-        "OwnerKey" = "8:_5F7C6BD8C7C5F5331BC1F396844B6189"
+        "OwnerKey" = "8:_E166F6381D2E4B6B9B438EE6B622C67A"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -166,7 +166,25 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_2983C0366B5C6FE0F296BAC24BA815CB"
+        "OwnerKey" = "8:_FDE6838E851A43B13DAAD847493F71D5"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_F72A1E66F8C6D554CAE4854476CB4852"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_F5571423351F77DF14E0F0289BB3EAE2"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_E5639682CDDA3DBDDCED146BF2A74A9F"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -178,7 +196,13 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_85E370BF6C9465521F12C26DE716A02A"
+        "OwnerKey" = "8:_CBCD1569CCDB711FA8F5FA73056E3FE7"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_B4CD9AB6E398A25B3D9BE15C0C0A7C2A"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -190,7 +214,19 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_F5571423351F77DF14E0F0289BB3EAE2"
+        "OwnerKey" = "8:_89F11B22F49DAD1384451CA83E7039BD"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_85E370BF6C9465521F12C26DE716A02A"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_7DC566CB45660360AA1A85DD915C2E07"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -208,31 +244,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_7DC566CB45660360AA1A85DD915C2E07"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_FDE6838E851A43B13DAAD847493F71D5"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_1AB7C1C69390801211DC4B4C0841A0E9"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_CBCD1569CCDB711FA8F5FA73056E3FE7"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_E5639682CDDA3DBDDCED146BF2A74A9F"
+        "OwnerKey" = "8:_2983C0366B5C6FE0F296BAC24BA815CB"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -244,19 +256,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_F72A1E66F8C6D554CAE4854476CB4852"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_89F11B22F49DAD1384451CA83E7039BD"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_B4CD9AB6E398A25B3D9BE15C0C0A7C2A"
+        "OwnerKey" = "8:_1AB7C1C69390801211DC4B4C0841A0E9"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -1050,15 +1050,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Vinyl Recorder"
-        "ProductCode" = "8:{77F7268C-5B1C-444A-816C-90EA84AE8408}"
-        "PackageCode" = "8:{FA50F1F8-2790-46B7-A48A-385751D3C302}"
+        "ProductCode" = "8:{7BDCA77D-C416-4441-A2C1-95E2C7584973}"
+        "PackageCode" = "8:{6ABEB849-29AA-4C71-A899-21DC2B07C8E0}"
         "UpgradeCode" = "8:{BAD25BB8-630D-4584-970C-71467A56A92F}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.1.0"
+        "ProductVersion" = "8:1.1.3"
         "Manufacturer" = "8:Rasheed"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -1074,7 +1074,7 @@
         "UseSystemSearchPath" = "11:TRUE"
         "TargetPlatform" = "3:1"
         "PreBuildEvent" = "8:"
-        "PostBuildEvent" = "8:"
+        "PostBuildEvent" = "8:msitran -a \"$(ProjectDir)RemoveAllBeforeInstall.mst\" \"$(TargetDir)VinylRecorderInstaller-De.msi\"\r\n\r\nscp \"$(TargetDir)VinylRecorderInstaller-De.msi\" mserver@cadoc:/home/mserver/webserver/files/msi/live/de/ \r\nscp \"$(TargetDir)setup.exe\" mserver@cadoc:/home/mserver/webserver/files/setup/de/ "
         "RunPostBuildEvent" = "3:0"
         }
         "Registry"
