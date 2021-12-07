@@ -137,7 +137,7 @@ namespace Record.Recorder.Core
             recordingDevice = new WaveInEvent() { DeviceNumber = recordingDeviceNumber };
             recordingDevice.WaveFormat = new WaveFormat(RecorderConfig.SampleRate, RecorderConfig.Channels);
 
-            writer = new WaveFileWriter(recordingFilePath, recordingDevice.WaveFormat);
+            writer = new WaveFileWriter(recordingFilePath, recordingDevice.WaveFormat);            
             writer.WriteSilence();
 
             recordingDevice.DataAvailable += OnDataAvailable;
